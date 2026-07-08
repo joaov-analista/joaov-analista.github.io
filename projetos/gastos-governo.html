@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Despesas do Governo Federal | João Vítor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/11.0.5/swiper-bundle.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+  <style>
+    :root {
+      --bg:#F5F7FA;--surface:#FFFFFF;--bg2:#EEF2F7;--navy:#0F1C2E;
+      --blue:#2563EB;--blue-l:#DBEAFE;--amber:#F59E0B;--amber-l:#FEF3C7;
+      --green:#10B981;--green-l:#D1FAE5;--red:#EF4444;--red-l:#FEE2E2;
+      --t1:#0F1C2E;--t2:#4B5563;--t3:#9CA3AF;--border:#E2E8F0;
+      --r:12px;--r-lg:20px;
+      --shadow:0 1px 3px rgba(15,28,46,.07),0 4px 16px rgba(15,28,46,.05);
+      --shadow-lg:0 8px 40px rgba(15,28,46,.12);--nav-h:64px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);line-height:1.6}
+    a{text-decoration:none;color:inherit}
+    .container{max-width:900px;margin:0 auto;padding:0 24px}
+    .section-label{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
+    .tag{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:500;padding:4px 10px;border-radius:20px;background:var(--blue-l);color:var(--blue)}
+    .tag.green{background:var(--green-l);color:var(--green)}
+    .tag.amber{background:var(--amber-l);color:var(--amber)}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:var(--r);font-weight:600;font-size:14px;cursor:pointer;transition:all .2s;border:none;font-family:'Inter',sans-serif}
+    .btn-primary{background:var(--blue);color:#fff}
+    .btn-primary:hover{background:#1d4ed8;transform:translateY(-1px)}
+    .btn-outline{background:transparent;color:var(--t1);border:1.5px solid var(--border)}
+    .btn-outline:hover{border-color:var(--blue);color:var(--blue);transform:translateY(-1px)}
+    nav.main-nav{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav-h);background:rgba(245,247,250,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);display:flex;align-items:center}
+    nav.main-nav .container{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:1100px}
+    .nav-logo{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;color:var(--navy)}
+    .nav-logo span{color:var(--blue)}
+    .nav-back{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:var(--t2);padding:6px 12px;border-radius:8px;transition:all .15s}
+    .nav-back:hover{color:var(--blue);background:var(--blue-l)}
+    .projeto-hero{padding-top:calc(var(--nav-h) + 56px);padding-bottom:56px;background:linear-gradient(135deg,#0F1C2E 0%,#1a3356 100%);color:#fff;position:relative;overflow:hidden}
+    .projeto-hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 1px 1px,rgba(255,255,255,.05) 1px,transparent 0);background-size:28px 28px}
+    .projeto-hero .container{position:relative;z-index:1}
+    .ph-eyebrow{display:flex;align-items:center;gap:8px;margin-bottom:16px}
+    .ph-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:rgba(255,255,255,.5);transition:color .15s}
+    .ph-back:hover{color:#fff}
+    .ph-back::before{content:'←'}
+    .ph-sep{color:rgba(255,255,255,.25)}
+    .ph-cat{font-family:'JetBrains Mono',monospace;font-size:12px;color:#93c5fd;letter-spacing:.1em;text-transform:uppercase}
+    .ph-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(24px,4vw,40px);font-weight:700;line-height:1.15;margin-bottom:16px}
+    .ph-desc{font-size:16px;color:rgba(255,255,255,.7);max-width:620px;line-height:1.7;margin-bottom:24px}
+    .ph-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
+    .ph-tag{font-size:12px;font-weight:500;padding:4px 12px;border-radius:20px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.15)}
+    .ph-meta{display:flex;gap:24px;flex-wrap:wrap}
+    .ph-meta-item{display:flex;align-items:center;gap:6px;font-size:13px;color:rgba(255,255,255,.5)}
+    .ph-meta-item i{font-size:12px}
+    .result-strip{background:var(--surface);border-bottom:1px solid var(--border)}
+    .result-strip .container{display:grid;grid-template-columns:repeat(3,1fr)}
+    .rs-item{padding:24px;border-right:1px solid var(--border);text-align:center}
+    .rs-item:last-child{border-right:none}
+    .rs-value{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;color:var(--navy)}
+    .rs-label{font-size:12px;color:var(--t3);margin-top:2px}
+    .proj-section{padding:64px 0}
+    .proj-section+.proj-section{border-top:1px solid var(--border)}
+    .proj-section.alt{background:var(--surface)}
+    .proj-section h2{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:var(--navy);margin-bottom:20px}
+    .contexto-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:40px;align-items:start}
+    .contexto-text p{color:var(--t2);line-height:1.8;font-size:15px;margin-bottom:14px}
+    .stack-card{background:var(--bg2);border-radius:var(--r-lg);padding:22px;border:1px solid var(--border)}
+    .stack-card h3{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:var(--navy);margin-bottom:14px}
+    .stack-list{display:flex;flex-direction:column;gap:10px}
+    .stack-item{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--t2)}
+    .stack-item i{width:20px;color:var(--blue);text-align:center}
+    .fonte-card{background:var(--bg2);border-radius:var(--r-lg);padding:18px 20px;border:1px solid var(--border);margin-top:12px}
+    .fonte-card h4{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+    .fonte-card p{font-size:12px;color:var(--t2);line-height:1.6}
+    .carousel-wrap{position:relative;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow-lg);background:var(--surface)}
+    .swiper{width:100%}
+    .swiper-slide{aspect-ratio:16/9;background:linear-gradient(135deg,#EEF2F7,#DBEAFE);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;color:var(--t3)}
+    .swiper-slide img{width:100%;height:100%;object-fit:cover}
+    .swiper-slide>i{font-size:48px;color:var(--blue);opacity:.3}
+    .swiper-slide>span{font-size:13px}
+    .swiper-pagination-bullet-active{background:var(--blue)!important}
+    .swiper-button-next,.swiper-button-prev{color:var(--blue)!important}
+    .slide-caption{padding:14px 20px;background:var(--surface);border-top:1px solid var(--border);font-size:13px;color:var(--t3);font-style:italic;min-height:44px}
+    .code-block-wrap{border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow-lg)}
+    .code-tabs{display:flex;align-items:center;gap:4px;background:#1d2433;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.08)}
+    .code-tab{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;border-radius:8px;border:none;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;color:rgba(255,255,255,.45);background:transparent;cursor:pointer;transition:all .15s}
+    .code-tab:hover{color:rgba(255,255,255,.75);background:rgba(255,255,255,.06)}
+    .code-tab.active{color:#fff;background:rgba(255,255,255,.12)}
+    .code-tab i{font-size:13px}
+    .code-tab.etl-tab.active i{color:#4ade80}
+    .code-tab.eda-tab.active i{color:#fbbf24}
+    .code-copy{margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.15);font-family:'Inter',sans-serif;font-size:12px;font-weight:500;color:rgba(255,255,255,.5);background:transparent;cursor:pointer;transition:all .15s}
+    .code-copy:hover{color:#fff;border-color:rgba(255,255,255,.35)}
+    .code-copy.copied{color:#4ade80;border-color:#4ade80}
+    .code-panel{display:block}
+    .code-panel.hidden{display:none}
+    .code-panel pre{margin:0!important;border-radius:0!important;max-height:440px;overflow-y:auto;font-size:13px!important;line-height:1.65!important;padding:20px 24px!important}
+    .code-panel pre::-webkit-scrollbar{width:6px;height:6px}
+    .code-panel pre::-webkit-scrollbar-track{background:transparent}
+    .code-panel pre::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:3px}
+    .insights-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+    .insight-card{background:var(--bg2);border-radius:var(--r);padding:20px;border:1px solid var(--border)}
+    .insight-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;font-size:15px}
+    .ic-green{background:var(--green-l);color:var(--green)}
+    .ic-amber{background:var(--amber-l);color:var(--amber)}
+    .ic-blue{background:var(--blue-l);color:var(--blue)}
+    .ic-red{background:var(--red-l);color:var(--red)}
+    .insight-title{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px;color:var(--navy);margin-bottom:6px}
+    .insight-text{font-size:13px;color:var(--t2);line-height:1.6}
+    .insight-num{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;margin-bottom:4px}
+    .files-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+    .file-card{display:flex;align-items:center;gap:14px;background:var(--surface);border-radius:var(--r);padding:16px 18px;border:1.5px solid var(--border);transition:all .2s;cursor:pointer}
+    .file-card:hover{border-color:var(--blue);box-shadow:var(--shadow);transform:translateY(-1px)}
+    .file-card a{display:contents;color:inherit}
+    .file-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+    .fi-pbi{background:#fff3cd;color:#F2C811}
+    .fi-py{background:#e8f5e9;color:#2E7D32}
+    .fi-nb{background:#fff3e0;color:#e65100}
+    .file-info{flex:1}
+    .file-name{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;color:var(--navy)}
+    .file-type{font-size:11px;color:var(--t3);margin-top:1px}
+    .file-dl{color:var(--t3);font-size:13px;transition:color .15s}
+    .file-card:hover .file-dl{color:var(--blue)}
+    .proj-nav{padding:40px 0;background:var(--surface);border-top:1px solid var(--border)}
+    .proj-nav .container{display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .pn-back{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500;color:var(--t2);padding:10px 16px;border-radius:var(--r);border:1.5px solid var(--border);transition:all .2s}
+    .pn-back:hover{border-color:var(--blue);color:var(--blue)}
+    .pn-prev-label small{font-size:11px;color:var(--t3);display:block}
+    .pn-prev-label span{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:var(--navy)}
+    footer{background:#070F1A;color:rgba(255,255,255,.35);text-align:center;padding:22px;font-size:13px}
+    footer strong{color:rgba(255,255,255,.65)}
+    @media(max-width:720px){
+      .contexto-grid{grid-template-columns:1fr}
+      .result-strip .container{grid-template-columns:1fr}
+      .rs-item{border-right:none;border-bottom:1px solid var(--border)}
+      .rs-item:last-child{border-bottom:none}
+    }
+  </style>
+</head>
+<body>
+
+<nav class="main-nav">
+  <div class="container">
+    <a href="../index.html" class="nav-logo">JV<span>.</span>data</a>
+    <a href="../index.html#projetos" class="nav-back"><i class="fa-solid fa-arrow-left"></i> Voltar ao Portfólio</a>
+  </div>
+</nav>
+
+<div class="projeto-hero">
+  <div class="container">
+    <div class="ph-eyebrow">
+      <a href="../index.html#projetos" class="ph-back">Portfólio</a>
+      <span class="ph-sep">/</span>
+      <span class="ph-cat">Dados Públicos</span>
+    </div>
+    <h1 class="ph-title">Análise de Despesas do<br>Governo Federal (2015–2024)</h1>
+    <p class="ph-desc">10 anos de execução orçamentária federal consolidados com Python a partir de 120 arquivos mensais do Portal da Transparência — revelando para onde foi o dinheiro público, quanto ficou sem execução e como a pandemia e a dívida moldaram o orçamento brasileiro.</p>
+    <div class="ph-tags">
+      <span class="ph-tag">Python</span>
+      <span class="ph-tag">Power BI</span>
+      <span class="ph-tag">Pandas</span>
+      <span class="ph-tag">Portal da Transparência</span>
+      <span class="ph-tag">Dados Abertos</span>
+      <span class="ph-tag">Série Histórica</span>
+    </div>
+    <div class="ph-meta">
+      <span class="ph-meta-item"><i class="fa-regular fa-calendar"></i> Junho de 2026</span>
+      <span class="ph-meta-item"><i class="fa-solid fa-layer-group"></i> Python + Power BI</span>
+      <span class="ph-meta-item"><i class="fa-solid fa-code-branch"></i>
+        <a href="https://github.com/joaov-analista" target="_blank" style="color:inherit;text-decoration:underline">Ver no GitHub</a>
+      </span>
+    </div>
+  </div>
+</div>
+
+<div class="result-strip">
+  <div class="container">
+    <div class="rs-item">
+      <div class="rs-value" style="color:var(--red)">R$ 11,41 Tri</div>
+      <div class="rs-label">não executados em 10 anos</div>
+    </div>
+    <div class="rs-item">
+      <div class="rs-value" style="color:var(--amber)">73,6%</div>
+      <div class="rs-label">taxa de execução acumulada</div>
+    </div>
+    <div class="rs-item">
+      <div class="rs-value" style="color:var(--blue)">10 anos</div>
+      <div class="rs-label">série histórica analisada</div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTEXTO -->
+<section class="proj-section alt">
+  <div class="container">
+    <div class="section-label">// problema & abordagem</div>
+    <h2>Contexto do Projeto</h2>
+    <div class="contexto-grid">
+      <div class="contexto-text">
+        <p>O governo federal brasileiro executa anualmente um orçamento de trilhões de reais distribuídos entre dezenas de ministérios. No entanto, a população em geral desconhece como esse dinheiro é efetivamente gasto: quais ministérios concentram os recursos, quais tipos de despesa predominam e se o dinheiro planejado é de fato pago ao longo do ano.</p>
+        <p>O objetivo foi consolidar e analisar 10 anos de execução orçamentária federal (2015–2024), unificando 120 arquivos mensais do Portal da Transparência com Python e construindo um dashboard no Power BI que tornasse essa realidade visível e acessível.</p>
+        <p>O resultado expõe padrões invisíveis nos relatórios brutos: a concentração histórica de mais de 60% do orçamento na gestão da dívida, o crescimento de 128% nas despesas previdenciárias e o maior salto de gastos da série histórica, gerado pela pandemia de 2020.</p>
+
+        <div class="fonte-card">
+          <h4><i class="fa-solid fa-database" style="color:var(--blue)"></i> Execução Orçamentária da Despesa</h4>
+          <p>Dados oficiais do SIAFI com todas as despesas pagas pelo governo federal, organizados por ministério, tipo de despesa e data. Arquivos mensais de 2015 a 2024 — consolidados em uma única base analítica com Python.</p>
+        </div>
+        <div class="fonte-card">
+          <h4><i class="fa-solid fa-chart-line" style="color:var(--amber)"></i> Série Histórica do Orçamento Federal (SIOP)</h4>
+          <p>Base consolidada com o comparativo entre orçamento planejado (LOA), dotação atual após ajustes e valor efetivamente executado — por órgão superior, de 2015 a 2024.</p>
+        </div>
+      </div>
+      <div class="stack-card">
+        <h3>Stack utilizada</h3>
+        <div class="stack-list">
+          <div class="stack-item"><i class="fa-brands fa-python"></i><span>Python — consolidação de 120 CSVs</span></div>
+          <div class="stack-item"><i class="fa-solid fa-table"></i><span>Pandas — limpeza e modelagem</span></div>
+          <div class="stack-item"><i class="fa-solid fa-gears"></i><span>ETL — unificação e padronização</span></div>
+          <div class="stack-item"><i class="fa-solid fa-chart-bar"></i><span>Power BI — dashboard executivo</span></div>
+          <div class="stack-item"><i class="fa-solid fa-calculator"></i><span>DAX — KPIs e variações anuais</span></div>
+          <div class="stack-item"><i class="fa-solid fa-globe"></i><span>Portal da Transparência + SIOP</span></div>
+          <div class="stack-item"><i class="fa-brands fa-github"></i><span>GitHub — versionamento</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALERIA -->
+<section class="proj-section">
+  <div class="container">
+    <div class="section-label">// capturas de tela</div>
+    <h2>Dashboard em Detalhe</h2>
+    <div class="carousel-wrap">
+      <div class="swiper">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <!-- Substitua por: <img src="../assets/img/governo-1.png" alt="Visão Geral do Orçamento"> -->
+            <i class="fa-solid fa-landmark"></i>
+            <span>Slide 1 — Visão Geral do Orçamento · adicione seu screenshot</span>
+          </div>
+          <div class="swiper-slide">
+            <!-- Substitua por: <img src="../assets/img/governo-2.png" alt="Heatmap por Órgão e Ano"> -->
+            <i class="fa-solid fa-table-cells"></i>
+            <span>Slide 2 — Heatmap de Gastos por Órgão e Ano · adicione seu screenshot</span>
+          </div>
+          <div class="swiper-slide">
+            <!-- Substitua por: <img src="../assets/img/governo-3.png" alt="Execução Orçamentária"> -->
+            <i class="fa-solid fa-chart-pie"></i>
+            <span>Slide 3 — Execução Orçamentária por Ministério · adicione seu screenshot</span>
+          </div>
+          <div class="swiper-slide">
+            <!-- Substitua por: <img src="../assets/img/governo-4.png" alt="Série Histórica"> -->
+            <i class="fa-solid fa-chart-line"></i>
+            <span>Slide 4 — Série Histórica 2015–2024 · adicione seu screenshot</span>
+          </div>
+        </div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+      </div>
+      <div class="slide-caption" id="slide-caption">Use as setas para navegar entre as páginas do dashboard</div>
+    </div>
+  </div>
+</section>
+
+<!-- CÓDIGO -->
+<section class="proj-section alt">
+  <div class="container">
+    <div class="section-label">// código do projeto</div>
+    <h2>Código Utilizado</h2>
+    <div class="code-block-wrap">
+      <div class="code-tabs">
+        <button class="code-tab etl-tab active" onclick="switchTab('etl', this)">
+          <i class="fa-brands fa-python"></i> Python — Consolidação ETL
+        </button>
+        <button class="code-tab eda-tab" onclick="switchTab('eda', this)">
+          <i class="fa-brands fa-python"></i> Python — Modelagem & EDA
+        </button>
+        <button class="code-copy" id="copy-btn" onclick="copyCode()">
+          <i class="fa-regular fa-copy"></i> Copiar
+        </button>
+      </div>
+
+      <!-- PAINEL ETL — baixar_bases.py -->
+      <div class="code-panel" id="panel-etl">
+        <pre><code class="language-python">"""
+Script: Consolidar arquivos de despesas do Portal da Transparência
+
+Como usar:
+1. Coloque este script na mesma pasta onde estão os CSVs
+2. Rode: python juntar_despesas.py
+"""
+
+import os
+import glob
+import pandas as pd
+
+# CONFIGURAÇÕES
+PASTA_ARQUIVOS = "C:\\caminho\\para\\arquivos_despesa"
+ARQUIVO_FINAL  = "gastos_consolidado.csv"
+
+
+def main():
+    print("\n" + "=" * 55)
+    print("  Consolidador de Despesas do Governo Federal")
+    print("=" * 55 + "\n")
+
+    # Busca todos os CSVs com o padrão do portal (ex: 202401_Despesas.csv)
+    arquivos = sorted(glob.glob(
+        os.path.join(PASTA_ARQUIVOS, "*_Despesas.csv")
+    ))
+
+    if not arquivos:
+        print("Nenhum arquivo encontrado!")
+        print("Os arquivos devem ter o formato: 202401_Despesas.csv")
+        return
+
+    print(f"{len(arquivos)} arquivo(s) encontrado(s):\n")
+    for a in arquivos:
+        print(f"  {os.path.basename(a)}")
+
+    print("\nLendo e juntando...\n")
+    dfs = []
+
+    for arquivo in arquivos:
+        nome = os.path.basename(arquivo)
+        try:
+            df = pd.read_csv(
+                arquivo,
+                sep=";",
+                encoding="latin-1",
+                dtype=str,
+                low_memory=False
+            )
+            dfs.append(df)
+            print(f"    OK  {nome}  ({len(df):,} linhas)")
+
+        except Exception as e:
+            print(f"    ERRO em {nome}: {e}")
+
+    if not dfs:
+        print("\n  Nenhum arquivo foi lido com sucesso.")
+        return
+
+    # Junta tudo em um único DataFrame
+    df_final = pd.concat(dfs, ignore_index=True)
+
+    # Salva o arquivo consolidado
+    df_final.to_csv(
+        ARQUIVO_FINAL,
+        index=False,
+        encoding="utf-8-sig",
+        sep=";"
+    )
+
+    print("\n" + "=" * 55)
+    print(f"  Arquivo salvo:    {ARQUIVO_FINAL}")
+    print(f"  Total de linhas:  {len(df_final):,}")
+    print(f"  Total de colunas: {len(df_final.columns)}")
+    print(f"  Colunas: {list(df_final.columns)}")
+    print("=" * 55)
+    print("\n  Pronto! Importe o consolidado no seu dashboard.")
+
+
+if __name__ == "__main__":
+    main()</code></pre>
+      </div>
+
+      <!-- PAINEL EDA — modelagem e análise -->
+      <!--
+        INSTRUÇÃO: substitua o código abaixo pelo conteúdo real
+        do seu notebook modelagem_limpeza.ipynb
+      -->
+      <div class="code-panel hidden" id="panel-eda">
+        <pre><code class="language-python"># ================================================
+# MODELAGEM E EDA — DESPESAS DO GOVERNO FEDERAL
+# Autor: João Vítor de Freitas | Python + Pandas
+# ================================================
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib.ticker as mtick
+import seaborn as sns
+
+sns.set_theme(style='whitegrid')
+plt.rcParams['figure.dpi'] = 120
+
+# ── 1. Carregamento do consolidado ──────────────
+df = pd.read_csv('gastos_consolidado.csv',
+                 sep=';', encoding='utf-8-sig', dtype=str)
+
+# Colunas numéricas: converter vírgula → ponto
+cols_valor = ['Valor Empenhado (R$)',
+              'Valor Liquidado (R$)',
+              'Valor Pago (R$)']
+for col in cols_valor:
+    df[col] = (df[col].str.replace('.', '', regex=False)
+                      .str.replace(',', '.', regex=False)
+                      .astype(float))
+
+df['Ano'] = df['Ano'].astype(int)
+print(f"Shape: {df.shape}")
+print(df[cols_valor].describe().round(2))
+
+# ── 2. Execução orçamentária por ano ────────────
+exec_anual = (
+    df.groupby('Ano')[['Valor Empenhado (R$)', 'Valor Pago (R$)']]
+      .sum() / 1e12               # converter para trilhões
+)
+exec_anual['taxa_execucao'] = (
+    exec_anual['Valor Pago (R$)'] /
+    exec_anual['Valor Empenhado (R$)'] * 100
+)
+print("\nExecução por ano (R$ Tri):\n", exec_anual.round(2))
+
+# ── 3. Top 10 órgãos por valor pago (2015–2024) ─
+top_orgaos = (
+    df.groupby('Nome Órgão Superior')['Valor Pago (R$)']
+      .sum()
+      .sort_values(ascending=False)
+      .head(10) / 1e12
+)
+
+fig, ax = plt.subplots(figsize=(10, 6))
+top_orgaos.sort_values().plot(kind='barh', ax=ax, color='#2563EB')
+ax.xaxis.set_major_formatter(
+    mtick.FuncFormatter(lambda x, _: f'R$ {x:.1f} Tri'))
+ax.set_title('Top 10 Órgãos por Valor Pago (2015–2024)',
+             fontsize=13, fontweight='bold')
+ax.set_xlabel('Valor Pago (R$ Trilhões)')
+plt.tight_layout()
+plt.savefig('outputs/top_orgaos.png', bbox_inches='tight')
+plt.show()
+
+# ── 4. Heatmap de gastos por órgão e ano ────────
+pivot = (
+    df.groupby(['Nome Órgão Superior', 'Ano'])['Valor Pago (R$)']
+      .sum()
+      .unstack('Ano') / 1e9       # em bilhões
+)
+# Manter apenas os 10 maiores gastos
+top10 = pivot.sum(axis=1).nlargest(10).index
+pivot_top = pivot.loc[top10]
+
+fig, ax = plt.subplots(figsize=(14, 6))
+sns.heatmap(pivot_top, ax=ax, fmt='.0f', linewidths=.5,
+            cmap='Blues', annot=True,
+            cbar_kws={'label': 'R$ Bilhões'})
+ax.set_title('Gastos por Órgão e Ano — Top 10 (R$ Bi)',
+             fontsize=13, fontweight='bold')
+ax.set_ylabel('')
+plt.tight_layout()
+plt.savefig('outputs/heatmap_orgaos.png', bbox_inches='tight')
+plt.show()
+
+# ── 5. Anomalia 2020: Auxílios Emergenciais ─────
+aux = df[df['Nome Ação'].str.contains('Auxílio', na=False)]
+aux_anual = (
+    aux.groupby('Ano')['Valor Pago (R$)'].sum() / 1e9
+)
+print("\nAuxílios por ano (R$ Bi):\n", aux_anual.round(1))</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSIGHTS -->
+<section class="proj-section">
+  <div class="container">
+    <div class="section-label">// principais achados</div>
+    <h2>Insights do Projeto</h2>
+    <div class="insights-grid">
+
+      <div class="insight-card">
+        <div class="insight-icon ic-red"><i class="fa-solid fa-circle-xmark"></i></div>
+        <div class="insight-num" style="color:var(--red)">R$ 11,41 Tri</div>
+        <div class="insight-title">Governo nunca atingiu a meta de execução</div>
+        <div class="insight-text">Com execução acumulada de 73,6%, o governo deixou de executar R$ 11,41 trilhões em 10 anos — recursos aprovados pelo Congresso que não chegaram à ponta final, seja por contingenciamento, falha de planejamento ou incapacidade operacional.</div>
+      </div>
+
+      <div class="insight-card">
+        <div class="insight-icon ic-amber"><i class="fa-solid fa-building-columns"></i></div>
+        <div class="insight-num" style="color:var(--amber)">+62% do orçamento</div>
+        <div class="insight-title">Ministério da Fazenda concentra mais da metade dos gastos</div>
+        <div class="insight-text">Em todos os anos analisados, a Fazenda sempre concentrou a maior fatia do orçamento federal — impulsionada pela dívida pública, que sozinha consome mais do que todos os outros ministérios combinados. O Principal Corrigido da Dívida Mobiliária praticamente dobrou em 10 anos.</div>
+      </div>
+
+      <div class="insight-card">
+        <div class="insight-icon ic-blue"><i class="fa-solid fa-person-cane"></i></div>
+        <div class="insight-num" style="color:var(--blue)">+128% em 10 anos</div>
+        <div class="insight-title">Previdência Social: crescimento estrutural e irreversível</div>
+        <div class="insight-text">As aposentadorias do RGPS saltaram de R$ 203 Bi para R$ 464 Bi entre 2015 e 2024. Somada a pensões e aposentadorias rurais, a Previdência representa 25% de todo o gasto federal — evidenciando uma pressão fiscal crescente ligada ao envelhecimento da população.</div>
+      </div>
+
+      <div class="insight-card">
+        <div class="insight-icon ic-red"><i class="fa-solid fa-virus"></i></div>
+        <div class="insight-num" style="color:var(--red)">+1.090%</div>
+        <div class="insight-title">Pandemia de 2020: o maior salto de gastos da série</div>
+        <div class="insight-text">Os "Outros Auxílios Financeiros" saltaram de R$ 29 Bi (2019) para R$ 347 Bi (2020) — reflexo direto do Auxílio Emergencial da COVID-19. Este é o evento mais visível em toda a série histórica e o principal responsável pelo crescimento da dívida em 2021 e 2022.</div>
+      </div>
+
+      <div class="insight-card">
+        <div class="insight-icon ic-green"><i class="fa-solid fa-scale-balanced"></i></div>
+        <div class="insight-num" style="color:var(--green)">Apenas 10%</div>
+        <div class="insight-title">Saúde + Educação somam menos de 1/10 do orçamento</div>
+        <div class="insight-text">Ministério da Saúde (5%) e Ministério da Educação (5%) juntos representam menos de 1/10 do orçamento federal, enquanto dívida pública e Previdência concentram mais de 87%. Esse contraste evidencia a rigidez orçamentária brasileira e o pouco espaço para investimentos sociais discricionários.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ARQUIVOS -->
+<section class="proj-section alt">
+  <div class="container">
+    <div class="section-label">// arquivos do projeto</div>
+    <h2>Baixar Arquivos</h2>
+    <p style="color:var(--t2);font-size:14px;margin-bottom:24px">Todos os arquivos estão disponíveis no repositório do GitHub para consulta e download.</p>
+    <div class="files-grid">
+      <div class="file-card">
+        <!-- Atualize o href com o link real do arquivo no GitHub -->
+        <a href="https://github.com/joaov-analista" target="_blank" style="display:contents">
+          <div class="file-icon fi-py"><i class="fa-brands fa-python"></i></div>
+          <div class="file-info">
+            <div class="file-name">baixar_bases.py</div>
+            <div class="file-type">Python · Consolidação ETL dos CSVs</div>
+          </div>
+          <i class="fa-solid fa-download file-dl"></i>
+        </a>
+      </div>
+      <div class="file-card">
+        <a href="https://github.com/joaov-analista" target="_blank" style="display:contents">
+          <div class="file-icon fi-nb"><i class="fa-solid fa-book-open"></i></div>
+          <div class="file-info">
+            <div class="file-name">modelagem_limpeza.ipynb</div>
+            <div class="file-type">Jupyter Notebook · Modelagem & EDA</div>
+          </div>
+          <i class="fa-solid fa-download file-dl"></i>
+        </a>
+      </div>
+      <div class="file-card">
+        <a href="https://github.com/joaov-analista" target="_blank" style="display:contents">
+          <div class="file-icon fi-pbi"><i class="fa-solid fa-chart-bar"></i></div>
+          <div class="file-info">
+            <div class="file-name">dashboard-governo.pbix</div>
+            <div class="file-type">Power BI · Dashboard Executivo</div>
+          </div>
+          <i class="fa-solid fa-download file-dl"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NAVEGAÇÃO -->
+<div class="proj-nav">
+  <div class="container">
+    <a href="eletronicos.html" style="display:flex;align-items:center;gap:12px">
+      <div class="btn btn-primary" style="padding:10px 14px"><i class="fa-solid fa-arrow-left"></i></div>
+      <div class="pn-prev-label">
+        <small>Projeto anterior</small>
+        <span>Análise de Vendas — Eletrônicos</span>
+      </div>
+    </a>
+    <a href="../index.html#projetos" class="pn-back">
+      <i class="fa-solid fa-grid-2"></i> Todos os Projetos
+    </a>
+  </div>
+</div>
+
+<footer>
+  <p>Feito por <strong>João Vítor de Freitas</strong> · Analista de Dados · 2026</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/11.0.5/swiper-bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script>
+  const captions = [
+    'Página 1 — Visão Geral do Orçamento Federal',
+    'Página 2 — Heatmap de Gastos por Órgão e Ano',
+    'Página 3 — Execução Orçamentária por Ministério',
+    'Página 4 — Série Histórica 2015–2024',
+  ];
+  const swiper = new Swiper('.swiper', {
+    loop: true,
+    pagination: { el: '.swiper-pagination', clickable: true },
+    navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+    on: {
+      slideChange() {
+        const caption = document.getElementById('slide-caption');
+        if (caption && captions[this.realIndex]) caption.textContent = captions[this.realIndex];
+      }
+    }
+  });
+
+  function switchTab(lang, btn) {
+    document.querySelectorAll('.code-panel').forEach(p => p.classList.add('hidden'));
+    document.querySelectorAll('.code-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('panel-' + lang).classList.remove('hidden');
+    btn.classList.add('active');
+    const copyBtn = document.getElementById('copy-btn');
+    copyBtn.innerHTML = '<i class="fa-regular fa-copy"></i> Copiar';
+    copyBtn.classList.remove('copied');
+  }
+
+  function copyCode() {
+    const visiblePanel = document.querySelector('.code-panel:not(.hidden)');
+    const code = visiblePanel ? visiblePanel.querySelector('code').innerText : '';
+    navigator.clipboard.writeText(code).then(() => {
+      const btn = document.getElementById('copy-btn');
+      btn.innerHTML = '<i class="fa-solid fa-check"></i> Copiado!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.innerHTML = '<i class="fa-regular fa-copy"></i> Copiar';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  }
+</script>
+</body>
+</html>
