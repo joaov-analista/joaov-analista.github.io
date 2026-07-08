@@ -277,12 +277,8 @@
       <div class="rs-label">Perda mensal identificada</div>
     </div>
     <div class="rs-item">
-      <div class="rs-value" style="color:var(--amber)">3,2%</div>
-      <div class="rs-label">Taxa de churn calculada</div>
-    </div>
-    <div class="rs-item">
-      <div class="rs-value" style="color:var(--green)">5 tabelas</div>
-      <div class="rs-label">Modelo dimensional criado</div>
+      <div class="rs-value" style="color:var(--amber)">29 dias</div>
+      <div class="rs-label">Média de dias para cancelar</div>
     </div>
   </div>
 </div>
@@ -294,16 +290,15 @@
     <h2>Contexto do Projeto</h2>
     <div class="contexto-grid">
       <div class="contexto-text">
-        <p>Uma plataforma de streaming hipotética com dados de comportamento de usuários apresentava crescimento de assinantes mas queda na receita — sinal clássico de churn silencioso afetando as contas mais valiosas.</p>
+        <p>Exploração do comportamento de usuários de streaming para identificar padrões de Churn e oportunidades de retenção.</p>
         <p>O objetivo era construir um pipeline analítico completo: extrair e limpar os dados no MySQL, modelar dimensionalmente para Power BI e criar um dashboard executivo que revelasse onde e por que os usuários cancelavam.</p>
-        <p>O resultado identificou que os cancelamentos se concentravam em usuários do plano Premium com mais de 6 meses de conta — perfil de alto valor que justificava ações de retenção específicas.</p>
+        <p>O resultado identificou que os cancelamentos se concentravam em usuários Jovens do plano Standard</p>
       </div>
       <div class="stack-card">
         <h3>Stack utilizada</h3>
         <div class="stack-list">
           <div class="stack-item"><i class="fa-solid fa-database"></i><span>MySQL — extração e modelagem</span></div>
           <div class="stack-item"><i class="fa-solid fa-gears"></i><span>ETL — coleta, limpeza e carga</span></div>
-          <div class="stack-item"><i class="fa-solid fa-table-columns"></i><span>Star Schema — 1 fato + 4 dims</span></div>
           <div class="stack-item"><i class="fa-solid fa-chart-bar"></i><span>Power BI — dashboard executivo</span></div>
           <div class="stack-item"><i class="fa-solid fa-calculator"></i><span>DAX — medidas e Time Intelligence</span></div>
           <div class="stack-item"><i class="fa-brands fa-github"></i><span>GitHub — versionamento do código</span></div>
@@ -541,13 +536,13 @@ plt.show()</code></pre>
     <div class="insights-grid">
       <div class="insight-card">
         <div class="insight-icon ic-green"><i class="fa-solid fa-triangle-exclamation"></i></div>
-        <div class="insight-title">Churn concentrado no plano Premium</div>
-        <div class="insight-text">Usuários Premium com 6+ meses de conta representaram 68% dos cancelamentos, apesar de serem apenas 32% da base.</div>
+        <div class="insight-title">Churn concentrado no plano Standard</div>
+        <div class="insight-text">Usuários Jovens do plano Standard representaram 20% dos cancelamentos e tinham 40% do faturamento do total.</div>
       </div>
       <div class="insight-card">
         <div class="insight-icon ic-amber"><i class="fa-solid fa-clock"></i></div>
-        <div class="insight-title">Janela crítica de risco: meses 3–5</div>
-        <div class="insight-text">A probabilidade de churn aumenta 2,4x entre o 3º e 5º mês de assinatura — período ideal para ações de retenção proativas.</div>
+        <div class="insight-title">Janela crítica de risco: 29 dias</div>
+        <div class="insight-text">A probabilidade de churn aumenta após 29 dias sem logar na plataforma — período ideal para ações de retenção proativas.</div>
       </div>
       <div class="insight-card">
         <div class="insight-icon ic-blue"><i class="fa-solid fa-arrow-trend-down"></i></div>
