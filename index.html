@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="João Vítor — Analista de Dados com foco em Power BI, SQL e Python.">
+  <title>João Vítor | Analista de Dados</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* ===== TOKENS ===== */
+    :root {
+      --bg:       #F5F7FA;
+      --surface:  #FFFFFF;
+      --bg2:      #EEF2F7;
+      --navy:     #0F1C2E;
+      --blue:     #2563EB;
+      --blue-l:   #DBEAFE;
+      --amber:    #F59E0B;
+      --amber-l:  #FEF3C7;
+      --green:    #10B981;
+      --green-l:  #D1FAE5;
+      --t1:       #0F1C2E;
+      --t2:       #4B5563;
+      --t3:       #9CA3AF;
+      --border:   #E2E8F0;
+      --r:        12px;
+      --r-lg:     20px;
+      --shadow:   0 1px 3px rgba(15,28,46,.07), 0 4px 16px rgba(15,28,46,.05);
+      --shadow-lg:0 8px 40px rgba(15,28,46,.12);
+      --nav-h:    64px;
+    }
+    /* ===== RESET ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--t1); line-height: 1.6; }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ===== UTILITY ===== */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px; font-weight: 500; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 10px;
+    }
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(26px, 4vw, 38px); font-weight: 700;
+      color: var(--navy); line-height: 1.2;
+    }
+    .tag {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 12px; font-weight: 500; padding: 4px 10px;
+      border-radius: 20px; background: var(--blue-l); color: var(--blue);
+    }
+    .tag.green  { background: var(--green-l); color: var(--green); }
+    .tag.amber  { background: var(--amber-l); color: var(--amber); }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 20px; border-radius: var(--r);
+      font-weight: 600; font-size: 14px; cursor: pointer;
+      transition: all .2s; border: none; font-family: 'Inter', sans-serif;
+    }
+    .btn-primary { background: var(--blue); color: #fff; }
+    .btn-primary:hover { background: #1d4ed8; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(37,99,235,.35); }
+    .btn-outline { background: transparent; color: var(--t1); border: 1.5px solid var(--border); }
+    .btn-outline:hover { border-color: var(--blue); color: var(--blue); transform: translateY(-1px); }
+
+    /* ===== LANG TOGGLE ===== */
+    .lang-toggle { display: flex; gap: 3px; margin-right: 12px; }
+    .lang-btn {
+      font-size: 12px; font-weight: 700; padding: 5px 11px; border-radius: 8px;
+      border: 1.5px solid var(--border); background: var(--surface);
+      color: var(--t3); cursor: pointer; transition: all .15s;
+      font-family: 'Inter', sans-serif; line-height: 1; letter-spacing: .01em;
+    }
+    .lang-btn:hover:not(.active) { border-color: var(--t3); color: var(--t2); }
+    .lang-btn.active { background: var(--blue-l); color: var(--blue); border-color: var(--blue); }
+
+    /* ===== NAVBAR ===== */
+    nav.main-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: var(--nav-h);
+      background: rgba(245,247,250,.9);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center;
+    }
+    nav.main-nav .container { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+    .nav-logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 18px; color: var(--navy); }
+    .nav-logo span { color: var(--blue); }
+    .nav-links { display: flex; gap: 2px; list-style: none; }
+    .nav-links a {
+      font-size: 14px; font-weight: 500; padding: 6px 12px;
+      border-radius: 8px; color: var(--t2); transition: all .15s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--blue); background: var(--blue-l); }
+    .nav-cta { font-size: 13px !important; padding: 8px 16px !important; }
+
+    /* ===== HERO ===== */
+    #inicio {
+      min-height: 100vh; padding-top: var(--nav-h);
+      display: flex; align-items: center;
+      background: linear-gradient(135deg, #F5F7FA 0%, #EEF2F7 55%, #E8EFFF 100%);
+      position: relative; overflow: hidden;
+    }
+    #inicio::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle at 1px 1px, var(--border) 1px, transparent 0);
+      background-size: 28px 28px;
+      opacity: .55;
+    }
+    .hero-inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 60px; align-items: center;
+      position: relative; z-index: 1; padding: 72px 0;
+    }
+    .hero-eyebrow {
+      font-family: 'JetBrains Mono', monospace; font-size: 13px;
+      color: var(--blue); margin-bottom: 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .hero-eyebrow::before { content: ''; width: 28px; height: 2px; background: var(--blue); display: inline-block; }
+    .hero-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(34px, 5.5vw, 58px); font-weight: 700;
+      line-height: 1.1; color: var(--navy); margin-bottom: 12px;
+    }
+    .hero-name .hl { color: var(--blue); }
+    .hero-role { font-size: 17px; color: var(--t2); margin-bottom: 24px; }
+    .hero-desc { font-size: 15px; color: var(--t2); line-height: 1.75; max-width: 460px; margin-bottom: 36px; }
+    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 36px; }
+    .hero-socials { display: flex; gap: 10px; }
+    .social-btn {
+      width: 40px; height: 40px; border-radius: 10px;
+      border: 1.5px solid var(--border); display: flex;
+      align-items: center; justify-content: center;
+      color: var(--t2); transition: all .2s; font-size: 16px;
+      background: var(--surface);
+    }
+    .social-btn:hover { border-color: var(--blue); color: var(--blue); transform: translateY(-2px); box-shadow: var(--shadow); }
+
+    /* ===== TIMELINE ===== */
+    .hero-visual { display: flex; justify-content: center; }
+    .timeline-card {
+      background: var(--surface); border-radius: var(--r-lg);
+      box-shadow: var(--shadow-lg); padding: 24px;
+      width: 100%; max-width: 400px;
+      border: 1px solid var(--border);
+    }
+    .tl-header {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 24px; padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .tl-header-icon {
+      width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+      background: var(--blue-l); color: var(--blue);
+      display: flex; align-items: center; justify-content: center; font-size: 15px;
+    }
+    .tl-header-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 14px; color: var(--navy); }
+    .tl-header-sub   { font-size: 11px; color: var(--t3); margin-top: 1px; }
+    .tl-line {
+      position: relative;
+      padding-left: 32px;
+    }
+    .tl-line::before {
+      content: ''; position: absolute; left: 7px; top: 8px; bottom: 8px;
+      width: 2px; background: var(--border); border-radius: 2px;
+    }
+    .tl-item {
+      position: relative; padding-bottom: 22px;
+      opacity: 0; animation: tlFadeIn .5s ease forwards;
+    }
+    .tl-item:last-child { padding-bottom: 0; }
+    .tl-dot {
+      position: absolute; left: -32px; top: 3px;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: var(--blue); border: 3px solid var(--surface);
+      box-shadow: 0 0 0 2px var(--blue);
+    }
+    .tl-dot.active {
+      background: var(--green);
+      box-shadow: 0 0 0 2px var(--green);
+      animation: tlPulse 2s ease-in-out infinite;
+    }
+    .tl-year  { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--blue); font-weight: 600; letter-spacing: .05em; margin-bottom: 3px; }
+    .tl-year.active { color: var(--green); }
+    .tl-name  { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 2px; }
+    .tl-org   { font-size: 12px; color: var(--t3); margin-bottom: 5px; }
+    .tl-badge {
+      display: inline-block; font-size: 10px; font-weight: 500;
+      padding: 2px 9px; border-radius: 20px;
+      background: var(--blue-l); color: var(--blue);
+    }
+    .tl-badge.green { background: var(--green-l); color: var(--green); }
+    @keyframes tlFadeIn  { from { opacity:0; transform: translateX(10px); } to { opacity:1; transform: translateX(0); } }
+    @keyframes tlPulse   { 0%,100% { box-shadow: 0 0 0 2px var(--green); } 50% { box-shadow: 0 0 0 6px rgba(16,185,129,.2); } }
+
+    /* ===== SOBRE ===== */
+    #sobre { padding: 96px 0; background: var(--surface); }
+    .sobre-inner { display: grid; grid-template-columns: 1fr 1.6fr; gap: 64px; align-items: center; }
+    .sobre-photo-wrap { position: relative; }
+    .sobre-photo {
+      width: 100%; aspect-ratio: 4/5; border-radius: var(--r-lg);
+      background: linear-gradient(135deg, var(--blue-l), var(--bg2));
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 10px;
+      border: 2px dashed var(--border); color: var(--blue); overflow: hidden;
+    }
+    /* Se adicionar foto: <img src="../assets/img/foto.jpg" alt="João Vítor"> dentro de .sobre-photo */
+    .sobre-photo img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--r-lg); }
+    .sobre-photo > i   { font-size: 64px; opacity: .4; }
+    .sobre-photo > p   { font-size: 12px; color: var(--t3); }
+    .sobre-badge {
+      position: absolute; bottom: -16px; right: -16px;
+      background: var(--navy); color: #fff;
+      border-radius: var(--r); padding: 14px 18px;
+      font-family: 'Space Grotesk', sans-serif; box-shadow: var(--shadow-lg);
+    }
+    .sobre-badge .num { font-size: 28px; font-weight: 700; line-height: 1; }
+    .sobre-badge .txt { font-size: 11px; opacity: .65; margin-top: 2px; }
+    .sobre-content .section-title { margin: 8px 0 20px; }
+    .sobre-content p { color: var(--t2); line-height: 1.8; margin-bottom: 14px; font-size: 15px; }
+    .sobre-bullets { display: flex; flex-direction: column; gap: 8px; margin-top: 20px; }
+    .sobre-bullet {
+      display: flex; align-items: flex-start; gap: 12px;
+      background: var(--bg); border-radius: 10px; padding: 12px 16px;
+    }
+    .sobre-bullet i    { color: var(--blue); margin-top: 2px; font-size: 13px; }
+    .sobre-bullet span { font-size: 14px; color: var(--t2); }
+
+    /* ===== HABILIDADES ===== */
+    #habilidades { padding: 96px 0; }
+    .habilidades-header { text-align: center; margin-bottom: 52px; }
+    .habilidades-header .section-title { margin-top: 8px; }
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
+    .skill-category {
+      background: var(--surface); border-radius: var(--r-lg);
+      padding: 22px; border: 1px solid var(--border);
+      transition: box-shadow .2s, transform .2s;
+    }
+    .skill-category:hover { box-shadow: var(--shadow-lg); transform: translateY(-3px); }
+    .skill-cat-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .skill-cat-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; font-size: 15px;
+    }
+    .sci-blue   { background: var(--blue-l);  color: var(--blue); }
+    .sci-amber  { background: var(--amber-l); color: var(--amber); }
+    .sci-green  { background: var(--green-l); color: var(--green); }
+    .sci-navy   { background: #e8eef7;        color: var(--navy); }
+    .skill-cat-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 14px; color: var(--navy); }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 7px; }
+    .skill-tag {
+      font-size: 12px; font-weight: 500; padding: 5px 10px;
+      border-radius: 8px; background: var(--bg); color: var(--t2);
+      border: 1px solid var(--border);
+    }
+
+    /* ===== PROJETOS ===== */
+    #projetos { padding: 96px 0; background: var(--surface); }
+    .projetos-header { text-align: center; margin-bottom: 52px; }
+    .projetos-header .section-title { margin-top: 8px; }
+    .projetos-header p { color: var(--t2); max-width: 500px; margin: 14px auto 0; font-size: 15px; }
+    .projetos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 26px; }
+
+    .projeto-card {
+      background: var(--bg); border-radius: var(--r-lg);
+      overflow: hidden; border: 1px solid var(--border);
+      transition: box-shadow .25s, transform .25s;
+    }
+    .projeto-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-5px); }
+    .projeto-thumb {
+      position: relative; aspect-ratio: 16/9; overflow: hidden;
+      background: linear-gradient(135deg, #EEF2F7, #DBEAFE);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .projeto-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+    .projeto-card:hover .projeto-thumb img { transform: scale(1.04); }
+    .thumb-placeholder { text-align: center; color: var(--t3); padding: 20px; }
+    .thumb-placeholder i { font-size: 44px; color: var(--blue); opacity: .4; margin-bottom: 8px; display: block; }
+    .thumb-placeholder p { font-size: 12px; }
+    .projeto-overlay {
+      position: absolute; inset: 0;
+      background: rgba(15,28,46,.72);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity .25s;
+    }
+    .projeto-card:hover .projeto-overlay { opacity: 1; }
+    .projeto-body { padding: 22px; }
+    .projeto-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .projeto-date { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--t3); }
+    .projeto-title { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 19px; color: var(--navy); margin-bottom: 10px; line-height: 1.3; }
+    .projeto-desc  { font-size: 14px; color: var(--t2); line-height: 1.65; margin-bottom: 16px; }
+    .projeto-tags  { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
+    .projeto-footer{ display: flex; align-items: center; justify-content: space-between; }
+    .projeto-result{ display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--green); }
+    .btn-sm        { font-size: 13px !important; padding: 8px 16px !important; border-radius: 8px !important; }
+
+    /* ===== CONTATO ===== */
+    #contato { padding: 96px 0; background: var(--navy); }
+    .contato-inner { max-width: 600px; margin: 0 auto; text-align: center; }
+    .contato-inner .section-label { color: #60a5fa; }
+    .contato-inner .section-title { color: #fff; margin: 8px 0 16px; }
+    .contato-inner p { color: rgba(255,255,255,.6); margin-bottom: 40px; line-height: 1.75; font-size: 15px; }
+    .contato-links { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+    .contato-link {
+      display: flex; align-items: center; gap: 10px;
+      padding: 14px 22px; border-radius: var(--r);
+      background: rgba(255,255,255,.08); color: #fff;
+      font-weight: 500; font-size: 14px; transition: all .2s;
+      border: 1px solid rgba(255,255,255,.12);
+    }
+    .contato-link i { font-size: 16px; }
+    .contato-link:hover { background: var(--blue); border-color: var(--blue); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37,99,235,.4); }
+    .contato-link.email:hover { background: var(--green); border-color: var(--green); box-shadow: 0 8px 24px rgba(16,185,129,.4); }
+
+    /* ===== FOOTER ===== */
+    footer { background: #070F1A; color: rgba(255,255,255,.35); text-align: center; padding: 22px; font-size: 13px; }
+    footer strong { color: rgba(255,255,255,.65); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 920px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+      .hero-eyebrow { justify-content: center; }
+      .hero-btns, .hero-socials { justify-content: center; }
+      .hero-desc { margin: 0 auto 36px; }
+      .sobre-inner { grid-template-columns: 1fr; gap: 40px; }
+      .sobre-photo-wrap { max-width: 260px; margin: 0 auto 24px; }
+      .projetos-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="main-nav">
+  <div class="container">
+    <a href="#inicio" class="nav-logo">JV<span>.</span>data</a>
+    <ul class="nav-links">
+      <li><a href="#inicio" class="active" data-i18n="nav-inicio">Início</a></li>
+      <li><a href="#sobre" data-i18n="nav-sobre">Sobre</a></li>
+      <li><a href="#habilidades">Skills</a></li>
+      <li><a href="#projetos" data-i18n="nav-projetos">Projetos</a></li>
+      <li><a href="#contato" data-i18n="nav-contato">Contato</a></li>
+    </ul>
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="btn-pt" onclick="setLang('pt')">🇧🇷 PT</button>
+      <button class="lang-btn"        id="btn-es" onclick="setLang('es')">🇪🇸 ES</button>
+    </div>
+    <a href="https://mail.google.com/mail/?view=cm&to=Joaovitor.dataanalyst@gmail.com" target="_blank" rel="noopener" class="btn btn-primary nav-links nav-cta">
+      <i class="fa-regular fa-envelope"></i> <span data-i18n="nav-cta">Contato</span>
+    </a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="inicio">
+  <div class="container">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-eyebrow" data-i18n="hero-eyebrow">Analista de Dados</div>
+        <h1 class="hero-name">João Vítor<br></h1>
+        <p class="hero-role">Power BI · SQL · Python</p>
+        <p class="hero-desc" data-i18n="hero-desc">
+          Transformo dados em decisões de negócio. Com 4 anos de experiência como auditor interno e foco em Business Intelligence, construo dashboards analíticos que geram impacto real e mensurável.
+        </p>
+        <div class="hero-btns">
+          <a href="#projetos" class="btn btn-primary"><i class="fa-solid fa-chart-bar"></i> <span data-i18n="hero-btn-proj">Ver Projetos</span></a>
+          <a href="#contato"  class="btn btn-outline"><i class="fa-solid fa-paper-plane"></i> <span data-i18n="hero-btn-contact">Fale Comigo</span></a>
+        </div>
+        <div class="hero-socials">
+          <a href="https://www.linkedin.com/in/jo%C3%A3ovitoranalista/" target="_blank" class="social-btn" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="https://github.com/joaov-analista" target="_blank" class="social-btn" title="GitHub"><i class="fa-brands fa-github"></i></a>
+          <a href="https://mail.google.com/mail/?view=cm&to=Joaovitor.dataanalyst@gmail.com" target="_blank" rel="noopener" class="social-btn" title="E-mail"><i class="fa-regular fa-envelope"></i></a>
+        </div>
+      </div>
+
+      <!-- Linha do Tempo -->
+      <div class="hero-visual">
+        <div class="timeline-card">
+          <div class="tl-header">
+            <div class="tl-header-icon"><i class="fa-solid fa-route"></i></div>
+            <div>
+              <div class="tl-header-title" data-i18n="tl-title">Minha Trajetória</div>
+              <div class="tl-header-sub"   data-i18n="tl-sub">De negócios a dados</div>
+            </div>
+          </div>
+          <div class="tl-line">
+            <div class="tl-item" style="animation-delay:.10s">
+              <div class="tl-dot"></div>
+              <div class="tl-year">2020</div>
+              <div class="tl-name" data-i18n="tl-name-1">Graduação em Administração</div>
+              <div class="tl-org">Faculdade Maurício de Nassau</div>
+              <span class="tl-badge" data-i18n="tl-badge-1">Gestão & Negócios</span>
+            </div>
+            <div class="tl-item" style="animation-delay:.25s">
+              <div class="tl-dot"></div>
+              <div class="tl-year">2021</div>
+              <div class="tl-name">Auditor Interno</div>
+              <div class="tl-org">Shopping do Automóvel · Recife, PE</div>
+              <span class="tl-badge" data-i18n="tl-badge-2">Relatórios · Insights · Tomada de decisão</span>
+            </div>
+            <div class="tl-item" style="animation-delay:.40s">
+              <div class="tl-dot"></div>
+              <div class="tl-year">2024</div>
+              <div class="tl-name" data-i18n="tl-name-3">Conclusão da Graduação</div>
+              <div class="tl-org" data-i18n="tl-org-3">Início focado em Análise de Dados</div>
+              <span class="tl-badge" data-i18n="tl-badge-3">Visão de negócio · Estratégia · KPIs</span>
+            </div>
+            <div class="tl-item" style="animation-delay:.55s">
+              <div class="tl-dot active"></div>
+              <div class="tl-year active" data-i18n="tl-year-4">2026 · Agora</div>
+              <div class="tl-name" data-i18n="tl-name-4">Analista de Dados</div>
+              <div class="tl-org" data-i18n="tl-org-4">EBAC · Disponivel para oportunidades</div>
+              <span class="tl-badge green">Power BI · SQL · Python</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOBRE -->
+<section id="sobre">
+  <div class="container">
+    <div class="sobre-inner">
+      <div class="sobre-photo-wrap">
+        <div class="sobre-photo">
+          <img src="assets/img/foto.jpg" alt="João Vítor">
+        </div>
+        <div class="sobre-badge">
+          <div class="num">4+</div>
+          <div class="txt">anos em dados<br>de negócio</div>
+        </div>
+      </div>
+      <div class="sobre-content">
+        <div class="section-label" data-i18n="sobre-label">sobre mim</div>
+        <h2 class="section-title" data-i18n="sobre-title">Analítico por natureza,<br>orientado a negócio por experiência.</h2>
+        <p data-i18n="sobre-p1">Sou analista com 4 anos de experiência em auditoria interna e controle financeiro, onde aprendi a "ler" processos de negócio e encontrar onde os dados contam a história real por trás dos números.</p>
+        <p data-i18n="sobre-p2">Hoje aplico esse olhar na construção de dashboards e análises em Power BI, SQL e Python — transformando dados brutos em insights que apoiam decisões estratégicas e geram valor mensurável.</p>
+        <div class="sobre-bullets">
+          <div class="sobre-bullet">
+            <i class="fa-solid fa-location-dot"></i>
+            <span data-i18n="sobre-b1">Recife, PE · Disponível para mudança e trabalho remoto</span>
+          </div>
+          <div class="sobre-bullet">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span data-i18n="sobre-b2">Administração de Empresas · Faculdade Maurício de Nassau (2024)</span>
+          </div>
+          <div class="sobre-bullet">
+            <i class="fa-solid fa-chart-line"></i>
+            <span data-i18n="sobre-b3">Especialização em Análise de Dados · EBAC (2026)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HABILIDADES -->
+<section id="habilidades">
+  <div class="container">
+    <div class="habilidades-header">
+      <div class="section-label">stack técnica</div>
+      <h2 class="section-title" data-i18n="skills-title">Ferramentas & Habilidades</h2>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-category">
+        <div class="skill-cat-header">
+          <div class="skill-cat-icon sci-blue"><i class="fa-solid fa-chart-pie"></i></div>
+          <span class="skill-cat-name">Business Intelligence</span>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag">Power BI</span>
+          <span class="skill-tag">DAX</span>
+          <span class="skill-tag">Power Query</span>
+          <span class="skill-tag">Looker Studio</span>
+          <span class="skill-tag">KPIs & OKRs</span>
+        </div>
+      </div>
+      <div class="skill-category">
+        <div class="skill-cat-header">
+          <div class="skill-cat-icon sci-amber"><i class="fa-solid fa-database"></i></div>
+          <span class="skill-cat-name" data-i18n="skill-cat-2">Banco de Dados & SQL</span>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag">MySQL</span>
+          <span class="skill-tag">PostgreSQL</span>
+          <span class="skill-tag">SQLite</span>
+          <span class="skill-tag">MongoDB</span>
+          <span class="skill-tag" data-i18n="skill-modelagem">Modelagem de Dados</span>
+          <span class="skill-tag">Star Schema</span>
+          <span class="skill-tag">Window Functions</span>
+        </div>
+      </div>
+      <div class="skill-category">
+        <div class="skill-cat-header">
+          <div class="skill-cat-icon sci-green"><i class="fa-brands fa-python"></i></div>
+          <span class="skill-cat-name" data-i18n="skill-cat-3">Linguagens & ETL</span>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">PySpark</span>
+          <span class="skill-tag">Pandas</span>
+          <span class="skill-tag">ETL</span>
+          <span class="skill-tag">EDA</span>
+          <span class="skill-tag">GitHub</span>
+        </div>
+      </div>
+      <div class="skill-category">
+        <div class="skill-cat-header">
+          <div class="skill-cat-icon sci-navy"><i class="fa-solid fa-table-cells"></i></div>
+          <span class="skill-cat-name" data-i18n="skill-cat-4">Análise & Produtividade</span>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag" data-i18n="skill-excel">Excel Avançado</span>
+          <span class="skill-tag">Google Sheets</span>
+          <span class="skill-tag" data-i18n="skill-estat">Estatística</span>
+          <span class="skill-tag">Google Cloud</span>
+          <span class="skill-tag">Data Warehouse</span>
+          <span class="skill-tag">I.A</span>
+          <span class="skill-tag">VS Code</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJETOS -->
+<section id="projetos">
+  <div class="container">
+    <div class="projetos-header">
+      <div class="section-label" data-i18n="proj-label">portfólio</div>
+      <h2 class="section-title" data-i18n="proj-title">Projetos Analíticos</h2>
+      <p data-i18n="proj-sub">Análise de dados com foco em geração de insights e impacto de negócio mensurável.</p>
+    </div>
+    <div class="projetos-grid">
+
+      <!-- PROJETO 1 — Streaming -->
+      <div class="projeto-card">
+        <div class="projeto-thumb">
+          <!--
+            PARA ADICIONAR SCREENSHOT:
+            1. Salve a imagem como assets/img/streaming-thumb.png
+            2. Substitua o bloco .thumb-placeholder pela tag:
+               <img src="assets/img/streaming-thumb.png" alt="Dashboard Streaming">
+          -->
+          <div class="thumb-placeholder">
+            <i class="fa-solid fa-tv"></i>
+            <p data-i18n="thumb-txt">Adicione a screenshot do dashboard</p>
+          </div>
+          <div class="projeto-overlay">
+            <a href="projetos/streaming.html" class="btn btn-primary"><span data-i18n="btn-ver">Ver Projeto</span> <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+        <div class="projeto-body">
+          <div class="projeto-meta">
+            <span class="projeto-date">Mar / 2026</span>
+            <span class="tag">Power BI</span>
+          </div>
+          <h3 class="projeto-title" data-i18n="p1-title">Análise de Plataforma de Streaming</h3>
+          <p class="projeto-desc" data-i18n="p1-desc">Pipeline ETL completo do MySQL ao dashboard executivo. Análise de churn, comportamento de usuários e receita recorrente com DAX e modelagem dimensional.</p>
+          <div class="projeto-tags">
+            <span class="tag">MySQL</span>
+            <span class="tag">ETL</span>
+            <span class="tag green">Churn Analysis</span>
+            <span class="tag amber">DAX</span>
+          </div>
+          <div class="projeto-footer">
+            <div class="projeto-result"><i class="fa-solid fa-circle-check"></i> <span data-i18n="p1-result">R$ 7,76K/mês de perda identificado</span></div>
+            <a href="projetos/streaming.html" class="btn btn-outline btn-sm"><span data-i18n="btn-det">Detalhes</span> <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROJETO 2 — Eletrônicos -->
+      <div class="projeto-card">
+        <div class="projeto-thumb">
+          <!--
+            PARA ADICIONAR SCREENSHOT:
+            1. Salve como assets/img/eletronicos-thumb.png
+            2. Substitua o bloco .thumb-placeholder pela tag:
+               <img src="assets/img/eletronicos-thumb.png" alt="Dashboard Eletrônicos">
+          -->
+          <div class="thumb-placeholder">
+            <i class="fa-solid fa-mobile-screen-button"></i>
+            <p data-i18n="thumb-txt">Adicione a screenshot do dashboard</p>
+          </div>
+          <div class="projeto-overlay">
+            <a href="projetos/eletronicos.html" class="btn btn-primary"><span data-i18n="btn-ver">Ver Projeto</span> <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+        <div class="projeto-body">
+          <div class="projeto-meta">
+            <span class="projeto-date">Mar / 2026</span>
+            <span class="tag">Power BI</span>
+          </div>
+          <h3 class="projeto-title" data-i18n="p2-title">Análise de Vendas — Loja de Eletrônicos</h3>
+          <p class="projeto-desc" data-i18n="p2-desc">Dashboard de performance comercial com análise YoY, Star Schema otimizado e mapeamento de gap de receita por categoria e região geográfica.</p>
+          <div class="projeto-tags">
+            <span class="tag">MySQL</span>
+            <span class="tag">Star Schema</span>
+            <span class="tag green">YoY Analysis</span>
+            <span class="tag amber">ETL</span>
+          </div>
+          <div class="projeto-footer">
+            <div class="projeto-result"><i class="fa-solid fa-circle-check"></i> <span data-i18n="p2-result">Gap de receita de R$ 42K mapeado</span></div>
+            <a href="projetos/eletronicos.html" class="btn btn-outline btn-sm"><span data-i18n="btn-det">Detalhes</span> <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROJETO 3 — Gastos do Governo -->
+      <div class="projeto-card">
+        <div class="projeto-thumb">
+          <!--
+            PARA ADICIONAR SCREENSHOT:
+            1. Salve como assets/img/governo-thumb.png
+            2. Substitua o bloco .thumb-placeholder pela tag:
+               <img src="assets/img/governo-thumb.png" alt="Dashboard Gastos do Governo">
+          -->
+          <div class="thumb-placeholder">
+            <i class="fa-solid fa-landmark"></i>
+            <p data-i18n="thumb-txt">Adicione a screenshot do dashboard</p>
+          </div>
+          <div class="projeto-overlay">
+            <a href="projetos/gastos-governo.html" class="btn btn-primary"><span data-i18n="btn-ver">Ver Projeto</span> <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+        <div class="projeto-body">
+          <div class="projeto-meta">
+            <span class="projeto-date">Jun / 2026</span>
+            <span class="tag">Power BI</span>
+          </div>
+          <h3 class="projeto-title" data-i18n="p3-title">Análise de Despesas do Governo Federal (2015–2024)</h3>
+          <p class="projeto-desc" data-i18n="p3-desc">Consolidação de 10 anos de dados do Portal da Transparência com Python e análise de como R$ 15,5 trilhões foram distribuídos — revelando que 73,6% do orçamento foi executado e R$ 11,41 Tri ficaram sem execução.</p>
+          <div class="projeto-tags">
+            <span class="tag">Python</span>
+            <span class="tag">Power BI</span>
+            <span class="tag green">Dados Abertos</span>
+            <span class="tag amber">Série Histórica</span>
+          </div>
+          <div class="projeto-footer">
+            <div class="projeto-result"><i class="fa-solid fa-circle-check"></i> <span data-i18n="p3-result">R$ 11,41 Tri não executados identificados</span></div>
+            <a href="projetos/gastos-governo.html" class="btn btn-outline btn-sm"><span data-i18n="btn-det">Detalhes</span> <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section id="contato">
+  <div class="container">
+    <div class="contato-inner">
+      <div class="section-label" data-i18n="contato-label">fale comigo</div>
+      <h2 class="section-title" data-i18n="contato-title">Vamos conversar sobre dados?</h2>
+      <p data-i18n="contato-p">Estou disponível para oportunidades de Analista de Dados — presencial ou remoto. Boa conversa começa por aqui.</p>
+      <div class="contato-links">
+        <a href="https://mail.google.com/mail/?view=cm&to=Joaovitor.dataanalyst@gmail.com" target="_blank" rel="noopener" class="contato-link email">
+          <i class="fa-regular fa-envelope"></i> Joaovitor.dataanalyst@gmail.com
+        </a>
+        <a href="https://www.linkedin.com/in/jo%C3%A3ovitoranalista/" target="_blank" class="contato-link">
+          <i class="fa-brands fa-linkedin"></i> LinkedIn
+        </a>
+        <a href="https://github.com/joaov-analista" target="_blank" class="contato-link">
+          <i class="fa-brands fa-github"></i> GitHub
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p data-i18n="footer-txt">Feito por <strong>João Vítor de Freitas</strong> · Analista de Dados · 2026</p>
+</footer>
+
+<script>
+  /* ── Active nav on scroll ── */
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 90) current = s.id; });
+    navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+  });
+
+  /* ── Translations ── */
+  const translations = {
+    pt: {
+      'nav-inicio':    'Início',
+      'nav-sobre':     'Sobre',
+      'nav-projetos':  'Projetos',
+      'nav-contato':   'Contato',
+      'nav-cta':       'Contato',
+      'hero-eyebrow':  'Analista de Dados',
+      'hero-desc':     'Transformo dados em decisões de negócio. Com 4 anos de experiência como auditor interno e foco em Business Intelligence, construo dashboards analíticos que geram impacto real e mensurável.',
+      'hero-btn-proj':    'Ver Projetos',
+      'hero-btn-contact': 'Fale Comigo',
+      'tl-title':   'Minha Trajetória',
+      'tl-sub':     'De negócios a dados',
+      'tl-name-1':  'Graduação em Administração',
+      'tl-badge-1': 'Gestão & Negócios',
+      'tl-badge-2': 'Relatórios · Insights · Tomada de decisão',
+      'tl-name-3':  'Conclusão da Graduação',
+      'tl-org-3':   'Início focado em Análise de Dados',
+      'tl-badge-3': 'Visão de negócio · Estratégia · KPIs',
+      'tl-year-4':  '2026 · Agora',
+      'tl-name-4':  'Analista de Dados',
+      'tl-org-4':   'EBAC · Disponivel para oportunidades',
+      'sobre-label': 'sobre mim',
+      'sobre-title': 'Analítico por natureza,<br>orientado a negócio por experiência.',
+      'sobre-p1':    'Sou analista com 4 anos de experiência em auditoria interna e controle financeiro, onde aprendi a "ler" processos de negócio e encontrar onde os dados contam a história real por trás dos números.',
+      'sobre-p2':    'Hoje aplico esse olhar na construção de dashboards e análises em Power BI, SQL e Python — transformando dados brutos em insights que apoiam decisões estratégicas e geram valor mensurável.',
+      'sobre-b1':    'Recife, PE · Disponível para mudança e trabalho remoto',
+      'sobre-b2':    'Administração de Empresas · Faculdade Maurício de Nassau (2024)',
+      'sobre-b3':    'Especialização em Análise de Dados · EBAC (2026)',
+      'skills-title':   'Ferramentas & Habilidades',
+      'skill-cat-2':    'Banco de Dados & SQL',
+      'skill-cat-3':    'Linguagens & ETL',
+      'skill-cat-4':    'Análise & Produtividade',
+      'skill-modelagem':'Modelagem de Dados',
+      'skill-excel':    'Excel Avançado',
+      'skill-estat':    'Estatística',
+      'proj-label': 'portfólio',
+      'proj-title': 'Projetos Analíticos',
+      'proj-sub':   'Análise de dados com foco em geração de insights e impacto de negócio mensurável.',
+      'thumb-txt':  'Adicione a screenshot do dashboard',
+      'btn-ver':    'Ver Projeto',
+      'btn-det':    'Detalhes',
+      'p1-title':   'Análise de Plataforma de Streaming',
+      'p1-desc':    'Pipeline ETL completo do MySQL ao dashboard executivo. Análise de churn, comportamento de usuários e receita recorrente com DAX e modelagem dimensional.',
+      'p1-result':  'R$ 7,76K/mês de perda identificado',
+      'p2-title':   'Análise de Vendas — Loja de Eletrônicos',
+      'p2-desc':    'Dashboard de performance comercial com análise YoY, Star Schema otimizado e mapeamento de gap de receita por categoria e região geográfica.',
+      'p2-result':  'Gap de receita de R$ 42K mapeado',
+      'p3-title':   'Análise de Despesas do Governo Federal (2015–2024)',
+      'p3-desc':    'Consolidação de 10 anos de dados do Portal da Transparência com Python e análise de como R$ 15,5 trilhões foram distribuídos — revelando que 73,6% do orçamento foi executado e R$ 11,41 Tri ficaram sem execução.',
+      'p3-result':  'R$ 11,41 Tri não executados identificados',
+      'contato-label': 'fale comigo',
+      'contato-title': 'Vamos conversar sobre dados?',
+      'contato-p':     'Estou disponível para oportunidades de Analista de Dados — presencial ou remoto. Boa conversa começa por aqui.',
+      'footer-txt':    'Feito por <strong>João Vítor de Freitas</strong> · Analista de Dados · 2026',
+    },
+    es: {
+      'nav-inicio':    'Inicio',
+      'nav-sobre':     'Sobre mí',
+      'nav-projetos':  'Proyectos',
+      'nav-contato':   'Contacto',
+      'nav-cta':       'Contacto',
+      'hero-eyebrow':  'Analista de Datos',
+      'hero-desc':     'Transformo datos en decisiones de negocio. Con 4 años de experiencia como auditor interno y enfoque en Business Intelligence, construyo dashboards analíticos que generan impacto real y medible.',
+      'hero-btn-proj':    'Ver Proyectos',
+      'hero-btn-contact': 'Hable Conmigo',
+      'tl-title':   'Mi Trayectoria',
+      'tl-sub':     'De negocios a datos',
+      'tl-name-1':  'Licenciatura en Administración',
+      'tl-badge-1': 'Gestión & Negocios',
+      'tl-badge-2': 'Informes · Insights · Toma de decisión',
+      'tl-name-3':  'Conclusión de la Carrera',
+      'tl-org-3':   'Inicio enfocado en Análisis de Datos',
+      'tl-badge-3': 'Visión de negocio · Estrategia · KPIs',
+      'tl-year-4':  '2026 · Ahora',
+      'tl-name-4':  'Analista de Datos',
+      'tl-org-4':   'EBAC · Disponible para oportunidades',
+      'sobre-label': 'sobre mí',
+      'sobre-title': 'Analítico por naturaleza,<br>orientado a negocios por experiencia.',
+      'sobre-p1':    'Soy analista con 4 años de experiencia en auditoría interna y control financiero, donde aprendí a "leer" procesos de negocio y encontrar dónde los datos cuentan la historia real detrás de los números.',
+      'sobre-p2':    'Hoy aplico esa mirada en la construcción de dashboards y análisis en Power BI, SQL y Python — transformando datos brutos en insights que apoyan decisiones estratégicas y generan valor medible.',
+      'sobre-b1':    'Recife, PE · Disponible para reubicación y trabajo remoto',
+      'sobre-b2':    'Administración de Empresas · Faculdade Maurício de Nassau (2024)',
+      'sobre-b3':    'Especialización en Análisis de Datos · EBAC (2026)',
+      'skills-title':   'Herramientas & Habilidades',
+      'skill-cat-2':    'Base de Datos & SQL',
+      'skill-cat-3':    'Lenguajes & ETL',
+      'skill-cat-4':    'Análisis & Productividad',
+      'skill-modelagem':'Modelado de Datos',
+      'skill-excel':    'Excel Avanzado',
+      'skill-estat':    'Estadística',
+      'proj-label': 'portafolio',
+      'proj-title': 'Proyectos Analíticos',
+      'proj-sub':   'Análisis de datos con enfoque en generación de insights e impacto de negocio medible.',
+      'thumb-txt':  'Agregue la captura del dashboard',
+      'btn-ver':    'Ver Proyecto',
+      'btn-det':    'Detalles',
+      'p1-title':   'Análisis de Plataforma de Streaming',
+      'p1-desc':    'Pipeline ETL completo del MySQL al dashboard ejecutivo. Análisis de churn, comportamiento de usuarios e ingresos recurrentes con DAX y modelado dimensional.',
+      'p1-result':  'R$ 7,76K/mes de pérdida identificado',
+      'p2-title':   'Análisis de Ventas — Tienda de Electrónicos',
+      'p2-desc':    'Dashboard de rendimiento comercial con análisis YoY, Star Schema optimizado y mapeo de brecha de ingresos por categoría y región geográfica.',
+      'p2-result':  'Brecha de ingresos de R$ 42K mapeada',
+      'p3-title':   'Análisis de Gastos del Gobierno Federal (2015–2024)',
+      'p3-desc':    'Consolidación de 10 años de datos del Portal de Transparencia con Python y análisis de cómo se distribuyeron R$ 15,5 billones — revelando que el 73,6% del presupuesto fue ejecutado y R$ 11,41 Bill. no se ejecutaron.',
+      'p3-result':  'R$ 11,41 Bill. sin ejecutar identificados',
+      'contato-label': 'hable conmigo',
+      'contato-title': '¿Hablamos sobre datos?',
+      'contato-p':     'Estoy disponible para oportunidades como Analista de Datos — presencial o remoto. Una buena conversación empieza aquí.',
+      'footer-txt':    'Hecho por <strong>João Vítor de Freitas</strong> · Analista de Datos · 2026',
+    }
+  };
+
+  function setLang(lang) {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (translations[lang] && translations[lang][key] !== undefined) {
+        el.innerHTML = translations[lang][key];
+      }
+    });
+    document.getElementById('btn-pt').classList.toggle('active', lang === 'pt');
+    document.getElementById('btn-es').classList.toggle('active', lang === 'es');
+    document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'es';
+  }
+</script>
+</body>
+</html>
