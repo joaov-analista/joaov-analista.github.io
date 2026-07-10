@@ -191,7 +191,7 @@
 
 <section class="proj-section alt">
   <div class="container">
-    <div class="section-label">// problema & abordagem</div>
+    <div class="section-label">problema & abordagem</div>
     <h2>Contexto do Projeto</h2>
     <div class="contexto-grid">
       <div class="contexto-text">
@@ -218,7 +218,7 @@
 
 <section class="proj-section">
   <div class="container">
-    <div class="section-label">// capturas de tela</div>
+    <div class="section-label">capturas de tela</div>
     <h2>Dashboard em Detalhe</h2>
     <div class="carousel-wrap">
       <div class="swiper">
@@ -255,15 +255,12 @@
 
 <section class="proj-section alt">
   <div class="container">
-    <div class="section-label">// código do projeto</div>
+    <div class="section-label">código do projeto</div>
     <h2>Código Utilizado</h2>
     <div class="code-block-wrap">
       <div class="code-tabs">
         <button class="code-tab sql-tab active" onclick="switchTab('sql', this)">
           <i class="fa-solid fa-database"></i> SQL — ETL & Star Schema
-        </button>
-        <button class="code-tab python-tab" onclick="switchTab('python', this)">
-          <i class="fa-brands fa-python"></i> Python — EDA
         </button>
         <button class="code-copy" id="copy-btn" onclick="copyCode()">
           <i class="fa-regular fa-copy"></i> Copiar
@@ -272,151 +269,278 @@
 
       <!-- INSTRUÇÃO: substitua pelo seu SQL real do projeto -->
       <div class="code-panel" id="panel-sql">
-        <pre><code class="language-sql">-- ================================================
+        <pre><code class="language-sql">
+-- ================================================
 -- REVENUE GAP — LOJA DE ELETRÔNICOS
 -- Etapa 1: ETL e Tratamento de Dados | MySQL
 -- Autor: João Vítor de Freitas
 -- ================================================
 
--- 1. Conversão de datas: string → DATE nativo
-UPDATE vendas
-SET data_venda = STR_TO_DATE(data_venda_str, '%d/%m/%Y')
-WHERE data_venda IS NULL;
+create database varejo;
+use varejo;
 
--- 2. Limpeza de valores monetários: string → DECIMAL
-UPDATE vendas
-SET faturamento = CAST(
-  REPLACE(REPLACE(faturamento_str, 'R$', ''), ',', '.') AS DECIMAL(12,2)
-);
+set sql_safe_updates = 0;
+select * from customers;
+-- verificar registros incosistentes
+select CustomerKey, count(*) as frequencia from customers group by CustomerKey order by frequencia desc;
+select City, count(*) as frequencia from customers group by City order by frequencia asc;
+select State, count(*) as frequencia from customers group by State order by frequencia asc;
+select Country, count(*) as frequencia from customers group by Country order by frequencia asc;
+select Continent, count(*) as frequencia from customers group by Continent order by frequencia asc;
+select Name, City, State, Country, Continent 
+from customers 
+where Name like '%[0-9]%' and 
+City like '%[0-9]%' and
+State like '%[0-9]%' and
+Country like '%[0-9]%' and
+Continent like '%[0-9]%'; -- verifica se há numeros e letras juntos
 
--- 3. Testes de frequência: identificar registros corrompidos
-SELECT faturamento_str, COUNT(*) AS qtd
-FROM vendas
-WHERE faturamento_str LIKE '%[^0-9.,]%'  -- caracteres inesperados
-GROUP BY faturamento_str
-ORDER BY qtd DESC;
+-- verificar se há nulos
+select  
+count(*) - count(CustomerKey),
+count(*) - count(Gender),
+count(*) - count(Name),
+count(*) - count(City),
+count(*) - count('State Code'),
+count(*) - count(State),
+count(*) - count('Zip Code'),
+count(*) - count(Country),
+count(*) - count(Continent),
+count(*) - count(Birthday)
+from customers;
 
--- 4. Mapeamento de nulos por dimensão
-SELECT
-  COUNT(*) - COUNT(id_loja)     AS nulos_loja,
-  COUNT(*) - COUNT(id_produto)  AS nulos_produto,
-  COUNT(*) - COUNT(id_cliente)  AS nulos_cliente,
-  COUNT(*) - COUNT(data_venda)  AS nulos_data
-FROM vendas;
+alter table customers
+modify CustomerKey int not null,
+add primary key (CustomerKey);
+alter table customers change column `State Code` State_code varchar(50);
+alter table customers change column `Zip Code` Zip_code int;
 
--- 5. Tratar vendas sem loja física → StoreKey 0 (Loja Digital)
-UPDATE vendas
-SET id_loja = 0
-WHERE id_loja IS NULL;
+update customers
+set Birthday = str_to_date(Birthday, '%m/%d/%Y');
+alter table customers modify column Birthday date;
 
-INSERT IGNORE INTO dim_loja (id_loja, nome_loja, canal)
-VALUES (0, 'Loja Digital', 'E-commerce');
 
--- 6. Dias de operação por mês (base para o Efeito Calendário)
-SELECT
-  YEAR(data_venda)                     AS ano,
-  MONTH(data_venda)                    AS mes,
-  COUNT(DISTINCT data_venda)           AS dias_abertos,
-  ROUND(SUM(faturamento), 2)           AS faturamento_total,
-  ROUND(SUM(faturamento)
-        / COUNT(DISTINCT data_venda), 2) AS fat_medio_diario
-FROM vendas
-GROUP BY ano, mes
-ORDER BY ano, mes;
+ select * from products;
+-- mudar nome da columa para nao dar erro no codigo
+alter table products change column `Product Name` Product_Name varchar(255);
 
--- 7. Revenue Gap: projeção abril para 30 dias de operação plena
-WITH abril AS (
-  SELECT
-    COUNT(DISTINCT data_venda)           AS dias_abertos,
-    ROUND(SUM(faturamento), 2)           AS fat_real,
-    ROUND(SUM(faturamento)
-          / COUNT(DISTINCT data_venda), 2) AS fat_diario
-  FROM vendas
-  WHERE MONTH(data_venda) = 4
-)
-SELECT
-  dias_abertos,
-  fat_real                                       AS faturamento_realizado,
-  ROUND(fat_diario * 30, 2)                      AS faturamento_projetado_30d,
-  ROUND(fat_diario * 30 - fat_real, 2)           AS revenue_gap
-FROM abril;</code></pre>
-      </div>
+UPDATE Products SET 
+    `Unit Cost USD` = REPLACE(REPLACE(REPLACE(`Unit Cost USD`, '$', ''), ',', ''), ' ', ''),
+    `Unit Price USD` = REPLACE(REPLACE(REPLACE(`Unit Price USD`, '$', ''), ',', ''), ' ', '');
 
-      <!-- INSTRUÇÃO: substitua pelo seu script/notebook real do projeto -->
-      <div class="code-panel hidden" id="panel-python">
-        <pre><code class="language-python"># ================================================
-# REVENUE GAP — LOJA DE ELETRÔNICOS
-# Etapa 2 & 3: BI e Análise Preditiva | Python
-# Autor: João Vítor de Freitas
-# ================================================
+alter table products 
+change column `Unit Cost USD` Unit_cost_USD decimal(18,2),
+change column `Unit Price USD` Unit_price_USD decimal(18,2);
+alter table products
+modify column SubcategoryKey int,
+modify column CategoryKey int;
 
-import pandas as pd
-import matplotlib.pyplot as plt
-import matplotlib.ticker as mtick
-import seaborn as sns
-import numpy as np
-from scipy import stats
+-- verificar registros incosistentes
+select ProductKey, count(*) as frequencia from products group by ProductKey order by frequencia desc;
+select Product_Name, count(*) as frequencia from products group by Product_Name order by frequencia asc;
+select Brand, count(*) as frequencia from products group by Brand order by frequencia asc;
+select Color, count(*) as frequencia from products group by Color order by frequencia asc;
+select Subcategory, count(*) as frequencia from products group by Subcategory order by frequencia asc;
+select Category, count(*) as frequencia from products group by Category order by frequencia asc;
+select SubcategoryKey, count(*) as frequencia from products group by SubcategoryKey order by frequencia asc;
+select CategoryKey, count(*) as frequencia from products group by CategoryKey order by frequencia asc;
 
-sns.set_theme(style='whitegrid')
-plt.rcParams['figure.dpi'] = 120
+-- verificar se ha nulos
+select  
+count(*) - count(ProductKey),
+count(*) - count(Product_Name),
+count(*) - count(Brand),
+count(*) - count(Color),
+count(*) - count(Unit_cost_USD),
+count(*) - count(Unit_price_USD),
+count(*) - count(SubcategoryKey),
+count(*) - count(Subcategory),
+count(*) - count(CategoryKey),
+count(*) - count(Category)
+from products;
 
-# ── 1. Carregamento dos dados ───────────────────
-df = pd.read_csv('vendas_eletronicos.csv', parse_dates=['data_venda'])
-df['mes']      = df['data_venda'].dt.month
-df['ano']      = df['data_venda'].dt.year
-df['mes_nome'] = df['data_venda'].dt.strftime('%b')
+alter table products
+modify ProductKey int not null,
+add primary key (ProductKey);
 
-# ── 2. Dias abertos e faturamento por mês ───────
-mensal = (
-    df.groupby('mes')
-      .agg(
-          dias_abertos=('data_venda', 'nunique'),
-          faturamento=('faturamento', 'sum'),
-          margem=('margem_contribuicao', 'mean')
-      )
-      .reset_index()
-)
-mensal['fat_medio_diario'] = (
-    mensal['faturamento'] / mensal['dias_abertos']
-)
-print(mensal[['mes','dias_abertos','faturamento','fat_medio_diario']].round(2))
+select * from sales;
+alter table sales 
+rename column `Order Number` to Order_number,
+rename column `Line Item` to Line_item,
+rename column `Order Date` to Order_date,
+rename column `Delivery Date` to Delivery_date,
+rename column `Currency Code` to Currency_code;
 
-# ── 3. Correlação: Dias Abertos × Faturamento ───
-r, p = stats.pearsonr(mensal['dias_abertos'], mensal['faturamento'])
-print(f"\nCorrelação de Pearson (r={r:.3f}, p={p:.4f})")
+-- verificar registros incosistentes
+select Order_number, count(*) as frequencia from sales group by Order_number order by frequencia desc;
+select Line_item, count(*) as frequencia from sales group by Line_item order by frequencia asc;
+select CustomerKey, count(*) as frequencia from sales group by CustomerKey order by frequencia desc;
+select StoreKey, count(*) as frequencia from sales group by StoreKey order by frequencia asc;
+select ProductKey, count(*) as frequencia from sales group by ProductKey order by frequencia asc;
+select Quantity, count(*) as frequencia from sales group by Quantity order by frequencia asc;
+select Currency_code, count(*) as frequencia from sales group by Currency_code order by frequencia asc;
 
-fig, ax = plt.subplots(figsize=(8, 5))
-ax.scatter(mensal['dias_abertos'], mensal['faturamento'],
-           color='#2563EB', s=80, zorder=5)
-# destaque para abril
-abril = mensal[mensal['mes'] == 4]
-ax.scatter(abril['dias_abertos'], abril['faturamento'],
-           color='#EF4444', s=140, zorder=6, label='Abril')
-m, b = np.polyfit(mensal['dias_abertos'], mensal['faturamento'], 1)
-x_ln = np.linspace(mensal['dias_abertos'].min(),
-                   mensal['dias_abertos'].max(), 100)
-ax.plot(x_ln, m * x_ln + b, '--', color='#9CA3AF', linewidth=1.5)
-ax.set_title(f'Dias Abertos × Faturamento (r={r:.2f})',
-             fontsize=13, fontweight='bold')
-ax.set_xlabel('Dias de Operação no Mês')
-ax.yaxis.set_major_formatter(
-    mtick.FuncFormatter(lambda x, _: f'R$ {x/1000:.0f}K'))
-ax.legend()
-plt.tight_layout()
-plt.savefig('outputs/correlacao_dias_faturamento.png', bbox_inches='tight')
-plt.show()
+-- verificar se ha nulos
+select  
+count(*) - count(Order_number),
+count(*) - count(Line_item),
+count(*) - count(Order_date),
+count(*) - count(Delivery_date),
+count(*) - count(CustomerKey),
+count(*) - count(StoreKey),
+count(*) - count(ProductKey),
+count(*) - count(Quantity),
+count(*) - count(Currency_code)
+from sales;
 
-# ── 4. Revenue Gap: projeção de abril para 30 dias ─
-fat_diario_abril = abril['fat_medio_diario'].values[0]
-fat_real_abril   = abril['faturamento'].values[0]
-fat_proj_30d     = fat_diario_abril * 30
-revenue_gap      = fat_proj_30d - fat_real_abril
+-- a coluna order number tem varios registros repetidos
+SELECT Order_number, COUNT(*)
+FROM Sales
+GROUP BY Order_number
+HAVING COUNT(*) > 1;
 
-print(f"\n── Revenue Gap (Abril) ──────────────────")
-print(f"Faturamento real:        R$ {fat_real_abril:,.0f}")
-print(f"Faturamento projetado:   R$ {fat_proj_30d:,.0f}")
-print(f"Revenue Gap:             R$ {revenue_gap:,.0f}")
-print(f"Margem de contribuição:  {abril['margem'].values[0]:.0%}")</code></pre>
+update sales
+set Order_date = str_to_date(Order_date, '%m/%d/%Y');
+update sales 
+set Delivery_date = null
+where Delivery_date = '' or Delivery_date = ' ';
+update sales
+set Delivery_date = str_to_date(Delivery_date, '%m/%d/%Y')
+where Delivery_date is not null;
+alter table sales modify column Order_date date;
+alter table sales modify column Delivery_date date;
+
+-- criando uma coluna 
+alter table sales
+add column sales_id int auto_increment primary key first;
+
+select * from stores;
+alter table stores
+rename column `Square Meters` to Square_meters,
+rename column `Open Date` to Open_date;
+
+-- verificar registros incosistentes
+select StoreKey, count(*) as frequencia from stores group by StoreKey order by frequencia desc;
+select Country, count(*) as frequencia from stores group by Country order by frequencia;
+select State, count(*) as frequencia from stores group by State order by frequencia desc;
+
+-- verificar se ha nulos
+select  
+count(*) - count(StoreKey),
+count(*) - count(Country),
+count(*) - count(State),
+count(*) - count(Square_meters),
+count(*) - count(Open_date)
+from stores;
+
+update stores
+set Open_date = str_to_date(Open_date, '%m/%d/%Y') where Open_date is not null;
+alter table stores modify column Open_date date;
+
+alter table stores
+modify StoreKey int not null,
+add primary key (StoreKey);
+
+select * from exchange_rates;
+-- verificar registros incosistentes
+select Date, count(*) as frequencia from exchange_rates group by Date order by frequencia desc;
+select Currency, count(*) as frequencia from exchange_rates group by Currency order by frequencia;
+select Exchange, count(*) as frequencia from exchange_rates group by Exchange order by frequencia desc;
+
+-- verificar se ha nulos
+select  
+count(*) - count(Date),
+count(*) - count(Currency),
+count(*) - count(Exchange)
+from exchange_rates;
+
+update exchange_rates set `Date` = str_to_date(`Date`, '%m/%d/%Y');
+alter table exchange_rates modify column `Date` date;
+
+-- tirando os espaços que houver nas colunas 
+update customers set CustomerKey = trim(CustomerKey);
+update products set ProductKey = trim(ProductKey);
+update stores set StoreKey = trim(StoreKey);
+update sales set CustomerKey = trim(CustomerKey);
+update sales set ProductKey = trim(ProductKey);
+update sales set StoreKey = trim(StoreKey);
+
+select distinct s.ProductKey 
+from sales s
+left join products p on s.ProductKey = p.ProductKey
+where p.ProductKey is null;
+
+select distinct s.CustomerKey
+from sales s
+left join customers c on s.CustomerKey = c.CustomerKey
+where c.CustomerKey is null;
+
+select distinct s.StoreKey
+from sales s
+left join stores on s.StoreKey = stores.StoreKey
+where stores.StoreKey is null;
+
+insert into customers (CustomerKey, Name, City, State, Country, Continent)
+values (9999999, 'Não identificado', 'N/A', 'N/A', 'N/A', 'N/A');
+
+update sales
+set CustomerKey = 9999999
+where CustomerKey not in (select CustomerKey from customers);
+
+SELECT StoreKey, COUNT(*) 
+FROM Sales 
+WHERE StoreKey NOT IN (SELECT StoreKey FROM Stores)
+GROUP BY StoreKey;
+
+insert into stores (StoreKey, Country, State)
+values (0, 'Online', 'Loja digital');
+
+alter table sales add constraint sales_customers foreign key (`CustomerKey`) references customers(`CustomerKey`);
+alter table sales add constraint sales_store foreign key (`StoreKey`) references Stores(`StoreKey`);
+alter table sales add constraint sales_product foreign key (`ProductKey`) references products(`ProductKey`);
+
+select * from customers limit 10;
+select * from products limit 10;
+select * from stores limit 10;
+select * from sales limit 10;
+
+create view clientes as
+select CustomerKey, Gender, City, State, Country from customers;
+
+create view produtos as
+select 
+	ProductKey, 
+	Product_Name, 
+	Brand, Color, 
+	Subcategory, 
+	Category,
+    Unit_cost_USD,
+    Unit_price_USD,
+    (Unit_price_USD - Unit_cost_USD) as lucro_bruto
+from products;
+
+create view lojas as 
+select StoreKey, Country, State, Square_meters from stores;
+
+create view vendas as
+select 
+	s.sales_id, 
+	s.Order_number, 
+	s.Line_item, 
+	s.Order_date, 
+	s.Delivery_date, 
+	s.CustomerKey, 
+    s.StoreKey,
+    s.ProductKey,
+    s.Quantity, 
+    s.Currency_code,
+    er.Exchange as cotacao,
+    round((p.lucro_bruto * s.Quantity * er.Exchange), 2) as lucro_bruto_usd,
+    round((p.Unit_price_USD * s.Quantity * er.Exchange), 2) as receita_total_usd
+from sales s
+left join exchange_rates er on s.Currency_code = er.Currency and s.Order_date = er.Date
+left join produtos p on s.ProductKey = p.ProductKey;
+        </code></pre>
       </div>
     </div>
   </div>
@@ -424,7 +548,7 @@ print(f"Margem de contribuição:  {abril['margem'].values[0]:.0%}")</code></pre
 
 <section class="proj-section">
   <div class="container">
-    <div class="section-label">// principais achados</div>
+    <div class="section-label">principais achados</div>
     <h2>Insights do Projeto</h2>
     <div class="insights-grid">
       <div class="insight-card">
@@ -448,12 +572,12 @@ print(f"Margem de contribuição:  {abril['margem'].values[0]:.0%}")</code></pre
 
 <section class="proj-section alt">
   <div class="container">
-    <div class="section-label">// arquivos do projeto</div>
+    <div class="section-label">arquivos do projeto</div>
     <h2>Baixar Arquivos</h2>
     <p style="color:var(--t2);font-size:14px;margin-bottom:24px">Todos os arquivos estão disponíveis no repositório do GitHub para consulta e download.</p>
     <div class="files-grid">
       <div class="file-card">
-        <a href="https://github.com/joaov-analista" target="_blank" style="display:contents">
+        <a href="https://github.com/joaov-analista/An-lise-de-vendas" target="_blank" style="display:contents">
           <div class="file-icon fi-pbi"><i class="fa-solid fa-chart-bar"></i></div>
           <div class="file-info">
             <div class="file-name">revenue-gap-eletronicos.pbix</div>
@@ -463,7 +587,7 @@ print(f"Margem de contribuição:  {abril['margem'].values[0]:.0%}")</code></pre
         </a>
       </div>
       <div class="file-card">
-        <a href="https://github.com/joaov-analista" target="_blank" style="display:contents">
+        <a href="https://github.com/joaov-analista/An-lise-de-vendas" target="_blank" style="display:contents">
           <div class="file-icon fi-sql"><i class="fa-solid fa-database"></i></div>
           <div class="file-info">
             <div class="file-name">etl-eletronicos.sql</div>
@@ -473,7 +597,7 @@ print(f"Margem de contribuição:  {abril['margem'].values[0]:.0%}")</code></pre
         </a>
       </div>
       <div class="file-card">
-        <a href="https://github.com/joaov-analista" target="_blank" style="display:contents">
+        <a href="https://github.com/joaov-analista/An-lise-de-vendas" target="_blank" style="display:contents">
           <div class="file-icon fi-py"><i class="fa-brands fa-python"></i></div>
           <div class="file-info">
             <div class="file-name">analise-revenue-gap.ipynb</div>
