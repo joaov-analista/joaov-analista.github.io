@@ -151,19 +151,20 @@
       <span class="ph-sep">/</span>
       <span class="ph-cat">Análise de Vendas</span>
     </div>
-    <h1 class="ph-title">Análise de Vendas —<br>Loja de Eletrônicos</h1>
-    <p class="ph-desc">Dashboard de performance comercial com Star Schema otimizado, análise YoY e mapeamento de R$ +1M em gap de receita — do ETL no MySQL ao painel executivo no Power BI.</p>
+    <h1 class="ph-title">Revenue Gap — Análise de<br>Vendas de Eletrônicos</h1>
+    <p class="ph-desc">Um enigma real de negócio: por que o faturamento caía em abril? Através de ETL no MySQL, KPIs em Power BI e análise preditiva, identifiquei que o problema não era comercial — era operacional. O Efeito Calendário escondia a loja mais produtiva do ano.</p>
     <div class="ph-tags">
       <span class="ph-tag">Power BI</span>
       <span class="ph-tag">MySQL</span>
       <span class="ph-tag">ETL</span>
-      <span class="ph-tag">Star Schema</span>
       <span class="ph-tag">DAX</span>
-      <span class="ph-tag">YoY Analysis</span>
+      <span class="ph-tag">Revenue Gap</span>
+      <span class="ph-tag">Análise Preditiva</span>
+      <span class="ph-tag">Árvore de Decomposição</span>
     </div>
     <div class="ph-meta">
       <span class="ph-meta-item"><i class="fa-regular fa-calendar"></i> Março de 2026</span>
-      <span class="ph-meta-item"><i class="fa-solid fa-layer-group"></i> Power BI + MySQL</span>
+      <span class="ph-meta-item"><i class="fa-solid fa-layer-group"></i> MySQL + Power BI</span>
       <span class="ph-meta-item"><i class="fa-solid fa-code-branch"></i>
         <a href="https://github.com/joaov-analista" target="_blank" style="color:inherit;text-decoration:underline">Ver no GitHub</a>
       </span>
@@ -174,38 +175,40 @@
 <div class="result-strip">
   <div class="container">
     <div class="rs-item">
-      <div class="rs-value" style="color:var(--blue)">R$ +1M </div>
-      <div class="rs-label">Gap de receita mapeado</div>
+      <div class="rs-value" style="color:var(--green)">60%</div>
+      <div class="rs-label">Margem de contribuição em abril</div>
     </div>
     <div class="rs-item">
-      <div class="rs-value" style="color:var(--amber)">58%</div>
-      <div class="rs-label">De margem de contribuição</div>
+      <div class="rs-value" style="color:var(--blue)">30 dias</div>
+      <div class="rs-label">Projeção de operação plena usada</div>
     </div>
     <div class="rs-item">
-      <div class="rs-value" style="color:var(--green)">5 tabelas</div>
-      <div class="rs-label">Star Schema modelado</div>
+      <div class="rs-value" style="color:var(--amber)">3 etapas</div>
+      <div class="rs-label">ETL → BI → Análise Preditiva</div>
     </div>
   </div>
 </div>
 
 <section class="proj-section alt">
   <div class="container">
-    <div class="section-label">problema & abordagem</div>
+    <div class="section-label">// problema & abordagem</div>
     <h2>Contexto do Projeto</h2>
     <div class="contexto-grid">
       <div class="contexto-text">
-        <p>Uma loja de eletrônicos hipotética apresentava quedas sazonais no faturamento.</p>
-        <p>O objetivo foi construir um pipeline completo: extrair os dados transacionais do MySQL, modelar um Star Schema otimizado para análise dimensional e criar um dashboard executivo com análise YoY que revelasse onde a receita estava sendo perdida.</p>
-        <p>O resultado mostrou que o gap de R$ +1M estava concentrado no mês de abril, impactado o faturamento — informação que não estava visível nos relatórios operacionais.</p>
+        <p>O projeto nasceu de um enigma real de negócio: o faturamento da loja caía consistentemente em abril — mas o Ticket Médio e os Itens por Pedido continuavam saudáveis. A contradição indicava que o problema não estava no comportamento do cliente nem no mix de produtos.</p>
+        <p>A abordagem foi estruturada em três etapas. Na primeira, realizei um ETL rigoroso no MySQL: converti strings para formatos nativos de DATE com STR_TO_DATE e para DECIMAL eliminando símbolos de moeda, executei testes de frequência com LIKE para identificar registros corrompidos e implementei o StoreKey 0 como "Loja Digital" para tratar vendas sem identificação de loja física — evitando perda de dados no modelo dimensional.</p>
+        <p>Na segunda etapa, construí o dashboard no Power BI com KPIs de Ticket Médio, Itens por Pedido (IPP) e Margem de Contribuição, além de medidas DAX para separar o faturamento de Lojas Físicas vs. E-commerce. Usei a Árvore de Decomposição para realizar o drill-down automático dos fatores que mais impactavam a queda de abril. Na terceira etapa, projetei o faturamento de abril para um cenário de 30 dias de operação plena — mensurando exatamente quanto a empresa deixou de ganhar com os fechamentos.</p>
       </div>
       <div class="stack-card">
         <h3>Stack utilizada</h3>
         <div class="stack-list">
-          <div class="stack-item"><i class="fa-solid fa-database"></i><span>MySQL — extração e transformação</span></div>
-          <div class="stack-item"><i class="fa-solid fa-gears"></i><span>ETL — limpeza e carga dimensional</span></div>
-          <div class="stack-item"><i class="fa-solid fa-star"></i><span>Star Schema — 1 fato + 5 dims</span></div>
-          <div class="stack-item"><i class="fa-solid fa-chart-bar"></i><span>Power BI — dashboard executivo</span></div>
-          <div class="stack-item"><i class="fa-solid fa-calculator"></i><span>DAX — YoY, MoM, acumulados</span></div>
+          <div class="stack-item"><i class="fa-solid fa-database"></i><span>MySQL — ETL com STR_TO_DATE e DECIMAL</span></div>
+          <div class="stack-item"><i class="fa-solid fa-magnifying-glass"></i><span>LIKE '%[0-9]%' — detecção de dados corrompidos</span></div>
+          <div class="stack-item"><i class="fa-solid fa-store"></i><span>StoreKey 0 — tratamento de vendas digitais</span></div>
+          <div class="stack-item"><i class="fa-solid fa-chart-bar"></i><span>Power BI — dashboard com KPIs financeiros</span></div>
+          <div class="stack-item"><i class="fa-solid fa-calculator"></i><span>DAX — Ticket Médio, IPP, Margem de Contribuição</span></div>
+          <div class="stack-item"><i class="fa-solid fa-sitemap"></i><span>Árvore de Decomposição — drill-down com IA</span></div>
+          <div class="stack-item"><i class="fa-solid fa-chart-scatter"></i><span>Dispersão — correlação Dias Abertos × Faturamento</span></div>
           <div class="stack-item"><i class="fa-brands fa-github"></i><span>GitHub — versionamento do código</span></div>
         </div>
       </div>
@@ -215,7 +218,7 @@
 
 <section class="proj-section">
   <div class="container">
-    <div class="section-label">capturas de tela</div>
+    <div class="section-label">// capturas de tela</div>
     <h2>Dashboard em Detalhe</h2>
     <div class="carousel-wrap">
       <div class="swiper">
@@ -223,22 +226,22 @@
           <div class="swiper-slide">
             <!-- Substitua por: <img src="../assets/img/eletronicos-1.png" alt="Visão Geral de Vendas"> -->
             <i class="fa-solid fa-chart-line"></i>
-            <span>Slide 1 — Visão Geral de Vendas · adicione seu screenshot</span>
+            <span>Slide 1 — Visão Geral · KPIs de Faturamento e Margem · adicione seu screenshot</span>
           </div>
           <div class="swiper-slide">
-            <!-- Substitua por: <img src="../assets/img/eletronicos-2.png" alt="Análise YoY por Categoria"> -->
-            <i class="fa-solid fa-right-left"></i>
-            <span>Slide 2 — Análise YoY por Categoria · adicione seu screenshot</span>
+            <!-- Substitua por: <img src="../assets/img/eletronicos-2.png" alt="Efeito Calendário"> -->
+            <i class="fa-solid fa-calendar-days"></i>
+            <span>Slide 2 — Efeito Calendário · Dias Abertos vs Faturamento · adicione seu screenshot</span>
           </div>
           <div class="swiper-slide">
-            <!-- Substitua por: <img src="../assets/img/eletronicos-3.png" alt="Gap de Receita por Região"> -->
-            <i class="fa-solid fa-map-location-dot"></i>
-            <span>Slide 3 — Gap de Receita por Região · adicione seu screenshot</span>
-          </div>
-          <div class="swiper-slide">
-            <!-- Substitua por: <img src="../assets/img/eletronicos-4.png" alt="Modelo Star Schema"> -->
+            <!-- Substitua por: <img src="../assets/img/eletronicos-3.png" alt="Árvore de Decomposição"> -->
             <i class="fa-solid fa-sitemap"></i>
-            <span>Slide 4 — Modelo de Dados (Star Schema) · adicione seu screenshot</span>
+            <span>Slide 3 — Árvore de Decomposição · Drill-down de Abril · adicione seu screenshot</span>
+          </div>
+          <div class="swiper-slide">
+            <!-- Substitua por: <img src="../assets/img/eletronicos-4.png" alt="Revenue Gap"> -->
+            <i class="fa-solid fa-chart-area"></i>
+            <span>Slide 4 — Revenue Gap · Projeção de 30 Dias · adicione seu screenshot</span>
           </div>
         </div>
         <div class="swiper-pagination"></div>
@@ -252,7 +255,7 @@
 
 <section class="proj-section alt">
   <div class="container">
-    <div class="section-label">código do projeto</div>
+    <div class="section-label">// código do projeto</div>
     <h2>Código Utilizado</h2>
     <div class="code-block-wrap">
       <div class="code-tabs">
@@ -267,181 +270,153 @@
         </button>
       </div>
 
-      <!-- INSTRUÇÃO: substitua o código abaixo pelo seu SQL real do projeto -->
+      <!-- INSTRUÇÃO: substitua pelo seu SQL real do projeto -->
       <div class="code-panel" id="panel-sql">
         <pre><code class="language-sql">-- ================================================
--- ANÁLISE DE VENDAS — LOJA DE ELETRÔNICOS
--- Autor: João Vítor de Freitas | MySQL
+-- REVENUE GAP — LOJA DE ELETRÔNICOS
+-- Etapa 1: ETL e Tratamento de Dados | MySQL
+-- Autor: João Vítor de Freitas
 -- ================================================
 
--- 1. Criação das dimensões (Star Schema)
-CREATE TABLE dim_produto (
-  id_produto    INT PRIMARY KEY AUTO_INCREMENT,
-  nome_produto  VARCHAR(150),
-  categoria     VARCHAR(80),
-  marca         VARCHAR(80),
-  preco_custo   DECIMAL(10,2),
-  preco_venda   DECIMAL(10,2)
+-- 1. Conversão de datas: string → DATE nativo
+UPDATE vendas
+SET data_venda = STR_TO_DATE(data_venda_str, '%d/%m/%Y')
+WHERE data_venda IS NULL;
+
+-- 2. Limpeza de valores monetários: string → DECIMAL
+UPDATE vendas
+SET faturamento = CAST(
+  REPLACE(REPLACE(faturamento_str, 'R$', ''), ',', '.') AS DECIMAL(12,2)
 );
 
-CREATE TABLE dim_tempo (
-  id_tempo    INT PRIMARY KEY,   -- formato YYYYMMDD
-  data        DATE,
-  ano         SMALLINT,
-  trimestre   TINYINT,
-  mes         TINYINT,
-  nome_mes    VARCHAR(15),
-  semana      TINYINT,
-  dia_semana  VARCHAR(15)
-);
+-- 3. Testes de frequência: identificar registros corrompidos
+SELECT faturamento_str, COUNT(*) AS qtd
+FROM vendas
+WHERE faturamento_str LIKE '%[^0-9.,]%'  -- caracteres inesperados
+GROUP BY faturamento_str
+ORDER BY qtd DESC;
 
--- 2. Tabela fato de vendas
-CREATE TABLE fato_vendas (
-  id_venda    INT PRIMARY KEY AUTO_INCREMENT,
-  id_tempo    INT,
-  id_produto  INT,
-  id_loja     INT,
-  id_cliente  INT,
-  quantidade  INT,
-  receita     DECIMAL(10,2),
-  custo       DECIMAL(10,2),
-  lucro       DECIMAL(10,2),
-  FOREIGN KEY (id_tempo)   REFERENCES dim_tempo(id_tempo),
-  FOREIGN KEY (id_produto) REFERENCES dim_produto(id_produto)
-);
+-- 4. Mapeamento de nulos por dimensão
+SELECT
+  COUNT(*) - COUNT(id_loja)     AS nulos_loja,
+  COUNT(*) - COUNT(id_produto)  AS nulos_produto,
+  COUNT(*) - COUNT(id_cliente)  AS nulos_cliente,
+  COUNT(*) - COUNT(data_venda)  AS nulos_data
+FROM vendas;
 
+-- 5. Tratar vendas sem loja física → StoreKey 0 (Loja Digital)
+UPDATE vendas
+SET id_loja = 0
+WHERE id_loja IS NULL;
 
--- 3. Análise YoY — receita por categoria
-WITH receita_anual AS (
+INSERT IGNORE INTO dim_loja (id_loja, nome_loja, canal)
+VALUES (0, 'Loja Digital', 'E-commerce');
+
+-- 6. Dias de operação por mês (base para o Efeito Calendário)
+SELECT
+  YEAR(data_venda)                     AS ano,
+  MONTH(data_venda)                    AS mes,
+  COUNT(DISTINCT data_venda)           AS dias_abertos,
+  ROUND(SUM(faturamento), 2)           AS faturamento_total,
+  ROUND(SUM(faturamento)
+        / COUNT(DISTINCT data_venda), 2) AS fat_medio_diario
+FROM vendas
+GROUP BY ano, mes
+ORDER BY ano, mes;
+
+-- 7. Revenue Gap: projeção abril para 30 dias de operação plena
+WITH abril AS (
   SELECT
-    p.categoria,
-    t.ano,
-    SUM(f.receita)                                      AS receita_total
-  FROM fato_vendas f
-  JOIN dim_produto p ON f.id_produto = p.id_produto
-  JOIN dim_tempo   t ON f.id_tempo   = t.id_tempo
-  WHERE t.ano IN (2024, 2025)
-  GROUP BY p.categoria, t.ano
-),
-pivot AS (
-  SELECT
-    categoria,
-    SUM(CASE WHEN ano = 2024 THEN receita_total END)    AS receita_2024,
-    SUM(CASE WHEN ano = 2025 THEN receita_total END)    AS receita_2025
-  FROM receita_anual
-  GROUP BY categoria
+    COUNT(DISTINCT data_venda)           AS dias_abertos,
+    ROUND(SUM(faturamento), 2)           AS fat_real,
+    ROUND(SUM(faturamento)
+          / COUNT(DISTINCT data_venda), 2) AS fat_diario
+  FROM vendas
+  WHERE MONTH(data_venda) = 4
 )
 SELECT
-  categoria,
-  ROUND(receita_2024, 2)                                AS receita_2024,
-  ROUND(receita_2025, 2)                                AS receita_2025,
-  ROUND(receita_2025 - receita_2024, 2)                 AS gap_receita,
-  ROUND((receita_2025 - receita_2024)
-        / receita_2024 * 100, 1)                        AS variacao_pct
-FROM pivot
-ORDER BY gap_receita ASC;
-
-
--- 4. Gap concentrado por trimestre e categoria
-SELECT
-  t.trimestre,
-  p.categoria,
-  ROUND(SUM(CASE WHEN t.ano = 2024 THEN f.receita END), 2) AS receita_2024,
-  ROUND(SUM(CASE WHEN t.ano = 2025 THEN f.receita END), 2) AS receita_2025,
-  ROUND(
-    SUM(CASE WHEN t.ano = 2025 THEN f.receita END) -
-    SUM(CASE WHEN t.ano = 2024 THEN f.receita END), 2)     AS gap
-FROM fato_vendas f
-JOIN dim_produto p ON f.id_produto = p.id_produto
-JOIN dim_tempo   t ON f.id_tempo   = t.id_tempo
-WHERE t.ano IN (2024, 2025)
-GROUP BY t.trimestre, p.categoria
-HAVING gap < 0
-ORDER BY gap ASC
-LIMIT 10;</code></pre>
+  dias_abertos,
+  fat_real                                       AS faturamento_realizado,
+  ROUND(fat_diario * 30, 2)                      AS faturamento_projetado_30d,
+  ROUND(fat_diario * 30 - fat_real, 2)           AS revenue_gap
+FROM abril;</code></pre>
       </div>
 
-      <!-- INSTRUÇÃO: substitua o código abaixo pelo seu Python real do projeto -->
+      <!-- INSTRUÇÃO: substitua pelo seu script/notebook real do projeto -->
       <div class="code-panel hidden" id="panel-python">
         <pre><code class="language-python"># ================================================
-# EDA — ANÁLISE DE VENDAS — LOJA DE ELETRÔNICOS
-# Autor: João Vítor de Freitas | Python + Pandas
+# REVENUE GAP — LOJA DE ELETRÔNICOS
+# Etapa 2 & 3: BI e Análise Preditiva | Python
+# Autor: João Vítor de Freitas
 # ================================================
 
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 import seaborn as sns
+import numpy as np
+from scipy import stats
 
 sns.set_theme(style='whitegrid')
 plt.rcParams['figure.dpi'] = 120
 
 # ── 1. Carregamento dos dados ───────────────────
 df = pd.read_csv('vendas_eletronicos.csv', parse_dates=['data_venda'])
-df['ano']       = df['data_venda'].dt.year
-df['mes']       = df['data_venda'].dt.month
-df['trimestre'] = df['data_venda'].dt.quarter
+df['mes']      = df['data_venda'].dt.month
+df['ano']      = df['data_venda'].dt.year
+df['mes_nome'] = df['data_venda'].dt.strftime('%b')
 
-print(f"Shape: {df.shape}")
-print(df.dtypes)
-print("\nValores nulos:\n", df.isnull().sum())
-
-# ── 2. Receita YoY por categoria ────────────────
-receita = (
-    df.groupby(['categoria', 'ano'])['receita']
-      .sum()
-      .unstack('ano')
-      .fillna(0)
-      .assign(
-          gap=lambda x: x[2025] - x[2024],
-          variacao_pct=lambda x: (x[2025] - x[2024]) / x[2024] * 100
-      )
-      .sort_values('gap')
-)
-print("\nReceita por categoria:\n", receita.round(2))
-
-# ── 3. Visualização: gap YoY por categoria ──────
-fig, ax = plt.subplots(figsize=(9, 5))
-cores = ['#EF4444' if v < 0 else '#10B981' for v in receita['gap']]
-bars  = ax.barh(receita.index, receita['gap'], color=cores)
-ax.axvline(0, color='#E2E8F0', linewidth=1)
-ax.set_title('Gap de Receita YoY por Categoria (2024 vs 2025)',
-             fontsize=13, fontweight='bold')
-ax.set_xlabel('Gap de Receita (R$)')
-for b in bars:
-    w = b.get_width()
-    ax.text(w + (500 if w >= 0 else -500),
-            b.get_y() + b.get_height() / 2,
-            f'R$ {w:,.0f}', va='center',
-            ha='left' if w >= 0 else 'right', fontsize=9)
-plt.tight_layout()
-plt.savefig('outputs/gap_yoy_categoria.png', bbox_inches='tight')
-plt.show()
-
-# ── 4. Evolução mensal — 2024 vs 2025 ──────────
+# ── 2. Dias abertos e faturamento por mês ───────
 mensal = (
-    df.groupby(['ano', 'mes'])['receita']
-      .sum()
-      .unstack('ano')
-      .fillna(0)
+    df.groupby('mes')
+      .agg(
+          dias_abertos=('data_venda', 'nunique'),
+          faturamento=('faturamento', 'sum'),
+          margem=('margem_contribuicao', 'mean')
+      )
+      .reset_index()
 )
-fig, ax = plt.subplots(figsize=(11, 4))
-ax.plot(mensal.index, mensal[2024], marker='o',
-        label='2024', color='#93c5fd', linewidth=2)
-ax.plot(mensal.index, mensal[2025], marker='o',
-        label='2025', color='#2563EB', linewidth=2)
-ax.fill_between(mensal.index, mensal[2024], mensal[2025],
-                where=mensal[2025] < mensal[2024],
-                alpha=0.12, color='#EF4444', label='Gap negativo')
+mensal['fat_medio_diario'] = (
+    mensal['faturamento'] / mensal['dias_abertos']
+)
+print(mensal[['mes','dias_abertos','faturamento','fat_medio_diario']].round(2))
+
+# ── 3. Correlação: Dias Abertos × Faturamento ───
+r, p = stats.pearsonr(mensal['dias_abertos'], mensal['faturamento'])
+print(f"\nCorrelação de Pearson (r={r:.3f}, p={p:.4f})")
+
+fig, ax = plt.subplots(figsize=(8, 5))
+ax.scatter(mensal['dias_abertos'], mensal['faturamento'],
+           color='#2563EB', s=80, zorder=5)
+# destaque para abril
+abril = mensal[mensal['mes'] == 4]
+ax.scatter(abril['dias_abertos'], abril['faturamento'],
+           color='#EF4444', s=140, zorder=6, label='Abril')
+m, b = np.polyfit(mensal['dias_abertos'], mensal['faturamento'], 1)
+x_ln = np.linspace(mensal['dias_abertos'].min(),
+                   mensal['dias_abertos'].max(), 100)
+ax.plot(x_ln, m * x_ln + b, '--', color='#9CA3AF', linewidth=1.5)
+ax.set_title(f'Dias Abertos × Faturamento (r={r:.2f})',
+             fontsize=13, fontweight='bold')
+ax.set_xlabel('Dias de Operação no Mês')
 ax.yaxis.set_major_formatter(
     mtick.FuncFormatter(lambda x, _: f'R$ {x/1000:.0f}K'))
-ax.set_title('Evolução Mensal de Receita — 2024 vs 2025',
-             fontsize=13, fontweight='bold')
-ax.set_xlabel('Mês')
 ax.legend()
 plt.tight_layout()
-plt.savefig('outputs/evolucao_mensal.png', bbox_inches='tight')
-plt.show()</code></pre>
+plt.savefig('outputs/correlacao_dias_faturamento.png', bbox_inches='tight')
+plt.show()
+
+# ── 4. Revenue Gap: projeção de abril para 30 dias ─
+fat_diario_abril = abril['fat_medio_diario'].values[0]
+fat_real_abril   = abril['faturamento'].values[0]
+fat_proj_30d     = fat_diario_abril * 30
+revenue_gap      = fat_proj_30d - fat_real_abril
+
+print(f"\n── Revenue Gap (Abril) ──────────────────")
+print(f"Faturamento real:        R$ {fat_real_abril:,.0f}")
+print(f"Faturamento projetado:   R$ {fat_proj_30d:,.0f}")
+print(f"Revenue Gap:             R$ {revenue_gap:,.0f}")
+print(f"Margem de contribuição:  {abril['margem'].values[0]:.0%}")</code></pre>
       </div>
     </div>
   </div>
@@ -449,23 +424,23 @@ plt.show()</code></pre>
 
 <section class="proj-section">
   <div class="container">
-    <div class="section-label">principais achados</div>
+    <div class="section-label">// principais achados</div>
     <h2>Insights do Projeto</h2>
     <div class="insights-grid">
       <div class="insight-card">
-        <div class="insight-icon ic-amber"><i class="fa-solid fa-mobile-screen-button"></i></div>
-        <div class="insight-title">Smartphones concentram 58% do gap</div>
-        <div class="insight-text">De R$ 42K de gap total, R$ 24,4K foram gerados apenas na categoria Smartphones — impactada por ruptura de estoque e mudança de mix de modelos em Q4.</div>
+        <div class="insight-icon ic-blue"><i class="fa-solid fa-calendar-days"></i></div>
+        <div class="insight-title">O Efeito Calendário: o problema era operacional, não comercial</div>
+        <div class="insight-text">A queda de faturamento em abril não tinha origem comercial. Através de um gráfico de dispersão, provei a correlação direta entre Dias Abertos e Faturamento — abril simplesmente tinha menos dias de operação. O comportamento do cliente e o mix de produtos estavam saudáveis.</div>
       </div>
       <div class="insight-card">
-        <div class="insight-icon ic-green"><i class="fa-solid fa-arrow-trend-down"></i></div>
-        <div class="insight-title">Queda de 18% YoY concentrada no Q4</div>
-        <div class="insight-text">Os trimestres Q1, Q2 e Q3 apresentaram desempenho estável ou positivo. A queda total foi puxada pelo Q4, onde a receita recuou 18% em relação ao mesmo período do ano anterior.</div>
+        <div class="insight-icon ic-green"><i class="fa-solid fa-arrow-trend-up"></i></div>
+        <div class="insight-title">Abril era o mês mais produtivo — com 60% de margem de contribuição</div>
+        <div class="insight-text">A métrica de Faturamento Médio Diário revelou que, enquanto estava aberta, a loja era mais produtiva em abril do que em outros meses. A margem de contribuição de 60% neste mês era superior à média — ou seja, abril era uma oportunidade disfarçada de problema.</div>
       </div>
       <div class="insight-card">
-        <div class="insight-icon ic-blue"><i class="fa-solid fa-map-pin"></i></div>
-        <div class="insight-title">Região Nordeste com maior potencial</div>
-        <div class="insight-text">Apesar de representar apenas 22% da receita, a região Nordeste foi a única com crescimento YoY positivo (+7%), indicando oportunidade de expansão não explorada.</div>
+        <div class="insight-icon ic-amber"><i class="fa-solid fa-chart-area"></i></div>
+        <div class="insight-title">Revenue Gap: queda virou oportunidade de expansão operacional</div>
+        <div class="insight-text">Projetando o faturamento de abril para 30 dias de operação plena, foi possível mensurar exatamente quanto a empresa deixou de ganhar com os fechamentos — transformando uma queda de faturamento em argumento concreto para revisão do calendário operacional da loja.</div>
       </div>
     </div>
   </div>
@@ -478,12 +453,11 @@ plt.show()</code></pre>
     <p style="color:var(--t2);font-size:14px;margin-bottom:24px">Todos os arquivos estão disponíveis no repositório do GitHub para consulta e download.</p>
     <div class="files-grid">
       <div class="file-card">
-        <!-- Atualize o href com o link real: github.com/joaov-analista/eletronicos/raw/main/eletronicos-dashboard.pbix -->
         <a href="https://github.com/joaov-analista" target="_blank" style="display:contents">
           <div class="file-icon fi-pbi"><i class="fa-solid fa-chart-bar"></i></div>
           <div class="file-info">
-            <div class="file-name">eletronicos-dashboard.pbix</div>
-            <div class="file-type">Power BI · Dashboard</div>
+            <div class="file-name">revenue-gap-eletronicos.pbix</div>
+            <div class="file-type">Power BI · Dashboard com KPIs e Árvore de Decomposição</div>
           </div>
           <i class="fa-solid fa-download file-dl"></i>
         </a>
@@ -492,8 +466,8 @@ plt.show()</code></pre>
         <a href="https://github.com/joaov-analista" target="_blank" style="display:contents">
           <div class="file-icon fi-sql"><i class="fa-solid fa-database"></i></div>
           <div class="file-info">
-            <div class="file-name">queries-eletronicos.sql</div>
-            <div class="file-type">MySQL · Star Schema & ETL</div>
+            <div class="file-name">etl-eletronicos.sql</div>
+            <div class="file-type">MySQL · ETL, limpeza e Revenue Gap</div>
           </div>
           <i class="fa-solid fa-download file-dl"></i>
         </a>
@@ -502,8 +476,8 @@ plt.show()</code></pre>
         <a href="https://github.com/joaov-analista" target="_blank" style="display:contents">
           <div class="file-icon fi-py"><i class="fa-brands fa-python"></i></div>
           <div class="file-info">
-            <div class="file-name">eda-eletronicos.ipynb</div>
-            <div class="file-type">Python · Análise Exploratória</div>
+            <div class="file-name">analise-revenue-gap.ipynb</div>
+            <div class="file-type">Python · Correlação e Análise Preditiva</div>
           </div>
           <i class="fa-solid fa-download file-dl"></i>
         </a>
@@ -537,10 +511,10 @@ plt.show()</code></pre>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 <script>
   const captions = [
-    'Página 1 — Visão Geral de Vendas',
-    'Página 2 — Análise YoY por Categoria',
-    'Página 3 — Gap de Receita por Região',
-    'Página 4 — Modelo de Dados (Star Schema)',
+    'Página 1 — Visão Geral · KPIs de Faturamento, Ticket Médio e Margem',
+    'Página 2 — Efeito Calendário · Dispersão: Dias Abertos × Faturamento',
+    'Página 3 — Árvore de Decomposição · Drill-down dos fatores de abril',
+    'Página 4 — Revenue Gap · Projeção de faturamento para 30 dias',
   ];
   const swiper = new Swiper('.swiper', {
     loop: true,
