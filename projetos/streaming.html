@@ -278,7 +278,7 @@
     </div>
     <div class="rs-item">
       <div class="rs-value" style="color:var(--amber)">29 dias</div>
-      <div class="rs-label">Média de dias para cancelar</div>
+      <div class="rs-label">Média de Churn</div>
     </div>
   </div>
 </div>
@@ -377,9 +377,6 @@
         <button class="code-tab sql-tab active" onclick="switchTab('sql', this)">
           <i class="fa-solid fa-database"></i> SQL — ETL & Análise
         </button>
-        <button class="code-tab python-tab" onclick="switchTab('python', this)">
-          <i class="fa-brands fa-python"></i> Python — EDA
-        </button>
         <button class="code-copy" id="copy-btn" onclick="copyCode()">
           <i class="fa-regular fa-copy"></i> Copiar
         </button>
@@ -391,138 +388,114 @@
         Cole o conteúdo do seu arquivo .sql aqui dentro do bloco <code>.
       -->
       <div class="code-panel" id="panel-sql">
-        <pre><code class="language-sql">-- ================================================
+        <pre><code class="language-sql">
+-- ================================================
 -- ANÁLISE DE CHURN — PLATAFORMA DE STREAMING
 -- Autor: João Vítor de Freitas | MySQL
 -- ================================================
 
--- 1. Taxa de churn por plano de assinatura
-WITH base AS (
-  SELECT
-    u.plano,
-    COUNT(DISTINCT u.id_usuario)                      AS total_usuarios,
-    COUNT(DISTINCT CASE
-      WHEN c.status = 'cancelado'
-      THEN u.id_usuario END)                          AS cancelamentos
-  FROM usuarios u
-  LEFT JOIN contratos c ON u.id_usuario = c.id_usuario
-  WHERE YEAR(u.data_cadastro) = 2025
-  GROUP BY u.plano
-)
-SELECT
-  plano,
-  total_usuarios,
-  cancelamentos,
-  ROUND(cancelamentos / total_usuarios * 100, 2)     AS taxa_churn_pct,
-  ROUND((total_usuarios - cancelamentos)
-        / total_usuarios * 100, 2)                   AS taxa_retencao_pct
-FROM base
-ORDER BY taxa_churn_pct DESC;
+create database projeto_netflix;
+use projeto_netflix;
+select * from netflix_user_behavior_dataset;
+desc netflix_user_behavior_dataset;
 
+-- criar um backup da tabela
+create table backup_netflix_user_behavior_dataset as select * from netflix_user_behavior_dataset;
+truncate backup_netflix_user_behavior_dataset;
+insert into backup_netflix_user_behavior_dataset select * from netflix_user_behavior_dataset;
 
--- 2. Janela de risco: meses até o cancelamento
-SELECT
-  TIMESTAMPDIFF(
-    MONTH,
-    u.data_cadastro,
-    c.data_cancelamento)                             AS meses_ate_churn,
-  COUNT(*)                                           AS qtd_cancelamentos,
-  ROUND(AVG(r.valor_mensalidade), 2)                 AS receita_media_perdida
-FROM usuarios u
-JOIN contratos c ON u.id_usuario = c.id_usuario
-JOIN receita   r ON u.id_usuario = r.id_usuario
-WHERE c.status = 'cancelado'
-GROUP BY meses_ate_churn
-ORDER BY meses_ate_churn;
+set sql_safe_updates = 0;
+-- alterar a coluna de user_id para primary key 
+update netflix_user_behavior_dataset 
+set user_id = cast(substring(user_id, 3) as unsigned);
+alter table netflix_user_behavior_dataset modify column user_id int not null;
+alter table netflix_user_behavior_dataset add primary key(user_id);
 
+-- analises para verificar se há valores inconsistentes
+select
+    min(age) as idade_minima,
+    max(age) as idade_maxima,
+    min(monthly_fee) as preco_minimo,
+    max(monthly_fee) as preco_maximo,
+    min(account_age_months) as idade_conta_meses,
+    max(avg_watch_time_minutes) as tempo_maximo_dia,
+    min(avg_watch_time_minutes) as tempo_minimo_dia,
+    max(watch_sessions_per_week) as max_sessoes_semana,
+    min(watch_sessions_per_week) as min_sessoes_semana,
+    max(completion_rate) as max_taxa_conclusao,
+    min(completion_rate) as min_taxa_conclusao,
+    max(rating_given) as max_classificacao_dada,
+    min(rating_given) as min_classificacao_dada,
+    max(recommendation_click_rate) as max_recomendacao,
+    min(recommendation_click_rate) as min_recomendacao,
+    max(days_since_last_login) as max_dias_ultimo_login,
+    min(days_since_last_login) as min_dias_ultimo_login,
+    count(*) as total_registros
+from netflix_user_behavior_dataset;
+select distinct country from netflix_user_behavior_dataset group by country;
+select distinct subscription_type from netflix_user_behavior_dataset group by subscription_type;
+select distinct payment_method from netflix_user_behavior_dataset group by payment_method;
+select distinct primary_device from netflix_user_behavior_dataset group by primary_device;
+select distinct gender from netflix_user_behavior_dataset group by gender;
+select distinct favorite_genre from netflix_user_behavior_dataset group by favorite_genre;
 
--- 3. Receita perdida acumulada por mês
-SELECT
-  DATE_FORMAT(c.data_cancelamento, '%Y-%m')          AS mes,
-  COUNT(*)                                           AS cancelamentos,
-  SUM(r.valor_mensalidade)                           AS receita_perdida,
-  SUM(SUM(r.valor_mensalidade))
-    OVER (ORDER BY DATE_FORMAT(c.data_cancelamento, '%Y-%m'))
-                                                     AS receita_perdida_acum
-FROM contratos c
-JOIN receita   r ON c.id_usuario = r.id_usuario
-WHERE c.status = 'cancelado'
-GROUP BY mes
-ORDER BY mes;</code></pre>
-      </div>
+-- verificando se há valores nulos
+select 
+    count(*) - count(user_id),
+    count(*) - count(age),
+    count(*) - count(gender),
+    count(*) - count(country),
+    count(*) - count(account_age_months),
+    count(*) - count(subscription_type),
+    count(*) - count(monthly_fee),
+    count(*) - count(payment_method),
+    count(*) - count(primary_device),
+    count(*) - count(devices_used),
+    count(*) - count(favorite_genre),
+    count(*) - count(avg_watch_time_minutes),
+    count(*) - count(watch_sessions_per_week),
+    count(*) - count(binge_watch_sessions),
+    count(*) - count(completion_rate),
+    count(*) - count(rating_given),
+    count(*) - count(content_interactions),
+    count(*) - count(recommendation_click_rate),
+    count(*) - count(days_since_last_login),
+    count(*) - count(churned)
+FROM netflix_user_behavior_dataset;
 
-      <!-- PAINEL PYTHON -->
-      <!--
-        INSTRUÇÃO: substitua o código abaixo pelo seu script/notebook real.
-        Cole o conteúdo do seu arquivo .py ou .ipynb aqui dentro do bloco <code>.
-      -->
-      <div class="code-panel hidden" id="panel-python">
-        <pre><code class="language-python"># ================================================
-# EDA — ANÁLISE DE PLATAFORMA DE STREAMING
-# Autor: João Vítor de Freitas | Python + Pandas
-# ================================================
+-- view para tratamento inicial dos dados
+create view analise_netflix as
+select 
+	user_id, 
+    age as idade, 
+    trim(upper(gender)) as genero, 
+	trim(upper(country)) as pais,
+    account_age_months as idade_conta_meses,
+    trim(upper(subscription_type)) as plano,
+    monthly_fee as taxa_mensal,
+    trim(upper(payment_method)) as metodo_pagamento,
+    trim(upper(primary_device)) as dispositivo,
+    trim(upper(favorite_genre)) as genero_favorito,
+    avg_watch_time_minutes as media_minutos_dia,
+    watch_sessions_per_week as sessoses_assistidas_semana,
+    completion_rate as taxa_conclusao_sessoes,
+    rating_given as media_classificacao,
+    recommendation_click_rate as taxa_recomendacoes,
+    days_since_last_login as dias_ultimo_login,
+    case 
+		when trim(upper(churned)) = 'YES' then 1 -- se foi cancelado recebe 1
+        else 0
+        end as cancelamento,
+	case 
+		when age < 25 then 'JOVEM'
+        when age < 50 then 'ADULTO'
+        else 'SENIOR'
+	end as faixa_etaria,
+    (account_age_months * monthly_fee) as faturamento_total
+from netflix_user_behavior_dataset;
 
-import pandas as pd
-import matplotlib.pyplot as plt
-import matplotlib.ticker as mtick
-import seaborn as sns
-
-sns.set_theme(style='whitegrid')
-plt.rcParams['figure.dpi'] = 120
-
-# ── 1. Carregamento e inspeção inicial ──────────
-df = pd.read_csv('streaming_data.csv',
-                 parse_dates=['data_cadastro', 'data_cancelamento'])
-
-print(f"Shape: {df.shape}")
-print(df.dtypes)
-print("\nValores nulos:\n", df.isnull().sum())
-
-# ── 2. Taxa de churn por plano ──────────────────
-churn = (
-    df.groupby('plano')['cancelou']
-      .agg(cancelamentos='sum', total='count')
-      .assign(taxa_churn=lambda x: x['cancelamentos'] / x['total'] * 100)
-      .sort_values('taxa_churn', ascending=False)
-)
-print("\nChurn por plano:\n", churn)
-
-# ── 3. Visualização: churn por plano ────────────
-fig, ax = plt.subplots(figsize=(8, 4))
-cores = ['#2563EB', '#93c5fd', '#DBEAFE']
-bars = ax.bar(churn.index, churn['taxa_churn'], color=cores)
-ax.yaxis.set_major_formatter(mtick.PercentFormatter())
-ax.set_title('Taxa de Churn por Plano', fontsize=13, fontweight='bold')
-ax.set_xlabel('Plano')
-ax.set_ylabel('Taxa de Churn (%)')
-for b in bars:
-    ax.text(b.get_x() + b.get_width() / 2,
-            b.get_height() + .1,
-            f'{b.get_height():.1f}%',
-            ha='center', fontsize=10)
-plt.tight_layout()
-plt.savefig('outputs/churn_por_plano.png', bbox_inches='tight')
-plt.show()
-
-# ── 4. Janela de risco (meses até cancelamento) ─
-df['meses_ate_churn'] = (
-    (df['data_cancelamento'] - df['data_cadastro']).dt.days // 30
-)
-risco = (df[df['cancelou'] == 1]['meses_ate_churn']
-           .value_counts()
-           .sort_index())
-
-fig, ax = plt.subplots(figsize=(10, 4))
-ax.plot(risco.index, risco.values,
-        marker='o', color='#2563EB', linewidth=2)
-ax.fill_between(risco.index, risco.values,
-                alpha=0.12, color='#2563EB')
-ax.set_title('Cancelamentos por Mês de Assinatura', fontsize=13, fontweight='bold')
-ax.set_xlabel('Meses de Assinatura')
-ax.set_ylabel('Qtd. de Cancelamentos')
-plt.tight_layout()
-plt.savefig('outputs/janela_risco.png', bbox_inches='tight')
-plt.show()</code></pre>
+select * from analise_netflix;
+        </code></pre>
       </div>
     </div>
   </div>
@@ -556,7 +529,7 @@ plt.show()</code></pre>
 <!-- ARQUIVOS -->
 <section class="proj-section alt">
   <div class="container">
-    <div class="section-label">// arquivos do projeto</div>
+    <div class="section-label">arquivos do projeto</div>
     <h2>Baixar Arquivos</h2>
     <p style="color:var(--t2);font-size:14px;margin-bottom:24px">Todos os arquivos estão disponíveis no repositório do GitHub para consulta e download.</p>
     <div class="files-grid">
@@ -567,7 +540,7 @@ plt.show()</code></pre>
           INSTRUÇÃO: substitua o href pelo link real do arquivo no GitHub.
           Exemplo: href="https://github.com/joaov-analista/streaming-analysis/raw/main/streaming-analise.pbix"
         -->
-        <a href="https://github.com/joaov-analista" target="_blank" style="display:contents">
+        <a href="https://github.com/joaov-analista/Churn_and_Retention_Analysis_Streaming_Insights" target="_blank" style="display:contents">
           <div class="file-icon fi-pbi"><i class="fa-solid fa-chart-bar"></i></div>
           <div class="file-info">
             <div class="file-name">streaming-analise.pbix</div>
@@ -579,7 +552,7 @@ plt.show()</code></pre>
 
       <!-- SQL -->
       <div class="file-card">
-        <a href="https://github.com/joaov-analista" target="_blank" style="display:contents">
+        <a href="https://github.com/joaov-analista/Churn_and_Retention_Analysis_Streaming_Insights" target="_blank" style="display:contents">
           <div class="file-icon fi-sql"><i class="fa-solid fa-database"></i></div>
           <div class="file-info">
             <div class="file-name">queries-streaming.sql</div>
@@ -591,7 +564,7 @@ plt.show()</code></pre>
 
       <!-- Python (opcional) -->
       <div class="file-card">
-        <a href="https://github.com/joaov-analista" target="_blank" style="display:contents">
+        <a href="https://github.com/joaov-analista/Churn_and_Retention_Analysis_Streaming_Insights" target="_blank" style="display:contents">
           <div class="file-icon fi-py"><i class="fa-brands fa-python"></i></div>
           <div class="file-info">
             <div class="file-name">eda-streaming.ipynb</div>
