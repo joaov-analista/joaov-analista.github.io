@@ -197,7 +197,7 @@
 <!-- CONTEXTO -->
 <section class="proj-section alt">
   <div class="container">
-    <div class="section-label">// problema & abordagem</div>
+    <div class="section-label">problema & abordagem</div>
     <h2>Contexto do Projeto</h2>
     <div class="contexto-grid">
       <div class="contexto-text">
@@ -233,7 +233,7 @@
 <!-- GALERIA -->
 <section class="proj-section">
   <div class="container">
-    <div class="section-label">// capturas de tela</div>
+    <div class="section-label">capturas de tela</div>
     <h2>Dashboard em Detalhe</h2>
     <div class="carousel-wrap">
       <div class="swiper">
@@ -271,7 +271,7 @@
 <!-- CÓDIGO -->
 <section class="proj-section alt">
   <div class="container">
-    <div class="section-label">// código do projeto</div>
+    <div class="section-label">código do projeto</div>
     <h2>Código Utilizado</h2>
     <div class="code-block-wrap">
       <div class="code-tabs">
@@ -279,7 +279,7 @@
           <i class="fa-brands fa-python"></i> Python — Consolidação ETL
         </button>
         <button class="code-tab eda-tab" onclick="switchTab('eda', this)">
-          <i class="fa-brands fa-python"></i> Python — Modelagem & EDA
+          <i class="fa-brands fa-python"></i> PySpark — Modelagem & EDA
         </button>
         <button class="code-copy" id="copy-btn" onclick="copyCode()">
           <i class="fa-regular fa-copy"></i> Copiar
@@ -288,11 +288,12 @@
 
       <!-- PAINEL ETL — baixar_bases.py -->
       <div class="code-panel" id="panel-etl">
-        <pre><code class="language-python">"""
-Script: Consolidar arquivos de despesas do Portal da Transparência
+        <pre><code class="language-python">
+"""
+Script: Juntar arquivos de despesas do Portal da Transparencia
 
 Como usar:
-1. Coloque este script na mesma pasta onde estão os CSVs
+1. Coloque este script na mesma pasta onde estao os CSVs
 2. Rode: python juntar_despesas.py
 """
 
@@ -300,31 +301,35 @@ import os
 import glob
 import pandas as pd
 
-# CONFIGURAÇÕES
-PASTA_ARQUIVOS = "C:\\caminho\\para\\arquivos_despesa"
+# CONFIGURACOES
+
+PASTA_ARQUIVOS = "C:\\Users\\jv001\\Downloads\\Python\\.venv311\\arquivos_despesa"           
 ARQUIVO_FINAL  = "gastos_consolidado.csv"
 
+# JUNTANDO OS ARQUIVOS
 
 def main():
     print("\n" + "=" * 55)
     print("  Consolidador de Despesas do Governo Federal")
     print("=" * 55 + "\n")
 
-    # Busca todos os CSVs com o padrão do portal (ex: 202401_Despesas.csv)
-    arquivos = sorted(glob.glob(
-        os.path.join(PASTA_ARQUIVOS, "*_Despesas.csv")
-    ))
+    # Busca todos os CSVs com o padrao do portal (ex: 202401_Despesas.csv)
+    arquivos = sorted(glob.glob(os.path.join(PASTA_ARQUIVOS, "*_Despesas.csv")))
 
+    # se nao encontrar nenhum arquivo
     if not arquivos:
         print("Nenhum arquivo encontrado!")
+        print("Verifique se os CSVs estao na mesma pasta que este script.")
         print("Os arquivos devem ter o formato: 202401_Despesas.csv")
         return
 
     print(f"{len(arquivos)} arquivo(s) encontrado(s):\n")
+    # juntando cada arquivo
     for a in arquivos:
-        print(f"  {os.path.basename(a)}")
+        print(f"{os.path.basename(a)}")
 
     print("\nLendo e juntando...\n")
+    # df para armazenar todos os arquivos
     dfs = []
 
     for arquivo in arquivos:
@@ -347,28 +352,23 @@ def main():
         print("\n  Nenhum arquivo foi lido com sucesso.")
         return
 
-    # Junta tudo em um único DataFrame
+    # Junta tudo em um unico DataFrame
     df_final = pd.concat(dfs, ignore_index=True)
 
     # Salva o arquivo consolidado
-    df_final.to_csv(
-        ARQUIVO_FINAL,
-        index=False,
-        encoding="utf-8-sig",
-        sep=";"
-    )
+    df_final.to_csv(ARQUIVO_FINAL, index=False, encoding="utf-8-sig", sep=";")
 
     print("\n" + "=" * 55)
-    print(f"  Arquivo salvo:    {ARQUIVO_FINAL}")
-    print(f"  Total de linhas:  {len(df_final):,}")
+    print(f"  Arquivo salvo: {ARQUIVO_FINAL}")
+    print(f"  Total de linhas: {len(df_final):,}")
     print(f"  Total de colunas: {len(df_final.columns)}")
     print(f"  Colunas: {list(df_final.columns)}")
     print("=" * 55)
-    print("\n  Pronto! Importe o consolidado no seu dashboard.")
-
+    print("\n  Pronto! Importe o arquivo consolidado no seu dashboard.")
 
 if __name__ == "__main__":
-    main()</code></pre>
+    main()
+        </code></pre>
       </div>
 
       <!-- PAINEL EDA — modelagem e análise -->
@@ -377,93 +377,108 @@ if __name__ == "__main__":
         do seu notebook modelagem_limpeza.ipynb
       -->
       <div class="code-panel hidden" id="panel-eda">
-        <pre><code class="language-python"># ================================================
+        <pre><code class="language-python">
+# ================================================
 # MODELAGEM E EDA — DESPESAS DO GOVERNO FEDERAL
 # Autor: João Vítor de Freitas | Python + Pandas
 # ================================================
 
-import pandas as pd
-import matplotlib.pyplot as plt
-import matplotlib.ticker as mtick
-import seaborn as sns
+# bibliotecas que serão usadas
+import pyspark
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import *
+from pyspark.sql.functions import col, regexp_replace
+from pyspark.sql.types import DecimalType
 
-sns.set_theme(style='whitegrid')
-plt.rcParams['figure.dpi'] = 120
+# código para o python integrar com o pyspark e acha-lo no disco
+import os
+import sys
+import duckdb
+import pyarrow
 
-# ── 1. Carregamento do consolidado ──────────────
-df = pd.read_csv('gastos_consolidado.csv',
-                 sep=';', encoding='utf-8-sig', dtype=str)
+# Alerta o Spark sobre onde o "winutils.exe" está guardado
+os.environ["HADOOP_HOME"] = r"C:\hadoop-3.4.3"
+sys.path.append(r"C:\hadoop-3.4.3\bin")
 
-# Colunas numéricas: converter vírgula → ponto
-cols_valor = ['Valor Empenhado (R$)',
-              'Valor Liquidado (R$)',
-              'Valor Pago (R$)']
-for col in cols_valor:
-    df[col] = (df[col].str.replace('.', '', regex=False)
-                      .str.replace(',', '.', regex=False)
-                      .astype(float))
+# Sessão do spark
+spark = SparkSession.builder.getOrCreate()
 
-df['Ano'] = df['Ano'].astype(int)
-print(f"Shape: {df.shape}")
-print(df[cols_valor].describe().round(2))
+# base que será usada
+df = spark.read.option("header", "True").option("sep", ";").csv("C:\\Users\\jv001\\Downloads\\Python\\gastos_consolidado.csv", header=True, inferSchema=True)
 
-# ── 2. Execução orçamentária por ano ────────────
-exec_anual = (
-    df.groupby('Ano')[['Valor Empenhado (R$)', 'Valor Pago (R$)']]
-      .sum() / 1e12               # converter para trilhões
+# mostrando a estrutura do df
+print(df.show(n=5, truncate=False))
+
+# selecionando somente as colunas que serão utilizadas
+
+df_reduzido = df.select(
+    col("Ano e mês do lançamento").alias("ano_mes_do_lançamento"),
+    col("Código Órgão Superior").alias("codigo_orgao_superior"),
+    col("Nome Órgão Superior").alias("nome_orgao_superior"),
+    col("Código Função").alias("codigo_funcao"),
+    col("Nome Função").alias("nome_funcao"),
+    col("Código Elemento de Despesa").alias("codigo_elemento_despesa"),
+    col("Nome Elemento de Despesa").alias("nome_elemento_despesa"),
+    col("Valor Empenhado (R$)").alias("valor_empenhado"),
+    col("Valor Liquidado (R$)").alias("valor_liquidado"),
+    col("Valor Pago (R$)").alias("valor_pago")
+    )
+df_reduzido.show(1)
+
+# tratar colunas de valores e data
+df_tratado = df_reduzido \
+    .withColumn("valor_empenhado", regexp_replace(col("valor_empenhado"), ",", ".")) \
+    .withColumn("valor_liquidado", regexp_replace(col("valor_liquidado"), ",", ".")) \
+    .withColumn("valor_pago", regexp_replace(col("valor_pago"), ",", ".")) \
+    .withColumn("ano_mes_do_lançamento", to_date(concat(col("ano_mes_do_lançamento"), lit(r"/01")), r"yyyy/MM/dd")) 
+    
+df_tratado = df_tratado \
+    .withColumn("valor_empenhado", col("valor_empenhado").cast(DecimalType(15, 2))) \
+    .withColumn("valor_liquidado", col("valor_liquidado").cast(DecimalType(15, 2 ))) \
+    .withColumn("valor_pago", col("valor_pago").cast(DecimalType(15, 2)))
+    
+df_tratado.show(5)
+
+# verificando nulos
+qtd_nulo = [
+    sum(when(col(c).isNull(), 1).otherwise(0)).alias(c)
+    for c in df_tratado.columns
+    ]
+
+df_tratado.select(qtd_nulo).show()
+df_tratado.count()
+
+# algumas linhas tem as colunas de valores todas em 0
+# filtrar o df sem essas linhas
+df_filtro = df_tratado.filter(
+    (col("valor_empenhado") > 0) |
+    (col("valor_liquidado") > 0 ) |
+    (col("valor_pago") > 0)
 )
-exec_anual['taxa_execucao'] = (
-    exec_anual['Valor Pago (R$)'] /
-    exec_anual['Valor Empenhado (R$)'] * 100
-)
-print("\nExecução por ano (R$ Tri):\n", exec_anual.round(2))
 
-# ── 3. Top 10 órgãos por valor pago (2015–2024) ─
-top_orgaos = (
-    df.groupby('Nome Órgão Superior')['Valor Pago (R$)']
-      .sum()
-      .sort_values(ascending=False)
-      .head(10) / 1e12
-)
+df_filtro.show(10)
+df_filtro.count()
 
-fig, ax = plt.subplots(figsize=(10, 6))
-top_orgaos.sort_values().plot(kind='barh', ax=ax, color='#2563EB')
-ax.xaxis.set_major_formatter(
-    mtick.FuncFormatter(lambda x, _: f'R$ {x:.1f} Tri'))
-ax.set_title('Top 10 Órgãos por Valor Pago (2015–2024)',
-             fontsize=13, fontweight='bold')
-ax.set_xlabel('Valor Pago (R$ Trilhões)')
-plt.tight_layout()
-plt.savefig('outputs/top_orgaos.png', bbox_inches='tight')
-plt.show()
+# retirando os espaços das colunas de texto
+df_final = df_filtro \
+    .withColumn("nome_orgao_superior", trim(col("nome_orgao_superior"))) \
+    .withColumn("nome_funcao", trim(col("nome_funcao"))) \
+    .withColumn("nome_elemento_despesa", trim(col("nome_elemento_despesa")))
 
-# ── 4. Heatmap de gastos por órgão e ano ────────
-pivot = (
-    df.groupby(['Nome Órgão Superior', 'Ano'])['Valor Pago (R$)']
-      .sum()
-      .unstack('Ano') / 1e9       # em bilhões
-)
-# Manter apenas os 10 maiores gastos
-top10 = pivot.sum(axis=1).nlargest(10).index
-pivot_top = pivot.loc[top10]
+# salvar df tratado
 
-fig, ax = plt.subplots(figsize=(14, 6))
-sns.heatmap(pivot_top, ax=ax, fmt='.0f', linewidths=.5,
-            cmap='Blues', annot=True,
-            cbar_kws={'label': 'R$ Bilhões'})
-ax.set_title('Gastos por Órgão e Ano — Top 10 (R$ Bi)',
-             fontsize=13, fontweight='bold')
-ax.set_ylabel('')
-plt.tight_layout()
-plt.savefig('outputs/heatmap_orgaos.png', bbox_inches='tight')
-plt.show()
+pasta = "C:\\Users\\jv001\\Downloads\\Python\\curso_ebac\\projeto_semantrix\\despesas_tratadas.parquet"
 
-# ── 5. Anomalia 2020: Auxílios Emergenciais ─────
-aux = df[df['Nome Ação'].str.contains('Auxílio', na=False)]
-aux_anual = (
-    aux.groupby('Ano')['Valor Pago (R$)'].sum() / 1e9
-)
-print("\nAuxílios por ano (R$ Bi):\n", aux_anual.round(1))</code></pre>
+arrow_table = df_final.toArrow()
+con = duckdb.connect()
+con.register("view_spark", arrow_table)
+
+con.execute(f"COPY view_spark TO '{pasta}' (FORMAT PARQUET);")
+
+print("arquivo salvo")
+
+spark.stop()
+        </code></pre>
       </div>
     </div>
   </div>
@@ -472,7 +487,7 @@ print("\nAuxílios por ano (R$ Bi):\n", aux_anual.round(1))</code></pre>
 <!-- INSIGHTS -->
 <section class="proj-section">
   <div class="container">
-    <div class="section-label">// principais achados</div>
+    <div class="section-label">principais achados</div>
     <h2>Insights do Projeto</h2>
     <div class="insights-grid">
 
@@ -518,13 +533,13 @@ print("\nAuxílios por ano (R$ Bi):\n", aux_anual.round(1))</code></pre>
 <!-- ARQUIVOS -->
 <section class="proj-section alt">
   <div class="container">
-    <div class="section-label">// arquivos do projeto</div>
+    <div class="section-label">arquivos do projeto</div>
     <h2>Baixar Arquivos</h2>
     <p style="color:var(--t2);font-size:14px;margin-bottom:24px">Todos os arquivos estão disponíveis no repositório do GitHub para consulta e download.</p>
     <div class="files-grid">
       <div class="file-card">
         <!-- Atualize o href com o link real do arquivo no GitHub -->
-        <a href="https://github.com/joaov-analista" target="_blank" style="display:contents">
+        <a href="https://github.com/joaov-analista/Projeto-semantrix" target="_blank" style="display:contents">
           <div class="file-icon fi-py"><i class="fa-brands fa-python"></i></div>
           <div class="file-info">
             <div class="file-name">baixar_bases.py</div>
@@ -534,7 +549,7 @@ print("\nAuxílios por ano (R$ Bi):\n", aux_anual.round(1))</code></pre>
         </a>
       </div>
       <div class="file-card">
-        <a href="https://github.com/joaov-analista" target="_blank" style="display:contents">
+        <a href="https://github.com/joaov-analista/Projeto-semantrix" target="_blank" style="display:contents">
           <div class="file-icon fi-nb"><i class="fa-solid fa-book-open"></i></div>
           <div class="file-info">
             <div class="file-name">modelagem_limpeza.ipynb</div>
@@ -544,7 +559,7 @@ print("\nAuxílios por ano (R$ Bi):\n", aux_anual.round(1))</code></pre>
         </a>
       </div>
       <div class="file-card">
-        <a href="https://github.com/joaov-analista" target="_blank" style="display:contents">
+        <a href="https://github.com/joaov-analista/Projeto-semantrix" target="_blank" style="display:contents">
           <div class="file-icon fi-pbi"><i class="fa-solid fa-chart-bar"></i></div>
           <div class="file-info">
             <div class="file-name">dashboard-governo.pbix</div>
