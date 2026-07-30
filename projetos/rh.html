@@ -250,22 +250,22 @@
       <div class="swiper">
         <div class="swiper-wrapper">
           <div class="swiper-slide">
-            <!-- Substitua por: <img src="../assets/img/rh-1.png" alt="Visão Executiva"> -->
+            <img src="../assets/img/rh-1.png" alt="Visão Executiva">
             <i class="fa-solid fa-chart-pie"></i>
             <span>Slide 1 — Visão Executiva · adicione seu screenshot</span>
           </div>
           <div class="swiper-slide">
-            <!-- Substitua por: <img src="../assets/img/rh-2.png" alt="Turnover e Desligamentos"> -->
+            <img src="../assets/img/rh-2.png" alt="Turnover e Desligamentos">
             <i class="fa-solid fa-arrow-right-from-bracket"></i>
             <span>Slide 2 — Turnover & Desligamentos · adicione seu screenshot</span>
           </div>
           <div class="swiper-slide">
-            <!-- Substitua por: <img src="../assets/img/rh-3.png" alt="Absenteísmo e Alertas"> -->
+            <img src="../assets/img/rh-3.png" alt="Absenteísmo e Alertas">
             <i class="fa-solid fa-triangle-exclamation"></i>
             <span>Slide 3 — Absenteísmo & Alertas · adicione seu screenshot</span>
           </div>
           <div class="swiper-slide">
-            <!-- Substitua por: <img src="../assets/img/rh-4.png" alt="Custo e Folha"> -->
+            <img src="../assets/img/rh-4.png" alt="Custo e Folha">
             <i class="fa-solid fa-money-bill-trend-up"></i>
             <span>Slide 4 — Custo & Folha · adicione seu screenshot</span>
           </div>
@@ -282,15 +282,12 @@
 <!-- CÓDIGO -->
 <section class="proj-section alt">
   <div class="container">
-    <div class="section-label">// código do projeto</div>
+    <div class="section-label">código do projeto</div>
     <h2>Código Utilizado</h2>
     <div class="code-block-wrap">
       <div class="code-tabs">
         <button class="code-tab etl-tab active" onclick="switchTab('etl', this)">
           <i class="fa-brands fa-python"></i> Python — ETL & Limpeza
-        </button>
-        <button class="code-tab eda-tab" onclick="switchTab('eda', this)">
-          <i class="fa-brands fa-python"></i> Python — Outliers & EDA
         </button>
         <button class="code-copy" id="copy-btn" onclick="copyCode()">
           <i class="fa-regular fa-copy"></i> Copiar
@@ -298,198 +295,149 @@
       </div>
 
       <div class="code-panel" id="panel-etl">
-        <pre><code class="language-python"># ================================================
+        <pre><code class="language-python">
+# ================================================
 # ETL & LIMPEZA — PEOPLE ANALYTICS (RH)
-# Autor: João Vítor de Freitas | Python + Pandas
-# 5 tabelas: dim_area, dim_calendario, dim_funcionario,
-#            fato_ausencias, fato_folha
+# Autor: João Vítor | Python + Pandas
 # ================================================
 
 import pandas as pd
-import numpy as np
-
-# ── 1. Carregamento das tabelas ──────────────────
-dim_area        = pd.read_csv('data/dim_area.csv')
-dim_calendario  = pd.read_csv('data/dim_calendario.csv')
-dim_funcionario = pd.read_csv('data/dim_funcionario.csv')
-fato_ausencias  = pd.read_csv('data/fato_ausencias.csv')
-fato_folha      = pd.read_csv('data/fato_folha.csv')
-
-# ── 2. Verificação de nulos em todas as tabelas ──
-for nome, df in {
-    'dim_area':        dim_area,
-    'dim_funcionario': dim_funcionario,
-    'fato_ausencias':  fato_ausencias,
-    'fato_folha':      fato_folha,
-}.items():
-    nulos = df.isnull().sum()
-    nulos = nulos[nulos > 0]
-    if not nulos.empty:
-        print(f"\n[{nome}] Nulos encontrados:\n{nulos}")
-    else:
-        print(f"[{nome}] Sem nulos.")
-
-# ── 3. Conversão de tipos — dim_funcionario ──────
-colunas_data = ['dt_nascimento', 'dt_admissao', 'dt_demissao']
-for col in colunas_data:
-    dim_funcionario[col] = pd.to_datetime(
-        dim_funcionario[col], errors='coerce'
-    )
-
-# ── 4. Checagem de consistência entre datas ──────
-# Admissão deve ser posterior ao nascimento
-invalidos_admissao = dim_funcionario[
-    dim_funcionario['dt_admissao'] <= dim_funcionario['dt_nascimento']
-]
-print(f"\nAdmissões inválidas (antes do nascimento): "
-      f"{len(invalidos_admissao)}")
-
-# Demissão deve ser posterior à admissão (quando preenchida)
-ativos = dim_funcionario['dt_demissao'].notna()
-invalidos_demissao = dim_funcionario[
-    ativos &
-    (dim_funcionario['dt_demissao'] <= dim_funcionario['dt_admissao'])
-]
-print(f"Demissões inválidas (antes da admissão): "
-      f"{len(invalidos_demissao)}")
-
-# ── 5. Padronização de strings ───────────────────
-dim_funcionario['nm_funcionario'] = (
-    dim_funcionario['nm_funcionario']
-    .str.strip()
-    .str.title()
-)
-dim_area['nm_area'] = dim_area['nm_area'].str.strip().str.upper()
-
-# ── 6. Calcular tempo de casa (meses) ───────────
-hoje = pd.Timestamp.today()
-dim_funcionario['meses_de_casa'] = dim_funcionario.apply(
-    lambda r: (
-        (r['dt_demissao'] - r['dt_admissao']).days // 30
-        if pd.notna(r['dt_demissao'])
-        else (hoje - r['dt_admissao']).days // 30
-    ), axis=1
-)
-
-# ── 7. Classificar tipo de desligamento ──────────
-# Saída voluntária = colaborador pediu demissão
-dim_funcionario['tipo_saida'] = dim_funcionario['motivo_saida'].map({
-    'Pedido de demissão': 'Voluntária',
-    'Demissão sem justa causa': 'Involuntária',
-    'Demissão com justa causa': 'Involuntária',
-    'Acordo': 'Involuntária',
-    'Aposentadoria': 'Voluntária',
-}).fillna('Ativo')
-
-saidas = dim_funcionario[dim_funcionario['tipo_saida'] != 'Ativo']
-print(f"\nTotal de desligamentos: {len(saidas)}")
-print(saidas['tipo_saida'].value_counts())
-
-# ── 8. Export para Power BI ──────────────────────
-dim_funcionario.to_csv('output/dim_funcionario_tratada.csv',
-                       index=False, encoding='utf-8-sig')
-fato_ausencias.to_csv('output/fato_ausencias_tratada.csv',
-                      index=False, encoding='utf-8-sig')
-fato_folha.to_csv('output/fato_folha_tratada.csv',
-                  index=False, encoding='utf-8-sig')
-print("\nArquivos exportados com sucesso.")</code></pre>
-      </div>
-
-      <div class="code-panel hidden" id="panel-eda">
-        <pre><code class="language-python"># ================================================
-# DETECÇÃO DE OUTLIERS & EDA — PEOPLE ANALYTICS
-# Autor: João Vítor de Freitas | Python + Pandas
-# Método: IQR (Interquartile Range)
-# ================================================
-
-import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as sns
+import seaborn as sn
 
-sns.set_theme(style='whitegrid')
-plt.rcParams['figure.dpi'] = 120
+# importando os arquivos csv
+dim_area = pd.read_csv("C:\\Projetos banco de dados\\projeto RH\\dim_area.csv")
+dim_calendario = pd.read_csv("C:\\Projetos banco de dados\\projeto RH\dim_calendario.csv")
+dim_funcionario = pd.read_csv("C:\\Projetos banco de dados\\projeto RH\\dim_funcionario.csv")
+fat_ausencias = pd.read_csv("C:\\Projetos banco de dados\\projeto RH\\fact_ausencias.csv")
+fat_folha = pd.read_csv("C:\\Projetos banco de dados\\projeto RH\\fact_folha.csv")
 
-fato_folha      = pd.read_csv('output/fato_folha_tratada.csv')
-fato_ausencias  = pd.read_csv('output/fato_ausencias_tratada.csv')
-dim_funcionario = pd.read_csv('output/dim_funcionario_tratada.csv')
+dfs = [dim_area, dim_funcionario, dim_calendario, fat_ausencias, fat_folha]
 
-# ── 1. Detecção de outliers em horas extras (IQR) ─
-Q1 = fato_folha['horas_extras'].quantile(0.25)
-Q3 = fato_folha['horas_extras'].quantile(0.75)
-IQR = Q3 - Q1
-limite_sup = Q3 + 1.5 * IQR
+# ler algumas linhas do csv para verificar a formatação das bases
+for i in dfs:
+    print(i.head().to_string())
 
-outliers_he = fato_folha[fato_folha['horas_extras'] > limite_sup]
-print(f"Outliers de horas extras detectados: {len(outliers_he):,}")
-print(f"Limite superior IQR: {limite_sup:.1f}h")
+# verificar se há nulos nas bases
+for i in dfs:
+    print(i.isnull().sum())
 
-# ── 2. Outliers por área ──────────────────────────
-outliers_por_area = (
-    outliers_he
-    .groupby('cd_area')['horas_extras']
-    .agg(qtd='count', media='mean')
-    .sort_values('qtd', ascending=False)
-    .head(5)
-)
-print("\nTop 5 áreas com mais outliers de horas extras:")
-print(outliers_por_area)
+# formatar o tipo de dado das bases
+data_funcionarios = ["data_nascimento", "data_admissao", "data_demissao"]
+    
+for col in data_funcionarios:
+    dim_funcionario[col] = pd.to_datetime(dim_funcionario[col])
+    
+dim_calendario["data"] = pd.to_datetime(dim_calendario["data"])
+fat_ausencias["data"] = pd.to_datetime(fat_ausencias["data"])
+fat_folha["mes_referencia"] = pd.to_datetime(fat_folha["mes_referencia"])
 
-# ── 3. Absenteísmo pré-demissão ──────────────────
-# Calcular eventos de ausência por colaborador por mês
-ausencias_mensais = (
-    fato_ausencias
-    .groupby(['cd_funcionario', 'ano_mes'])['id_ausencia']
-    .count()
-    .reset_index(name='eventos_mes')
-)
+for i in dfs:
+    print("tipos de dados:\n", i.dtypes)
 
-# Identificar os 2 meses antes do desligamento
-demitidos = dim_funcionario[
-    dim_funcionario['dt_demissao'].notna()
-][['cd_funcionario', 'dt_demissao']].copy()
-demitidos['dt_demissao'] = pd.to_datetime(demitidos['dt_demissao'])
-demitidos['mes_demissao'] = demitidos['dt_demissao'].dt.to_period('M')
+# verificar se há outliers nos registros
+# tabela de funcionarios
+# out em data de nascimento
+n_min = dim_funcionario["data_nascimento"].min()
+n_max = dim_funcionario["data_nascimento"].max()
+print(f"Data de nascimento Min: {n_min} e Max: {n_max}")
 
-# Calcular janela de alerta (meses -2 e -1 antes da saída)
-ausencias_mensais['ano_mes'] = pd.PeriodIndex(
-    ausencias_mensais['ano_mes'], freq='M'
-)
-merged = ausencias_mensais.merge(demitidos, on='cd_funcionario')
-merged['meses_antes_saida'] = (
-    merged['mes_demissao'] - merged['ano_mes']
-).apply(lambda x: x.n)
+# out em data de admissão e demissao
+a_min = dim_funcionario["data_admissao"].min()
+a_max = dim_funcionario["data_admissao"].max()
+print(f"Data de admissão Min {a_min} e Max {a_max}")
 
-pre_demissao = merged[merged['meses_antes_saida'].between(1, 2)]
-baseline     = merged[merged['meses_antes_saida'] > 6]
+d_min = dim_funcionario["data_demissao"].min()
+d_max = dim_funcionario["data_demissao"].max()
+print(f"Data de demissão Min {d_min} e Max {d_max}")
 
-media_pre  = pre_demissao['eventos_mes'].mean()
-media_base = baseline['eventos_mes'].mean()
-print(f"\nMédia de eventos/mês (baseline):      {media_base:.1f}")
-print(f"Média de eventos/mês (pré-demissão):  {media_pre:.1f}")
-print(f"Aumento: +{((media_pre/media_base)-1)*100:.0f}%")
+# nascimento depois da admissao
+inconsistencia_idade = dim_funcionario[dim_funcionario["data_nascimento"] >= dim_funcionario["data_admissao"]]
+print("Datas de nascimento maior ou igual  que a data de admissão: ", inconsistencia_idade) 
 
-# ── 4. Visualização: absenteísmo × meses para saída ─
-resumo = (
-    merged[merged['meses_antes_saida'] <= 12]
-    .groupby('meses_antes_saida')['eventos_mes']
-    .mean()
-    .sort_index(ascending=False)
-)
-fig, ax = plt.subplots(figsize=(10, 4))
-ax.plot(resumo.index, resumo.values,
-        marker='o', color='#7C3AED', linewidth=2.5)
-ax.axvline(2, color='#EF4444', linestyle='--',
-           linewidth=1.5, label='Janela de alerta')
-ax.invert_xaxis()
-ax.set_xlabel('Meses antes do desligamento')
-ax.set_ylabel('Média de eventos de ausência/mês')
-ax.set_title('Absenteísmo cresce nos meses que antecedem o desligamento',
-             fontsize=13, fontweight='bold')
-ax.legend()
+# demissao antes da admissao
+inconsistencia_admisao = dim_funcionario[dim_funcionario["data_demissao"] <= dim_funcionario["data_admissao"]]
+print("Data de demissão antes da data de demissão: ", inconsistencia_admisao)
+
+# criando coluna de idade funcionarios
+data_referencia = pd.Timestamp.today().normalize()
+dim_funcionario["idade"] = (data_referencia - dim_funcionario["data_nascimento"]).dt.days // 365
+
+# verificar as idades funcionarios
+i_min = dim_funcionario["idade"].min()
+i_max = dim_funcionario["idade"].max()
+print(f"Idade Min: {i_min} e Max: {i_max}")
+
+# outliers em salario
+print("Estatisticas de salário:")
+dim_funcionario["salario_atual"].describe()
+
+# os 5 mariores salarios 
+dim_funcionario.nlargest(5, "salario_atual")
+
+# tabela de ausencias
+# datas min e max
+ausencia_min = fat_ausencias["data"].min()
+ausencia_max = fat_ausencias["data"].max()
+print(f"Data de ausencia Min: {ausencia_min} e Max: {ausencia_max}")
+
+# estatisticas de horas perdidas
+print("Estatisticas da coluna de horas perdidas: ")
+fat_ausencias["horas_perdidas"].describe()
+
+# tabela folha
+# calcular o quartil de horas extras
+q1 = fat_folha["horas_extras_qtd"].quantile(0.25)
+q3 = fat_folha["horas_extras_qtd"].quantile(0.75)
+IQR = q3 - q1
+
+limite_baixo = q1 - 1.5 * IQR
+limite_alto = q3 + 1.5 * IQR
+
+outliers = fat_folha[
+    (fat_folha["horas_extras_qtd"] < limite_baixo) |
+    (fat_folha["horas_extras_qtd"] > limite_alto)
+]
+print(f"{len(outliers)} outliers encontrados")
+print(outliers)
+
+# grafico de custo por area
+plt.figure(figsize=(12, 6))
+sn.boxplot(data=fat_folha, y="custo_total" ,x="area", hue="area", palette="Set2", legend=False)
+plt.title("Custo total por área", fontsize=14, fontweight="bold")
+plt.xlabel("Área")
+plt.ylabel("Custo total (R$)")
+plt.xticks(rotation=30, ha="right")
 plt.tight_layout()
-plt.savefig('output/absenteismo_pre_demissao.png', bbox_inches='tight')
-plt.show()</code></pre>
+plt.show()
+
+'''
+COMO LER O GRAFICO
+as barras são o meio dos dados
+dentro das barras, a linha dentro das barras é a mediana 
+abaixo da linha é o Q1 (25% dos dados)
+acima da linha é o Q3 (75% dos dados)
+a altura da caixa é o IQR (intervalo do quartil)
+
+as linhas fora das barras são os limites do IQR (Q1 - 1.5 x IQR e Q3 + 1.5 x IQR)
+as  bolinhas fora das barras são os outliers, que ficaram fora da faixa de IQR esperada
+'''
+# consulta de outliers detectados
+fat_folha[fat_folha["custo_total"] > 15000]
+
+# salvar as bases tratadas
+bases = {
+    "dim_funcionario": dim_funcionario,
+    "dim_area": dim_area,
+    "dim_calendario": dim_calendario,
+    "fat_ausencias": fat_ausencias,
+    "fat_folha": fat_folha
+}
+
+for nome, df in bases.items():
+    df.to_csv(f"{nome}_tratato_python.csv", index=False, encoding="utf-8-sig")
+
+</code></pre>
       </div>
     </div>
   </div>
@@ -498,7 +446,7 @@ plt.show()</code></pre>
 <!-- INSIGHTS -->
 <section class="proj-section">
   <div class="container">
-    <div class="section-label">// principais achados</div>
+    <div class="section-label">principais achados</div>
     <h2>Insights do Projeto</h2>
     <div class="insights-grid">
 
@@ -513,7 +461,7 @@ plt.show()</code></pre>
         <div class="insight-icon ic-purple"><i class="fa-solid fa-clock"></i></div>
         <div class="insight-num" style="color:var(--purple)">1.657 outliers</div>
         <div class="insight-title">Sobrecarga de horas extras concentra o maior turnover</div>
-        <div class="insight-text">Logística e Operações lideram simultaneamente em horas extras médias e em turnover — sugerindo que a sobrecarga de trabalho é um fator direto de saída nessas áreas. Os 1.657 registros fora do padrão (IQR) estão concentrados exatamente nessas equipes.</div>
+        <div class="insight-text">Logística e Operações lideram simultaneamente em horas extras e em turnover — sugerindo que a sobrecarga de trabalho é um fator direto de saída nessas áreas. Os 1.657 registros fora do padrão (IQR) estão concentrados exatamente nessas equipes.</div>
       </div>
 
       <div class="insight-card">
@@ -537,13 +485,13 @@ plt.show()</code></pre>
 <!-- ARQUIVOS -->
 <section class="proj-section alt">
   <div class="container">
-    <div class="section-label">// arquivos do projeto</div>
+    <div class="section-label">arquivos do projeto</div>
     <h2>Baixar Arquivos</h2>
     <p style="color:var(--t2);font-size:14px;margin-bottom:24px">Todos os arquivos estão disponíveis no repositório do GitHub para consulta e download.</p>
     <div class="files-grid">
       <div class="file-card">
         <!-- Atualize o href com o link real do arquivo .pbix no GitHub -->
-        <a href="https://github.com/joaov-analista" target="_blank" style="display:contents">
+        <a href="https://github.com/joaov-analista/People-Analytcs" target="_blank" style="display:contents">
           <div class="file-icon fi-pbi"><i class="fa-solid fa-chart-bar"></i></div>
           <div class="file-info">
             <div class="file-name">people-analytics.pbix</div>
@@ -553,7 +501,7 @@ plt.show()</code></pre>
         </a>
       </div>
       <div class="file-card">
-        <a href="https://github.com/joaov-analista" target="_blank" style="display:contents">
+        <a href="https://github.com/joaov-analista/People-Analytcs" target="_blank" style="display:contents">
           <div class="file-icon fi-nb"><i class="fa-solid fa-book-open"></i></div>
           <div class="file-info">
             <div class="file-name">tratamento-rh.ipynb</div>
@@ -563,7 +511,7 @@ plt.show()</code></pre>
         </a>
       </div>
       <div class="file-card">
-        <a href="https://github.com/joaov-analista" target="_blank" style="display:contents">
+        <a href="https://github.com/joaov-analista/People-Analytcs" target="_blank" style="display:contents">
           <div class="file-icon fi-py"><i class="fa-brands fa-python"></i></div>
           <div class="file-info">
             <div class="file-name">eda-rh.py</div>
