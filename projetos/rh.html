@@ -455,42 +455,17 @@ for nome, df in bases.items():
     <!-- OUTPUT DO CÓDIGO — estilo Jupyter Notebook -->
     <div class="code-output" style="margin-top:16px">
       <div class="code-output-tabs">
-        <button class="out-tab active" onclick="switchOutput('absent', this)">
-          📈 Absenteísmo pré-demissão
-        </button>
         <button class="out-tab" onclick="switchOutput('outliers', this)">
           📊 Outliers — Horas Extras
         </button>
       </div>
 
-      <!-- OUTPUT 1 — gráfico de absenteísmo -->
-      <div class="out-panel" id="out-absent">
-        <!--
-          INSTRUÇÃO: salve o gráfico como ../assets/img/rh-grafico-absent.png
-          e substitua o bloco .code-output-placeholder pela tag:
-          <div class="code-output-inner">
-            <img src="../assets/img/rh-grafico-absent.png"
-                 alt="Absenteísmo pré-demissão">
-          </div>
-        -->
-        <div class="code-output-placeholder">
-          <i class="fa-solid fa-chart-line"></i>
-          <p>Gráfico gerado pelo código Python — aba "Outliers & EDA"<br>
-          <code>plt.savefig('output/absenteismo_pre_demissao.png')</code></p>
-          <p style="font-size:12px;margin-top:4px">Salve o gráfico como <code>assets/img/rh-grafico-absent.png</code> e substitua este bloco pela tag &lt;img&gt;</p>
-        </div>
-      </div>
-
       <!-- OUTPUT 2 — gráfico de outliers -->
       <div class="out-panel hidden" id="out-outliers">
-        <!--
-          INSTRUÇÃO: salve o gráfico como ../assets/img/rh-grafico-outliers.png
-          e substitua o bloco .code-output-placeholder pela tag:
           <div class="code-output-inner">
             <img src="../assets/img/rh-grafico-outliers.png"
                  alt="Outliers de horas extras por área">
           </div>
-        -->
         <div class="code-output-placeholder">
           <i class="fa-solid fa-chart-bar"></i>
           <p>Gráfico de horas extras fora do padrão (IQR) por área<br>
@@ -504,7 +479,7 @@ for nome, df in bases.items():
 </section>
 <section class="proj-section">
   <div class="container">
-    <div class="section-label">// principais achados</div>
+    <div class="section-label">principais achados</div>
     <h2>Insights do Projeto</h2>
     <div class="insights-grid">
 
@@ -543,7 +518,7 @@ for nome, df in bases.items():
 <!-- ARQUIVOS -->
 <section class="proj-section alt">
   <div class="container">
-    <div class="section-label">// arquivos do projeto</div>
+    <div class="section-label">arquivos do projeto</div>
     <h2>Baixar Arquivos</h2>
     <p style="color:var(--t2);font-size:14px;margin-bottom:24px">Todos os arquivos estão disponíveis no repositório do GitHub para consulta e download.</p>
     <div class="files-grid">
