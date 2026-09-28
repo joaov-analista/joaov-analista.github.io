@@ -211,16 +211,16 @@
 <div class="result-strip">
   <div class="container">
     <div class="rs-item">
-      <div class="rs-value" style="color:var(--blue)"></div>
-      <div class="rs-label">colaboradores analisados</div>
+      <div class="rs-value" style="color:var(--blue)">+1M</div>
+      <div class="rs-label">Eventos analisados</div>
     </div>
     <div class="rs-item">
-      <div class="rs-value" style="color:var(--amber)">399</div>
-      <div class="rs-label">desligamentos mapeados</div>
+      <div class="rs-value" style="color:var(--amber)">5</div>
+      <div class="rs-label">Tipos de públicos</div>
     </div>
     <div class="rs-item">
-      <div class="rs-value" style="color:var(--purple)">1.657</div>
-      <div class="rs-label">outliers de horas extras detectados</div>
+      <div class="rs-value" style="color:var(--purple)">9</div>
+      <div class="rs-label">Funcionalidades</div>
     </div>
   </div>
 </div>
@@ -232,26 +232,19 @@
     <h2>Contexto do Projeto</h2>
     <div class="contexto-grid">
       <div class="contexto-text">
-        <p>Este projeto simula um cenário real de People Analytics: uma base de RH com dados cadastrais, folha de pagamento e registros de ausência de 950 colaboradores entre 2021 e 2026. O objetivo foi identificar os fatores que mais influenciam turnover e absenteísmo — transformando dados operacionais de RH em alertas antecipados que podem orientar ações de retenção antes que o colaborador decida sair.</p>
-        <p>O tratamento de dados em Python envolveu a limpeza e padronização de 5 tabelas relacionadas — dimensões de área, calendário e funcionário; fatos de ausências e folha de pagamento — com verificação de nulos, conversão de tipos, checagem de consistência entre datas (nascimento, admissão, demissão) e detecção de outliers por método IQR. Esse processo revelou 1.657 registros de horas extras fora do padrão, concentrados em áreas específicas.</p>
-        <p>No Power BI, foram construídas 12 medidas DAX (turnover, absenteísmo, custo por colaborador, comparativos ano a ano) distribuídas em 4 páginas analíticas com foco em diferentes perspectivas do problema de RH.</p>
-        <div class="pages-grid" style="margin-top:16px">
-          <div class="page-card"><span class="page-num">P1</span><span class="page-name">Visão Executiva</span></div>
-          <div class="page-card"><span class="page-num">P2</span><span class="page-name">Turnover & Desligamentos</span></div>
-          <div class="page-card"><span class="page-num">P3</span><span class="page-name">Absenteísmo & Alertas</span></div>
-          <div class="page-card"><span class="page-num">P4</span><span class="page-name">Custo & Folha</span></div>
-        </div>
+        <p>Este projeto simula um aplicativo bancário real, com 9 funcionalidades, 5 tipos de públicos, 3 segmentos, 3 tipos de contas e faixa de renda. O objetivo foi analisar a experiência do cliente e identificar dificuldades e problemas com o aplicativo para responder a perguntas de negócio reais.</p>
+        <p>A criação dos dados fictícios foi feita usando a biblioteca faker no Python de acordo com as regras de negócio definida, e o Claude, passando instruções e validando os outputs. Fiz a validação de dados duplicados, inconsistências de relacionamento, limpeza de espaços em branco, normalização, detecção de outliers usando IQR, transformação de tipos de dados nos arquivos CSV gerados pelo Python</p>
+        <p>No PostgreSQL, foram criadas as tabelas do database e as views respondendo as perguntas de negócio.</p>
       </div>
       <div class="stack-card">
         <h3>Stack utilizada</h3>
         <div class="stack-list">
-          <div class="stack-item"><i class="fa-brands fa-python"></i><span>Python — limpeza de 5 tabelas</span></div>
-          <div class="stack-item"><i class="fa-solid fa-table"></i><span>Pandas — padronização e tipagem</span></div>
-          <div class="stack-item"><i class="fa-solid fa-magnifying-glass-chart"></i><span>IQR — detecção de outliers</span></div>
-          <div class="stack-item"><i class="fa-solid fa-star"></i><span>Star Schema — 3 dims + 2 fatos</span></div>
-          <div class="stack-item"><i class="fa-solid fa-chart-bar"></i><span>Power BI — 4 páginas analíticas</span></div>
-          <div class="stack-item"><i class="fa-solid fa-calculator"></i><span>DAX — 12 medidas de RH</span></div>
-          <div class="stack-item"><i class="fa-brands fa-github"></i><span>GitHub — versionamento</span></div>
+          <div class="stack-item"><i class="fa-brands fa-python"></i><span>faker — Criação de dados fictícios</span></div>
+          <div class="stack-item"><i class="fa-solid fa-table"></i><span>Pandas — Validação e Tratamento</span></div>
+          <div class="stack-item"><i class="fa-solid fa-magnifying-glass-chart">PostgreSQL — Armazenamento e camada analítica</i><span> </span></div>
+          <div class="stack-item"><i class="fa-solid fa-star"></i><span>pgAdmin 4 — Administração e execução de queries </span></div>
+          <div class="stack-item"><i class="fa-solid fa-chart-bar"></i><span>Power BI — Dashborad executivo</span></div>
+          <div class="stack-item"><i class="fa-brands fa-github"></i><span>GitHub — Documentação</span></div>
         </div>
       </div>
     </div>
@@ -267,16 +260,28 @@
       <div class="swiper">
         <div class="swiper-wrapper">
           <div class="swiper-slide">
-             <img src="../assets/img/rh-1.png" alt="Visão Executiva">
+             <img src="assets/img/customer_intelligence_01.png" alt="Dificuldades por funcionalidade">
           </div>
           <div class="swiper-slide">
-            <img src="../assets/img/rh-2.png" alt="Turnover e Desligamentos">
+            <img src="assets/img/customer_intelligence_02.png" alt="Frustações e Sentimentos por funcionalidade">
           </div>
           <div class="swiper-slide">
-            <img src="../assets/img/rh-3.png" alt="Absenteísmo e Alertas">
+            <img src="assets/img/customer_intelligence_03.png" alt="Experiência por perfil de usuário">
           </div>
           <div class="swiper-slide">
-            <img src="../assets/img/rh-4.png" alt="Custo e Folha">
+            <img src="assets/img/curtomer_intelligence_04.png" alt="Etapas com mais abandonos">
+          </div>
+          <div class="swiper-slide">
+            <img src="assets/img/customer_intelligence_05.png" alt="Tempo por funcionalidade">
+          </div>
+          <div class="swiper-slide">
+            <img src="assets/img/customer_intelligence_06.png" alt="Caminhos para uma experiência positiva">
+          </div>
+          <div class="swiper-slide">
+            <img src="assets/img/customer_intelligence_07.png" alt="Dia e Hora com mais erros">
+          </div>
+          <div class="swiper-slide">
+            <img src="assets/img/customer_intelligence_08.png" alt="NPS por funcionalidade">
           </div>
         </div>
         <div class="swiper-pagination"></div>
