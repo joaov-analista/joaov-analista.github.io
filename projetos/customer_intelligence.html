@@ -301,7 +301,13 @@
     <div class="code-block-wrap">
       <div class="code-tabs">
         <button class="code-tab etl-tab active" onclick="switchTab('etl', this)">
-          <i class="fa-brands fa-python"></i> Python — ETL & Limpeza
+          <i class="fa-brands fa-python"></i> Python — Validação
+        </button>
+        <button class="code-tab eda-tab" onclick="switchTab('eda', this)">
+          <i class="fa-brands fa-python"></i> Python — Tratamento
+        </button>
+        <button class="code-tab eda-tab" onclick="switchTab('eda', this)">
+          <i class="fa-brands fa-python"></i> PySpark — Modelagem & EDA
         </button>
         <button class="code-copy" id="copy-btn" onclick="copyCode()">
           <i class="fa-regular fa-copy"></i> Copiar
@@ -311,152 +317,16 @@
       <div class="code-panel" id="panel-etl">
         <pre><code class="language-python">
 # ================================================
-# ETL & LIMPEZA — PEOPLE ANALYTICS (RH)
-# Autor: João Vítor de Freitas | Python + Pandas
+# VALIDAÇÃO — CUSTOMER INTELLIGENCE
+# Autor: João Vítor
 # ================================================
 
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sn
 
-# importando os arquivos csv
-dim_area = pd.read_csv("C:\\Projetos banco de dados\\projeto RH\\dim_area.csv")
-dim_calendario = pd.read_csv("C:\\Projetos banco de dados\\projeto RH\dim_calendario.csv")
-dim_funcionario = pd.read_csv("C:\\Projetos banco de dados\\projeto RH\\dim_funcionario.csv")
-fat_ausencias = pd.read_csv("C:\\Projetos banco de dados\\projeto RH\\fact_ausencias.csv")
-fat_folha = pd.read_csv("C:\\Projetos banco de dados\\projeto RH\\fact_folha.csv")
 
-dfs = [dim_area, dim_funcionario, dim_calendario, fat_ausencias, fat_folha]
-
-# ler algumas linhas do csv para verificar a formatação das bases
-
-for i in dfs:
-    print(i.head().to_string())
-
-# verificar se há nulos nas bases
-
-for i in dfs:
-    print(i.isnull().sum())
-
-# formatar o tipo de dado das bases
-
-data_funcionarios = ["data_nascimento", "data_admissao", "data_demissao"]
-    
-for col in data_funcionarios:
-    dim_funcionario[col] = pd.to_datetime(dim_funcionario[col])
-    
-dim_calendario["data"] = pd.to_datetime(dim_calendario["data"])
-fat_ausencias["data"] = pd.to_datetime(fat_ausencias["data"])
-fat_folha["mes_referencia"] = pd.to_datetime(fat_folha["mes_referencia"])
-
-for i in dfs:
-    print("tipos de dados:\n", i.dtypes)
-
-# tabela de funcionarios
-# out em data de nascimento
-n_min = dim_funcionario["data_nascimento"].min()
-n_max = dim_funcionario["data_nascimento"].max()
-print(f"Data de nascimento Min: {n_min} e Max: {n_max}")
-
-# out em data de admissão e demissao
-a_min = dim_funcionario["data_admissao"].min()
-a_max = dim_funcionario["data_admissao"].max()
-print(f"Data de admissão Min {a_min} e Max {a_max}")
-
-d_min = dim_funcionario["data_demissao"].min()
-d_max = dim_funcionario["data_demissao"].max()
-print(f"Data de demissão Min {d_min} e Max {d_max}")
-
-# nascimento depois da admissao
-inconsistencia_idade = dim_funcionario[dim_funcionario["data_nascimento"] >= dim_funcionario["data_admissao"]]
-print("Datas de nascimento maior ou igual  que a data de admissão: ", inconsistencia_idade) 
-
-# demissao antes da admissao
-inconsistencia_admisao = dim_funcionario[dim_funcionario["data_demissao"] <= dim_funcionario["data_admissao"]]
-print("Data de demissão antes da data de demissão: ", inconsistencia_admisao)
-
-# criando coluna de idade funcionarios
-data_referencia = pd.Timestamp.today().normalize()
-dim_funcionario["idade"] = (data_referencia - dim_funcionario["data_nascimento"]).dt.days // 365
-
-# verificar as idades funcionarios
-i_min = dim_funcionario["idade"].min()
-i_max = dim_funcionario["idade"].max()
-print(f"Idade Min: {i_min} e Max: {i_max}")
-
-# outliers em salario
-print("Estatisticas de salário:")
-dim_funcionario["salario_atual"].describe()
-
-# os 5 maiores salarios 
-dim_funcionario.nlargest(5, "salario_atual")
-
-# tabela de ausencias
-# datas min e max
-ausencia_min = fat_ausencias["data"].min()
-ausencia_max = fat_ausencias["data"].max()
-print(f"Data de ausencia Min: {ausencia_min} e Max: {ausencia_max}")
-
-# estatisticas de horas perdidas
-print("Estatisticas da coluna de horas perdidas: ")
-fat_ausencias["horas_perdidas"].describe()
-
-# tabela folha
-# calcular o quartil de horas extras
-q1 = fat_folha["horas_extras_qtd"].quantile(0.25)
-q3 = fat_folha["horas_extras_qtd"].quantile(0.75)
-IQR = q3 - q1
-
-limite_baixo = q1 - 1.5 * IQR
-limite_alto = q3 + 1.5 * IQR
-
-outliers = fat_folha[
-    (fat_folha["horas_extras_qtd"] < limite_baixo) |
-    (fat_folha["horas_extras_qtd"] > limite_alto)
-]
-print(f"{len(outliers)} outliers encontrados")
-print(outliers)
-
-# grafico de hora extra por area
-plt.figure(figsize=(12, 6))
-sn.boxplot(data=fat_folha, y="valor_horas_extras" ,x="area", hue="area", palette="Set2", legend=False)
-plt.title("Custo total por área", fontsize=14, fontweight="bold")
-plt.xlabel("Área")
-plt.ylabel("Custo total (R$)")
-plt.xticks(rotation=30, ha="right")
-plt.tight_layout()
-plt.show()
-
-'''
-COMO LER O GRAFICO
-as barras são o meio dos dados
-dentro das barras: a linha dentro das barras é a mediana 
-abaixo da linha é o Q1 (25% dos dados)
-acima da linha é o Q3 (75% dos dados)
-a altura da caixa é o IQR (intervalo do quartil)
-
-as linhas fora das barras são os limites do IQR (Q1 - 1.5 x IQR e Q3 + 1.5 x IQR)
-as  bolinhas fora das barras são os outliers, que ficaram fora da faixa de IQR esperada
-'''
-
-# outliers detectados no grafico
-fat_folha[fat_folha["valor_horas_extras"] > 400]
-
-# salvar as bases tratadas
-bases = {
-    "dim_funcionario": dim_funcionario,
-    "dim_area": dim_area,
-    "dim_calendario": dim_calendario,
-    "fat_ausencias": fat_ausencias,
-    "fat_folha": fat_folha
-}
-
-for nome, df in bases.items():
-    df.to_csv(f"{nome}_tratato_python.csv", index=False, encoding="utf-8-sig")
-</code></pre>
+    </code></pre>
       </div>
     </div>
-
+    
     <!-- OUTPUT DO CÓDIGO — estilo Jupyter Notebook -->
     <div class="code-output" style="margin-top:16px">
       <div class="code-output-tabs">
