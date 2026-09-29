@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Journey Intelligence | João Vítor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/11.0.5/swiper-bundle.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+  <style>
+    :root {
+      --bg:#F5F7FA;--surface:#FFFFFF;--bg2:#EEF2F7;--navy:#0F1C2E;
+      --blue:#2563EB;--blue-l:#DBEAFE;--amber:#F59E0B;--amber-l:#FEF3C7;
+      --green:#10B981;--green-l:#D1FAE5;--red:#EF4444;--red-l:#FEE2E2;
+      --teal:#0D9488;--teal-l:#CCFBF1;
+      --t1:#0F1C2E;--t2:#4B5563;--t3:#9CA3AF;--border:#E2E8F0;
+      --r:12px;--r-lg:20px;
+      --shadow:0 1px 3px rgba(15,28,46,.07),0 4px 16px rgba(15,28,46,.05);
+      --shadow-lg:0 8px 40px rgba(15,28,46,.12);--nav-h:64px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);line-height:1.6}
+    a{text-decoration:none;color:inherit}
+    .container{max-width:900px;margin:0 auto;padding:0 24px}
+    .section-label{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
+    .tag{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:500;padding:4px 10px;border-radius:20px;background:var(--blue-l);color:var(--blue)}
+    .tag.green{background:var(--green-l);color:var(--green)}
+    .tag.amber{background:var(--amber-l);color:var(--amber)}
+    .tag.red{background:var(--red-l);color:var(--red)}
+    .tag.teal{background:var(--teal-l);color:var(--teal)}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:var(--r);font-weight:600;font-size:14px;cursor:pointer;transition:all .2s;border:none;font-family:'Inter',sans-serif}
+    .btn-primary{background:var(--blue);color:#fff}
+    .btn-primary:hover{background:#1d4ed8;transform:translateY(-1px)}
+    .btn-outline{background:transparent;color:var(--t1);border:1.5px solid var(--border)}
+    .btn-outline:hover{border-color:var(--blue);color:var(--blue);transform:translateY(-1px)}
+    /* NAV */
+    nav.main-nav{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav-h);background:rgba(245,247,250,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);display:flex;align-items:center}
+    nav.main-nav .container{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:1100px}
+    .nav-logo{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;color:var(--navy)}
+    .nav-logo span{color:var(--blue)}
+    .nav-back{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:var(--t2);padding:6px 12px;border-radius:8px;transition:all .15s}
+    .nav-back:hover{color:var(--blue);background:var(--blue-l)}
+    /* HERO */
+    .projeto-hero{padding-top:calc(var(--nav-h) + 56px);padding-bottom:56px;background:linear-gradient(135deg,#0F1C2E 0%,#0D3352 100%);color:#fff;position:relative;overflow:hidden}
+    .projeto-hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 1px 1px,rgba(255,255,255,.05) 1px,transparent 0);background-size:28px 28px}
+    .projeto-hero .container{position:relative;z-index:1}
+    .ph-eyebrow{display:flex;align-items:center;gap:8px;margin-bottom:16px}
+    .ph-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:rgba(255,255,255,.5);transition:color .15s}
+    .ph-back:hover{color:#fff}
+    .ph-back::before{content:'←'}
+    .ph-sep{color:rgba(255,255,255,.25)}
+    .ph-cat{font-family:'JetBrains Mono',monospace;font-size:12px;color:#5eead4;letter-spacing:.1em;text-transform:uppercase}
+    .ph-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(24px,4vw,40px);font-weight:700;line-height:1.15;margin-bottom:16px}
+    .ph-desc{font-size:16px;color:rgba(255,255,255,.7);max-width:620px;line-height:1.7;margin-bottom:24px}
+    .ph-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
+    .ph-tag{font-size:12px;font-weight:500;padding:4px 12px;border-radius:20px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.15)}
+    .ph-meta{display:flex;gap:24px;flex-wrap:wrap}
+    .ph-meta-item{display:flex;align-items:center;gap:6px;font-size:13px;color:rgba(255,255,255,.5)}
+    .ph-meta-item i{font-size:12px}
+    /* RESULT STRIP */
+    .result-strip{background:var(--surface);border-bottom:1px solid var(--border)}
+    .result-strip .container{display:grid;grid-template-columns:repeat(3,1fr)}
+    .rs-item{padding:24px;border-right:1px solid var(--border);text-align:center}
+    .rs-item:last-child{border-right:none}
+    .rs-value{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;color:var(--navy)}
+    .rs-label{font-size:12px;color:var(--t3);margin-top:2px}
+    /* SECTIONS */
+    .proj-section{padding:64px 0}
+    .proj-section+.proj-section{border-top:1px solid var(--border)}
+    .proj-section.alt{background:var(--surface)}
+    .proj-section h2{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:var(--navy);margin-bottom:20px}
+    /* CONTEXTO */
+    .contexto-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:40px;align-items:start}
+    .contexto-text p{color:var(--t2);line-height:1.8;font-size:15px;margin-bottom:14px}
+    .stack-card{background:var(--bg2);border-radius:var(--r-lg);padding:22px;border:1px solid var(--border)}
+    .stack-card h3{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:var(--navy);margin-bottom:14px}
+    .stack-list{display:flex;flex-direction:column;gap:10px}
+    .stack-item{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--t2)}
+    .stack-item i{width:20px;color:var(--blue);text-align:center}
+    /* PAGINAS DASHBOARD */
+    .pages-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:16px}
+    .page-card{background:var(--bg2);border-radius:var(--r);padding:12px 14px;border:1px solid var(--border);display:flex;align-items:center;gap:10px}
+    .page-num{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--teal);background:var(--teal-l);padding:3px 8px;border-radius:6px;flex-shrink:0}
+    .page-name{font-size:12px;font-weight:500;color:var(--navy);line-height:1.3}
+    /* CAROUSEL */
+    .carousel-wrap{position:relative;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow-lg);background:var(--surface)}
+    .swiper{width:100%}
+    .swiper-slide{aspect-ratio:16/9;position:relative;background:linear-gradient(135deg,#EEF2F7,#CCFBF1);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;color:var(--t3)}
+    .swiper-slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
+    .swiper-slide>i{font-size:48px;color:var(--teal);opacity:.3;position:relative;z-index:1}
+    .swiper-slide>span{font-size:13px;position:relative;z-index:1}
+    .swiper-pagination-bullet-active{background:var(--teal)!important}
+    .swiper-button-next,.swiper-button-prev{color:var(--teal)!important}
+    .slide-caption{padding:14px 20px;background:var(--surface);border-top:1px solid var(--border);font-size:13px;color:var(--t3);font-style:italic;min-height:44px}
+    /* CODE */
+    .code-block-wrap{border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow-lg)}
+    .code-tabs{display:flex;align-items:center;gap:4px;background:#1d2433;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.08)}
+    .code-tab{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;border-radius:8px;border:none;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;color:rgba(255,255,255,.45);background:transparent;cursor:pointer;transition:all .15s}
+    .code-tab:hover{color:rgba(255,255,255,.75);background:rgba(255,255,255,.06)}
+    .code-tab.active{color:#fff;background:rgba(255,255,255,.12)}
+    .code-tab i{font-size:13px}
+    .code-tab.py-tab.active i{color:#4ade80}
+    .code-tab.sql-tab.active i{color:#60a5fa}
+    .code-copy{margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.15);font-family:'Inter',sans-serif;font-size:12px;font-weight:500;color:rgba(255,255,255,.5);background:transparent;cursor:pointer;transition:all .15s}
+    .code-copy:hover{color:#fff;border-color:rgba(255,255,255,.35)}
+    .code-copy.copied{color:#4ade80;border-color:#4ade80}
+    .code-panel{display:block}
+    .code-panel.hidden{display:none}
+    .code-panel pre{margin:0!important;border-radius:0!important;max-height:440px;overflow-y:auto;font-size:13px!important;line-height:1.65!important;padding:20px 24px!important}
+    .code-panel pre::-webkit-scrollbar{width:6px}
+    .code-panel pre::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:3px}
+    /* INSIGHTS */
+    .insights-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+    .insight-card{background:var(--bg2);border-radius:var(--r);padding:20px;border:1px solid var(--border)}
+    .insight-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;font-size:15px}
+    .ic-green{background:var(--green-l);color:var(--green)}
+    .ic-amber{background:var(--amber-l);color:var(--amber)}
+    .ic-blue{background:var(--blue-l);color:var(--blue)}
+    .ic-red{background:var(--red-l);color:var(--red)}
+    .ic-teal{background:var(--teal-l);color:var(--teal)}
+    .insight-num{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;margin-bottom:4px}
+    .insight-title{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px;color:var(--navy);margin-bottom:6px}
+    .insight-text{font-size:13px;color:var(--t2);line-height:1.6}
+    /* RECOMENDACOES */
+    .rec-table{width:100%;border-collapse:collapse;font-size:13px}
+    .rec-table th{text-align:left;font-size:11px;font-weight:600;color:var(--t3);padding:10px 14px;border-bottom:2px solid var(--border);background:var(--bg2);text-transform:uppercase;letter-spacing:.06em}
+    .rec-table td{padding:14px;border-bottom:1px solid var(--border);color:var(--t2);vertical-align:top;line-height:1.5}
+    .rec-table tr:last-child td{border-bottom:none}
+    .rec-table tr:hover td{background:var(--bg)}
+    .pri-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;flex-shrink:0}
+    .pri-1{background:#FEE2E2;color:#991B1B}
+    .pri-2{background:#FEF3C7;color:#92400E}
+    .pri-3{background:#DBEAFE;color:#1E40AF}
+    .pri-4{background:#D1FAE5;color:#065F46}
+    .pri-5{background:#EDE9FE;color:#5B21B6}
+    /* FILES */
+    .files-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+    .file-card{display:flex;align-items:center;gap:14px;background:var(--surface);border-radius:var(--r);padding:16px 18px;border:1.5px solid var(--border);transition:all .2s}
+    .file-card:hover{border-color:var(--blue);box-shadow:var(--shadow);transform:translateY(-1px)}
+    .file-card a{display:contents;color:inherit}
+    .file-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+    .fi-pbi{background:#fff3cd;color:#F2C811}
+    .fi-py{background:#e8f5e9;color:#2E7D32}
+    .fi-sql{background:var(--blue-l);color:var(--blue)}
+    .file-info{flex:1}
+    .file-name{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;color:var(--navy)}
+    .file-type{font-size:11px;color:var(--t3);margin-top:1px}
+    .file-dl{color:var(--t3);font-size:13px;transition:color .15s}
+    .file-card:hover .file-dl{color:var(--blue)}
+    /* PROJ NAV */
+    .proj-nav{padding:40px 0;background:var(--surface);border-top:1px solid var(--border)}
+    .proj-nav .container{display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .pn-back-btn{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500;color:var(--t2);padding:10px 16px;border-radius:var(--r);border:1.5px solid var(--border);transition:all .2s}
+    .pn-back-btn:hover{border-color:var(--blue);color:var(--blue)}
+    .pn-prev-label small{font-size:11px;color:var(--t3);display:block}
+    .pn-prev-label span{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:var(--navy)}
+    footer{background:#070F1A;color:rgba(255,255,255,.35);text-align:center;padding:22px;font-size:13px}
+    footer strong{color:rgba(255,255,255,.65)}
+    @media(max-width:720px){
+      .contexto-grid{grid-template-columns:1fr}
+      .result-strip .container{grid-template-columns:1fr}
+      .rs-item{border-right:none;border-bottom:1px solid var(--border)}
+      .rs-item:last-child{border-bottom:none}
+      .pages-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="main-nav">
+  <div class="container">
+    <a href="../index.html" class="nav-logo">JV<span>.</span>data</a>
+    <a href="../index.html#projetos" class="nav-back"><i class="fa-solid fa-arrow-left"></i> Voltar ao Portfólio</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="projeto-hero">
+  <div class="container">
+    <div class="ph-eyebrow">
+      <a href="../index.html#projetos" class="ph-back">Portfólio</a>
+      <span class="ph-sep">/</span>
+      <span class="ph-cat">UX Analytics</span>
+    </div>
+    <h1 class="ph-title">Customer Journey Intelligence<br>— Aplicativo Bancário</h1>
+    <p class="ph-desc">Base sintética de 20.000 clientes gerada em Python, persistida em PostgreSQL com 5 tabelas relacionais e 10 views analíticas, e visualizada em Power BI com 8 páginas de dashboard — mapeando onde e por que os usuários encontram dificuldades no app.</p>
+    <div class="ph-tags">
+      <span class="ph-tag">Python</span>
+      <span class="ph-tag">PostgreSQL</span>
+      <span class="ph-tag">Power BI</span>
+      <span class="ph-tag">SQL Views</span>
+      <span class="ph-tag">UX Analytics</span>
+      <span class="ph-tag">NPS · CSAT</span>
+      <span class="ph-tag">Dados Sintéticos</span>
+    </div>
+    <div class="ph-meta">
+      <span class="ph-meta-item"><i class="fa-regular fa-calendar"></i> Julho de 2026</span>
+      <span class="ph-meta-item"><i class="fa-solid fa-layer-group"></i> Python + PostgreSQL + Power BI</span>
+      <span class="ph-meta-item"><i class="fa-solid fa-code-branch"></i>
+        <a href="https://github.com/joaov-analista/customer_journey" target="_blank" style="color:inherit;text-decoration:underline">Ver no GitHub</a>
+      </span>
+    </div>
+  </div>
+</div>
+
+<!-- RESULT STRIP -->
+<div class="result-strip">
+  <div class="container">
+    <div class="rs-item">
+      <div class="rs-value" style="color:var(--blue)">20.000</div>
+      <div class="rs-label">clientes simulados</div>
+    </div>
+    <div class="rs-item">
+      <div class="rs-value" style="color:var(--red)">79,53%</div>
+      <div class="rs-label">dos abandonos no LOGIN</div>
+    </div>
+    <div class="rs-item">
+      <div class="rs-value" style="color:var(--amber)">5.254</div>
+      <div class="rs-label">clientes impactados pelo LOGIN</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- CONTEXTO -->
+<section class="proj-section alt">
+  <div class="container">
+    <div class="section-label">// problema & abordagem</div>
+    <h2>Contexto do Projeto</h2>
+    <div class="contexto-grid">
+      <div class="contexto-text">
+        <p>Este projeto simula um cenário real de análise de experiência do usuário em um aplicativo bancário. O objetivo foi construir uma infraestrutura analítica completa — da geração dos dados até o dashboard executivo — capaz de responder perguntas críticas de produto: onde os clientes encontram mais dificuldades, quais perfis têm pior experiência e qual funcionalidade deve ser priorizada primeiro.</p>
+        <p>A base foi gerada inteiramente em Python com correlações de negócio realistas: personas com distribuições próprias de renda, segmento e comportamento, eventos com sazonalidade por hora e dia da semana, e erros com taxas diferenciadas por funcionalidade. Ao todo são 5 tabelas relacionais persistidas no PostgreSQL, com índices otimizados e 10 views analíticas prontas para consumo pelo Power BI.</p>
+        <p>O dashboard de 8 páginas responde perguntas estruturadas — cada página uma pergunta de negócio diferente — culminando em uma página de priorização que cruza clientes afetados, score de experiência e NPS para indicar onde agir primeiro.</p>
+        <div class="pages-grid">
+          <div class="page-card"><span class="page-num">P1</span><span class="page-name">Dificuldades por funcionalidade</span></div>
+          <div class="page-card"><span class="page-num">P2</span><span class="page-name">Frustrações e sentimentos</span></div>
+          <div class="page-card"><span class="page-num">P3</span><span class="page-name">Experiência por perfil de usuário</span></div>
+          <div class="page-card"><span class="page-num">P4</span><span class="page-name">Etapas com mais abandonos</span></div>
+          <div class="page-card"><span class="page-num">P5</span><span class="page-name">Tempo por funcionalidade</span></div>
+          <div class="page-card"><span class="page-num">P6</span><span class="page-name">Caminhos para experiência positiva</span></div>
+          <div class="page-card"><span class="page-num">P7</span><span class="page-name">Dia e hora com mais erros</span></div>
+          <div class="page-card"><span class="page-num">P8</span><span class="page-name">Priorização e impacto NPS</span></div>
+        </div>
+      </div>
+      <div class="stack-card">
+        <h3>Stack utilizada</h3>
+        <div class="stack-list">
+          <div class="stack-item"><i class="fa-brands fa-python"></i><span>Python — geração de 5 tabelas sintéticas</span></div>
+          <div class="stack-item"><i class="fa-solid fa-table"></i><span>Pandas — transformação e validação</span></div>
+          <div class="stack-item"><i class="fa-solid fa-magnifying-glass-chart"></i><span>IQR — detecção de outliers</span></div>
+          <div class="stack-item"><i class="fa-solid fa-database"></i><span>PostgreSQL — 5 tabelas + índices</span></div>
+          <div class="stack-item"><i class="fa-solid fa-eye"></i><span>SQL Views — 10 views analíticas</span></div>
+          <div class="stack-item"><i class="fa-solid fa-chart-bar"></i><span>Power BI — 8 páginas de dashboard</span></div>
+          <div class="stack-item"><i class="fa-solid fa-users"></i><span>NPS · CSAT · Score de experiência</span></div>
+          <div class="stack-item"><i class="fa-brands fa-github"></i><span>GitHub — versionamento completo</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALERIA -->
+<section class="proj-section">
+  <div class="container">
+    <div class="section-label">// capturas de tela</div>
+    <h2>Dashboard em Detalhe</h2>
+    <div class="carousel-wrap">
+      <div class="swiper">
+        <div class="swiper-wrapper">
+
+          <!-- SLIDE 1 — com imagem -->
+          <div class="swiper-slide">
+            <img src="../assets/img/cj-1.png" alt="Dificuldades por funcionalidade">
+          </div>
+
+          <!-- SLIDE 2 — com imagem -->
+          <div class="swiper-slide">
+            <img src="../assets/img/cj-2.png" alt="Frustrações e Sentimentos">
+          </div>
+
+          <!-- SLIDE 3 — com imagem -->
+          <div class="swiper-slide">
+            <img src="../assets/img/cj-3.png" alt="Experiência por perfil de usuário">
+          </div>
+
+          <!-- SLIDE 4 — com imagem -->
+          <div class="swiper-slide">
+            <img src="../assets/img/cj-4.png" alt="Etapas com mais abandonos">
+          </div>
+
+          <!-- SLIDE 5 — com imagem -->
+          <div class="swiper-slide">
+            <img src="../assets/img/cj-5.png" alt="Tempo por funcionalidade">
+          </div>
+
+          <!-- SLIDE 6 — com imagem -->
+          <div class="swiper-slide">
+            <img src="../assets/img/cj-6.png" alt="Caminhos para experiência positiva">
+          </div>
+
+          <!-- SLIDE 7 — com imagem -->
+          <div class="swiper-slide">
+            <img src="../assets/img/cj-7.png" alt="Dia da semana e hora com mais erros">
+          </div>
+
+          <!-- SLIDE 8 — com imagem -->
+          <div class="swiper-slide">
+            <img src="../assets/img/cj-8.png" alt="Priorização e impacto NPS">
+          </div>
+
+        </div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+      </div>
+      <div class="slide-caption" id="slide-caption">Use as setas para navegar entre as páginas do dashboard</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- CONTEXTO -->
+<section class="proj-section alt">
+  <div class="container">
+    <div class="section-label">// problema & abordagem</div>
+    <h2>Contexto do Projeto</h2>
+    <div class="contexto-grid">
+      <div class="contexto-text">
+        <p>Este projeto simula um cenário real de análise de experiência do usuário em um aplicativo bancário. A questão central era: <strong>onde e por que os usuários encontram dificuldades?</strong> Para responder, foi necessário construir toda a cadeia de dados do zero — da geração sintética até o dashboard executivo.</p>
+        <p>A base foi gerada em Python com correlações reais de negócio: 5 personas de cliente (Jovem Digital, Cliente Tradicional, Investidor, Idoso e Premium) com distribuições de renda, segmento e comportamento correlacionadas entre si, cobrindo 27 estados brasileiros com pesos populacionais reais. O resultado são 20.000 clientes e mais de 2 milhões de eventos de interação com o app.</p>
+        <p>Os dados foram persistidos em PostgreSQL com 5 tabelas relacionais, índices parciais para buscas críticas (erros e avaliações aceitas) e 10 views analíticas que respondem às perguntas do negócio diretamente no banco — antes mesmo de chegar ao Power BI.</p>
+        <p>O dashboard em Power BI foi construído com 8 páginas temáticas, cada uma respondendo a uma pergunta específica da jornada do usuário — de onde ocorrem os erros até qual melhoria deve ser priorizada primeiro.</p>
+
+        <div class="pages-grid">
+          <div class="page-card"><span class="page-num">P1</span><span class="page-name">Dificuldades por Funcionalidade</span></div>
+          <div class="page-card"><span class="page-num">P2</span><span class="page-name">Frustrações e Sentimentos</span></div>
+          <div class="page-card"><span class="page-num">P3</span><span class="page-name">Experiência por Perfil</span></div>
+          <div class="page-card"><span class="page-num">P4</span><span class="page-name">Etapas com Mais Abandonos</span></div>
+          <div class="page-card"><span class="page-num">P5</span><span class="page-name">Tempo por Funcionalidade</span></div>
+          <div class="page-card"><span class="page-num">P6</span><span class="page-name">Caminhos para Exp. Positiva</span></div>
+          <div class="page-card"><span class="page-num">P7</span><span class="page-name">Dia e Hora com Mais Erros</span></div>
+          <div class="page-card"><span class="page-num">P8</span><span class="page-name">Priorização e Impacto NPS</span></div>
+        </div>
+      </div>
+
+      <div class="stack-card">
+        <h3>Stack utilizada</h3>
+        <div class="stack-list">
+          <div class="stack-item"><i class="fa-brands fa-python"></i><span>Python — geração de 20.000 clientes</span></div>
+          <div class="stack-item"><i class="fa-solid fa-table"></i><span>Pandas · Faker · NumPy — ETL</span></div>
+          <div class="stack-item"><i class="fa-solid fa-database"></i><span>PostgreSQL — 5 tabelas relacionais</span></div>
+          <div class="stack-item"><i class="fa-solid fa-magnifying-glass"></i><span>SQL — 10 views analíticas</span></div>
+          <div class="stack-item"><i class="fa-solid fa-bolt"></i><span>Índices parciais — otimização</span></div>
+          <div class="stack-item"><i class="fa-solid fa-chart-bar"></i><span>Power BI — 8 páginas de dashboard</span></div>
+          <div class="stack-item"><i class="fa-solid fa-star-half-stroke"></i><span>NPS · CSAT · Score Experiência</span></div>
+          <div class="stack-item"><i class="fa-brands fa-github"></i><span>GitHub — versionamento</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALERIA -->
+<section class="proj-section">
+  <div class="container">
+    <div class="section-label">// capturas de tela</div>
+    <h2>Dashboard em Detalhe</h2>
+    <div class="carousel-wrap">
+      <div class="swiper">
+        <div class="swiper-wrapper">
+
+          <!-- SLIDE 1 — com imagem -->
+          <div class="swiper-slide">
+            <img src="../assets/img/cj-1.png" alt="Dificuldades por Funcionalidade">
+          </div>
+
+          <!-- SLIDE 2 — com imagem -->
+          <div class="swiper-slide">
+            <img src="../assets/img/cj-2.png" alt="Frustrações e Sentimentos">
+          </div>
+
+          <!-- SLIDE 3 — com imagem -->
+          <div class="swiper-slide">
+            <img src="../assets/img/cj-3.png" alt="Experiência por Perfil de Usuário">
+          </div>
+
+          <!-- SLIDE 4 — com imagem -->
+          <div class="swiper-slide">
+            <img src="../assets/img/cj-4.png" alt="Etapas com Mais Abandonos">
+          </div>
+
+          <!-- SLIDE 5 — com imagem -->
+          <div class="swiper-slide">
+            <img src="../assets/img/cj-5.png" alt="Tempo por Funcionalidade">
+          </div>
+
+          <!-- SLIDE 6 — com imagem -->
+          <div class="swiper-slide">
+            <img src="../assets/img/cj-6.png" alt="Caminhos para Experiência Positiva">
+          </div>
+
+          <!-- SLIDE 7 — com imagem -->
+          <div class="swiper-slide">
+            <img src="../assets/img/cj-7.png" alt="Dia e Hora com Mais Erros">
+          </div>
+
+          <!-- SLIDE 8 — com imagem -->
+          <div class="swiper-slide">
+            <img src="../assets/img/cj-8.png" alt="Priorização e Impacto NPS">
+          </div>
+
+        </div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+      </div>
+      <div class="slide-caption" id="slide-caption">Use as setas para navegar entre as páginas do dashboard</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- CÓDIGO -->
+<section class="proj-section alt">
+  <div class="container">
+    <div class="section-label">// código do projeto</div>
+    <h2>Código Utilizado</h2>
+    <div class="code-block-wrap">
+      <div class="code-tabs">
+        <button class="code-tab py-tab active" onclick="switchTab('py', this)">
+          <i class="fa-brands fa-python"></i> Python — ETL & Transformação
+        </button>
+        <button class="code-tab sql-tab" onclick="switchTab('sql', this)">
+          <i class="fa-solid fa-database"></i> SQL — Views Analíticas
+        </button>
+        <button class="code-copy" id="copy-btn" onclick="copyCode()">
+          <i class="fa-regular fa-copy"></i> Copiar
+        </button>
+      </div>
+
+      <!-- PAINEL PYTHON — transformacao.py -->
+      <div class="code-panel" id="panel-py">
+        <pre><code class="language-python">import pandas as pd
+
+# importar arquivos
+clientes  = pd.read_csv("aplicativo bancario\\clientes.csv")
+sessoes   = pd.read_csv("aplicativo bancario\\sessoes.csv")
+eventos   = pd.read_csv("aplicativo bancario\\eventos.csv")
+erros     = pd.read_csv("aplicativo bancario\\erros.csv")
+avaliacoes = pd.read_csv("aplicativo bancario\\avaliacoes.csv")
+
+def view(df, nome):
+    print("="*90)
+    print(f"{nome}")
+    print(df.head(5).to_string())
+    print(df.info())
+    print("="*90)
+
+# ===============================
+# TRANSFORMAÇÃO GERAL
+# ===============================
+
+# tirar espaços de todas as bases e deixar tudo minusculo
+def limpar_texto(df):
+    for coluna in df.select_dtypes(include="object").columns:
+        df[coluna] = df[coluna].str.strip().str.lower()
+    return df
+
+clientes   = limpar_texto(clientes)
+sessoes    = limpar_texto(sessoes)
+eventos    = limpar_texto(eventos)
+erros      = limpar_texto(erros)
+avaliacoes = limpar_texto(avaliacoes)
+
+# ===============================
+# TRANSFORMAÇÃO TABELA CLIENTES
+# ===============================
+
+# transformar faixa renda em categorico ordenado
+ordem = ["até r$ 2.000", "r$ 2.001 – r$ 5.000",
+         "r$ 5.001 – r$ 10.000", "r$ 10.001 – r$ 20.000",
+         "acima de r$ 20.000"]
+clientes["faixa_renda"] = pd.Categorical(
+    clientes["faixa_renda"], categories=ordem, ordered=True
+)
+clientes["faixa_renda_cod"] = clientes["faixa_renda"].cat.codes  # 0 a 4
+
+# verificar outliers em tempo_relacionamento e idade por IQR
+for col in ["tempo_relacionamento", "idade"]:
+    q1, q3 = clientes[col].quantile([0.25, 0.75])
+    IQR    = q3 - q1
+    out    = clientes[(clientes[col] < q1 - 1.5*IQR) |
+                      (clientes[col] > q3 + 1.5*IQR)]
+    print("="*90)
+    print(f"OUTLIERS CLIENTES — {col}: {len(out)} encontrados")
+    print("="*90)
+
+# ===============================
+# TRANSFORMAÇÃO TABELA SESSOES
+# ===============================
+
+sessoes["versao_app"]       = sessoes["versao_app"].astype("string")
+sessoes["data_hora_inicio"] = pd.to_datetime(sessoes["data_hora_inicio"])
+sessoes["data_hora_fim"]    = pd.to_datetime(sessoes["data_hora_fim"])
+
+# extrair hora e dia da semana para análise de sazonalidade
+sessoes["hora_inicio"] = sessoes["data_hora_inicio"].dt.hour
+sessoes["dia_inicio"]  = sessoes["data_hora_inicio"].dt.day_name(locale="pt_BR")
+
+# verificar outliers em duracao_segundos
+q1_s = sessoes["duracao_segundos"].quantile(0.25)
+q3_s = sessoes["duracao_segundos"].quantile(0.75)
+IQR_s = q3_s - q1_s
+outliers_s = sessoes[
+    (sessoes["duracao_segundos"] < q1_s - 1.5*IQR_s) |
+    (sessoes["duracao_segundos"] > q3_s + 1.5*IQR_s)
+]
+print("="*90)
+print(f"OUTLIERS SESSOES — duracao_segundos: {len(outliers_s)} encontrados")
+print("="*90)
+
+# ===============================
+# TRANSFORMAÇÃO TABELA EVENTOS
+# ===============================
+
+eventos["timestamp"] = pd.to_datetime(eventos["timestamp"])
+eventos["hora_dia"]  = eventos["timestamp"].dt.hour
+eventos["dia_semana"] = eventos["timestamp"].dt.day_name(locale="pt_BR")
+
+# verificar outliers em tempo_segundos
+q1_e = eventos["tempo_segundos"].quantile(0.25)
+q3_e = eventos["tempo_segundos"].quantile(0.75)
+IQR_e = q3_e - q1_e
+outliers_e = eventos[
+    (eventos["tempo_segundos"] < q1_e - 1.5*IQR_e) |
+    (eventos["tempo_segundos"] > q3_e + 1.5*IQR_e)
+]
+print("="*90)
+print(f"OUTLIERS EVENTOS — tempo_segundos: {len(outliers_e)} encontrados")
+print("="*90)
+
+# ===============================
+# TRANSFORMAÇÃO TABELA ERROS
+# ===============================
+
+erros["tempo_resolucao"] = erros["tempo_resolucao"].astype("Int64")
+
+# ===============================
+# TRANSFORMAÇÃO TABELA AVALIACOES
+# ===============================
+
+avaliacoes["comentario"]      = avaliacoes["comentario"].replace("nan", None)
+avaliacoes["data_avaliacao"]  = pd.to_datetime(avaliacoes["data_avaliacao"])
+
+# exibir resumo final de cada tabela
+for df, nome in [(clientes,  "CLIENTES"),
+                 (sessoes,   "SESSOES"),
+                 (eventos,   "EVENTOS"),
+                 (erros,     "ERROS"),
+                 (avaliacoes,"AVALIAÇÕES")]:
+    view(df, nome)
+
+# ===============================
+# SALVAR BASES
+# ===============================
+
+bases = {
+    "clientes":   clientes,
+    "sessoes":    sessoes,
+    "eventos":    eventos,
+    "erros":      erros,
+    "avaliacoes": avaliacoes,
+}
+for name, df in bases.items():
+    df.to_csv(f"{name}_transformados.csv", index=False, encoding="utf-8-sig")
+    print(f"{name} salvo")</code></pre>
+      </div>
+
+      <!-- PAINEL SQL — views analíticas -->
+      <div class="code-panel hidden" id="panel-sql">
+        <pre><code class="language-sql">-- ================
+-- CUSTOMER JOURNEY INTELLIGENCE — VIEWS ANALÍTICAS
+-- ================
+
+-- Onde os clientes encontram mais dificuldades?
+CREATE VIEW vw_dificuldade_p_funcionalidade AS
+SELECT
+    funcionalidade,
+    COUNT(*)                                  AS total_eventos,
+    SUM(teve_erro::int)                       AS total_erros,
+    ROUND(AVG(teve_erro::int) * 100, 2)       AS pct_taxa_erro,
+    ROUND(AVG(tempo_segundos), 1)             AS media_tempo_segundos,
+    COUNT(DISTINCT id_sessao)                 AS sessoes_afetadas
+FROM eventos
+GROUP BY funcionalidade
+ORDER BY pct_taxa_erro DESC;
+
+-- Quais funcionalidades geram maior frustração?
+CREATE VIEW vw_frustacao_p_funcionalidade AS
+SELECT
+    e.funcionalidade,
+    ROUND(AVG(s.score_experiencia), 1)        AS score_medio,
+    ROUND(AVG(a.nps), 1)                      AS nps_medio,
+    ROUND(AVG(a.csat), 1)                     AS csat_medio,
+    COUNT(DISTINCT er.id_erro)                AS qtd_erro,
+    SUM(CASE WHEN er.resolvido = false
+        THEN 1 ELSE 0 END)                    AS erros_nao_resolvido
+FROM eventos e
+JOIN sessoes s  ON e.id_sessao  = s.id_sessao
+LEFT JOIN erros er       ON er.id_evento = e.id_evento
+LEFT JOIN avaliacoes a   ON a.id_sessao  = s.id_sessao
+    AND a.aceitou_pesquisa = true
+GROUP BY e.funcionalidade
+ORDER BY score_medio ASC;
+
+-- Em qual etapa ocorre o maior abandono?
+CREATE VIEW vw_etapa_com_mais_abandono AS
+SELECT
+    e.funcionalidade,
+    COUNT(*)                                   AS total_abandonos,
+    ROUND(COUNT(*) * 100.0
+          / SUM(COUNT(*)) OVER (), 2)          AS pct_do_total,
+    ROUND(AVG(e.ordem), 1)                     AS ordem_media_abandono
+FROM eventos e
+JOIN sessoes s ON s.id_sessao = e.id_sessao
+WHERE s.abandonada = true
+  AND e.ordem = (
+    SELECT MAX(e2.ordem)
+    FROM eventos e2
+    WHERE e2.id_sessao = e.id_sessao
+  )
+GROUP BY e.funcionalidade
+ORDER BY total_abandonos DESC;
+
+-- Qual funcionalidade gera maior impacto no NPS?
+CREATE VIEW vw_nps_p_funcionalidade AS
+SELECT
+    e.funcionalidade,
+    COUNT(DISTINCT s.id_sessao)                AS sessoes_com_funcionalidade,
+    ROUND(AVG(CASE WHEN e.teve_erro = false
+        THEN a.nps END), 2)                    AS nps_medio_sem_erro,
+    ROUND(AVG(CASE WHEN e.teve_erro = true
+        THEN a.nps END), 2)                    AS nps_com_erro,
+    ROUND(
+        AVG(CASE WHEN e.teve_erro = false THEN a.nps END) -
+        AVG(CASE WHEN e.teve_erro = true  THEN a.nps END),
+    2)                                         AS delta_nps,
+    ROUND(
+        (SUM(CASE WHEN a.nps <= 6 THEN 1 ELSE 0 END) -
+         SUM(CASE WHEN a.nps >= 9 THEN 1 ELSE 0 END))
+        * 100.0 / NULLIF(COUNT(a.id_avaliacao), 0),
+    1)                                         AS nps_score
+FROM eventos e
+JOIN sessoes    s ON s.id_sessao  = e.id_sessao
+JOIN avaliacoes a ON a.id_sessao  = s.id_sessao
+    AND a.aceitou_pesquisa = true
+GROUP BY e.funcionalidade
+ORDER BY delta_nps DESC;
+
+-- Quais padrões de erro afetam mais clientes?
+CREATE VIEW vw_padroes AS
+SELECT
+    er.tipo_erro,
+    e.funcionalidade,
+    COUNT(DISTINCT er.id_erro)                 AS total_erros,
+    COUNT(DISTINCT s.id_cliente)               AS clientes_afetados,
+    COUNT(DISTINCT e.id_sessao)                AS sessoes_afetadas,
+    ROUND(AVG(s.score_experiencia), 1)         AS score_medio_sessao,
+    ROUND(AVG(er.resolvido::int) * 100, 1)     AS pct_resolucao,
+    ROUND(AVG(er.tentativas), 1)               AS media_tentativas
+FROM erros er
+JOIN eventos e  ON e.id_evento = er.id_evento
+JOIN sessoes s  ON s.id_sessao = er.id_sessao
+LEFT JOIN avaliacoes a ON a.id_sessao = s.id_sessao
+    AND a.aceitou_pesquisa = true
+GROUP BY er.tipo_erro, e.funcionalidade
+ORDER BY clientes_afetados DESC, score_medio_sessao ASC;</code></pre>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- CÓDIGO -->
+<section class="proj-section alt">
+  <div class="container">
+    <div class="section-label">// código do projeto</div>
+    <h2>Código Utilizado</h2>
+    <div class="code-block-wrap">
+      <div class="code-tabs">
+        <button class="code-tab py-tab active" onclick="switchTab('py', this)">
+          <i class="fa-brands fa-python"></i> Python — ETL &amp; Transformação
+        </button>
+        <button class="code-tab sql-tab" onclick="switchTab('sql', this)">
+          <i class="fa-solid fa-database"></i> SQL — Views Analíticas
+        </button>
+        <button class="code-copy" id="copy-btn" onclick="copyCode()">
+          <i class="fa-regular fa-copy"></i> Copiar
+        </button>
+      </div>
+
+      <!-- PAINEL PYTHON — transformacao.py -->
+      <div class="code-panel" id="panel-py">
+        <pre><code class="language-python">import pandas as pd
+
+# importar arquivos
+clientes  = pd.read_csv("clientes.csv")
+sessoes   = pd.read_csv("sessoes.csv")
+eventos   = pd.read_csv("eventos.csv")
+erros     = pd.read_csv("erros.csv")
+avaliacoes = pd.read_csv("avaliacoes.csv")
+
+def view(df, nome):
+    print("="*90)
+    print(f"{nome}")
+    print(df.head(5).to_string())
+    print(df.info())
+    print("="*90)
+
+# ===============================
+# TRANSFORMAÇÃO GERAL
+# ===============================
+
+# tirar espaços de todas as bases e deixar tudo minusculo
+def limpar_texto(df):
+    for coluna in df.select_dtypes(include="object").columns:
+        df[coluna] = df[coluna].str.strip().str.lower()
+    return df
+
+clientes   = limpar_texto(clientes)
+sessoes    = limpar_texto(sessoes)
+eventos    = limpar_texto(eventos)
+erros      = limpar_texto(erros)
+avaliacoes = limpar_texto(avaliacoes)
+
+# ===============================
+# TRANSFORMAÇÃO TABELA CLIENTES
+# ===============================
+
+# transformar faixa_renda em categorico ordenado
+ordem = ["até r$ 2.000", "r$ 2.001 – r$ 5.000",
+         "r$ 5.001 – r$ 10.000", "r$ 10.001 – r$ 20.000",
+         "acima de r$ 20.000"]
+
+clientes["faixa_renda"] = pd.Categorical(
+    clientes["faixa_renda"], categories=ordem, ordered=True
+)
+clientes["faixa_renda_cod"] = clientes["faixa_renda"].cat.codes  # 0 a 4
+
+# verificar outliers em tempo_relacionamento e idade (IQR)
+for col in ["tempo_relacionamento", "idade"]:
+    q1  = clientes[col].quantile(0.25)
+    q3  = clientes[col].quantile(0.75)
+    iqr = q3 - q1
+    out = clientes[(clientes[col] < q1 - 1.5*iqr) |
+                   (clientes[col] > q3 + 1.5*iqr)]
+    print(f"OUTLIERS {col.upper()}: {len(out)} encontrados")
+
+# ===============================
+# TRANSFORMAÇÃO TABELA SESSOES
+# ===============================
+
+sessoes["versao_app"]      = sessoes["versao_app"].astype("string")
+sessoes["data_hora_inicio"] = pd.to_datetime(sessoes["data_hora_inicio"])
+sessoes["data_hora_fim"]    = pd.to_datetime(sessoes["data_hora_fim"])
+
+# extrair hora e dia da semana
+sessoes["hora_inicio"] = sessoes["data_hora_inicio"].dt.hour
+sessoes["dia_inicio"]  = sessoes["data_hora_inicio"].dt.day_name(locale="pt_BR")
+
+# verificar outliers em duracao_segundos
+q1_s = sessoes["duracao_segundos"].quantile(0.25)
+q3_s = sessoes["duracao_segundos"].quantile(0.75)
+out_s = sessoes[(sessoes["duracao_segundos"] < q1_s - 1.5*(q3_s-q1_s)) |
+                (sessoes["duracao_segundos"] > q3_s + 1.5*(q3_s-q1_s))]
+print(f"OUTLIERS DURACAO_SEGUNDOS: {len(out_s)} encontrados")
+
+# ===============================
+# TRANSFORMAÇÃO TABELA EVENTOS
+# ===============================
+
+eventos["timestamp"] = pd.to_datetime(eventos["timestamp"])
+eventos["hora_dia"]  = eventos["timestamp"].dt.hour
+eventos["dia_semana"] = eventos["timestamp"].dt.day_name(locale="pt_BR")
+
+# verificar outliers em tempo_segundos
+q1_e = eventos["tempo_segundos"].quantile(0.25)
+q3_e = eventos["tempo_segundos"].quantile(0.75)
+out_e = eventos[(eventos["tempo_segundos"] < q1_e - 1.5*(q3_e-q1_e)) |
+                (eventos["tempo_segundos"] > q3_e + 1.5*(q3_e-q1_e))]
+print(f"OUTLIERS TEMPO_SEGUNDOS: {len(out_e)} encontrados")
+
+# ===============================
+# TRANSFORMAÇÃO TABELA ERROS
+# ===============================
+
+erros["tempo_resolucao"] = erros["tempo_resolucao"].astype("Int64")
+
+# ===============================
+# TRANSFORMAÇÃO TABELA AVALIACOES
+# ===============================
+
+avaliacoes["comentario"]      = avaliacoes["comentario"].replace("nan", None)
+avaliacoes["data_avaliacao"]  = pd.to_datetime(avaliacoes["data_avaliacao"])
+
+# exibir resumo de cada tabela
+for df, nome in [(clientes, "CLIENTES"), (sessoes, "SESSOES"),
+                 (eventos, "EVENTOS"), (erros, "ERROS"),
+                 (avaliacoes, "AVALIAÇÕES")]:
+    view(df, nome)
+
+# ===============================
+# SALVAR BASES TRATADAS
+# ===============================
+
+bases = {"clientes": clientes, "sessoes": sessoes,
+         "eventos": eventos, "erros": erros,
+         "avaliacoes": avaliacoes}
+
+for name, df in bases.items():
+    df.to_csv(f"{name}_transformados.csv", index=False, encoding="utf-8-sig")
+    print(f"{name} salvo")</code></pre>
+      </div>
+
+      <!-- PAINEL SQL — views.sql -->
+      <div class="code-panel hidden" id="panel-sql">
+        <pre><code class="language-sql">-- =====================================
+-- CUSTOMER JOURNEY INTELLIGENCE — VIEWS
+-- =====================================
+
+-- 1. Onde os clientes encontram mais dificuldades?
+CREATE VIEW vw_dificuldade_p_funcionalidade AS
+SELECT
+    funcionalidade,
+    COUNT(*)                                        AS total_eventos,
+    SUM(teve_erro::int)                             AS total_erros,
+    ROUND(AVG(teve_erro::int) * 100, 2)             AS pct_taxa_erro,
+    ROUND(AVG(tempo_segundos), 1)                   AS media_tempo_segundos,
+    COUNT(DISTINCT id_sessao)                       AS sessoes_afetadas
+FROM eventos
+GROUP BY funcionalidade
+ORDER BY pct_taxa_erro DESC;
+
+
+-- 2. Qual funcionalidade gera maior impacto no NPS?
+--    Delta NPS = diferença entre sessões com erro e sem erro
+CREATE VIEW vw_nps_p_funcionalidade AS
+SELECT
+    e.funcionalidade,
+    COUNT(DISTINCT s.id_sessao)                     AS sessoes_com_funcionalidade,
+    ROUND(AVG(CASE WHEN e.teve_erro = false
+              THEN a.nps END), 2)                   AS nps_medio_sem_erro,
+    ROUND(AVG(CASE WHEN e.teve_erro = true
+              THEN a.nps END), 2)                   AS nps_com_erro,
+    ROUND(AVG(CASE WHEN e.teve_erro = false THEN a.nps END) -
+          AVG(CASE WHEN e.teve_erro = true  THEN a.nps END), 2)
+                                                    AS delta_nps,
+    ROUND((SUM(CASE WHEN a.nps <= 6 THEN 1 ELSE 0 END) -
+           SUM(CASE WHEN a.nps >= 9 THEN 1 ELSE 0 END))
+           * 100.0 / NULLIF(COUNT(a.id_avaliacao), 0), 1)
+                                                    AS nps_score
+FROM eventos e
+JOIN sessoes   s ON s.id_sessao = e.id_sessao
+JOIN avaliacoes a ON a.id_sessao = s.id_sessao
+    AND a.aceitou_pesquisa = true
+GROUP BY e.funcionalidade
+ORDER BY delta_nps DESC;
+
+
+-- 3. Em qual etapa ocorre o maior abandono?
+CREATE VIEW vw_etapa_com_mais_abandono AS
+SELECT
+    e.funcionalidade,
+    COUNT(*)                                        AS total_abandonos,
+    ROUND(COUNT(*) * 100.0
+          / SUM(COUNT(*)) OVER (), 2)               AS pct_do_total,
+    ROUND(AVG(e.ordem), 1)                          AS ordem_media_abandono
+FROM eventos e
+JOIN sessoes s ON s.id_sessao = e.id_sessao
+WHERE s.abandonada = true
+  AND e.ordem = (
+      SELECT MAX(e2.ordem)
+      FROM   eventos e2
+      WHERE  e2.id_sessao = e.id_sessao
+  )
+GROUP BY e.funcionalidade
+ORDER BY total_abandonos DESC;
+
+
+-- 4. Padrões de erro: qual problema afeta mais clientes?
+CREATE VIEW vw_padroes AS
+SELECT
+    er.tipo_erro,
+    e.funcionalidade,
+    COUNT(DISTINCT er.id_erro)                      AS total_erros,
+    COUNT(DISTINCT s.id_cliente)                    AS clientes_afetados,
+    COUNT(DISTINCT e.id_sessao)                     AS sessoes_afetadas,
+    ROUND(AVG(s.score_experiencia), 1)              AS score_medio_sessao,
+    ROUND(AVG(er.resolvido::int) * 100, 1)          AS pct_resolucao,
+    ROUND(AVG(er.tentativas), 1)                    AS media_tentativas,
+    ROUND((SUM(CASE WHEN a.nps <= 6 THEN 1 ELSE 0 END) -
+           SUM(CASE WHEN a.nps >= 9 THEN 1 ELSE 0 END))
+           * 100.0 / NULLIF(COUNT(a.id_avaliacao), 0), 1)
+                                                    AS nps_score
+FROM erros er
+JOIN eventos   e ON e.id_evento  = er.id_evento
+JOIN sessoes   s ON s.id_sessao  = er.id_sessao
+LEFT JOIN avaliacoes a ON a.id_sessao = s.id_sessao
+    AND a.aceitou_pesquisa = true
+GROUP BY er.tipo_erro, e.funcionalidade
+ORDER BY clientes_afetados DESC, score_medio_sessao ASC;</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSIGHTS -->
+<section class="proj-section">
+  <div class="container">
+    <div class="section-label">// principais achados</div>
+    <h2>Insights do Projeto</h2>
+    <div class="insights-grid">
+
+      <div class="insight-card">
+        <div class="insight-icon ic-red"><i class="fa-solid fa-right-to-bracket"></i></div>
+        <div class="insight-num" style="color:var(--red)">46% dos erros</div>
+        <div class="insight-title">LOGIN concentra quase metade de todos os erros</div>
+        <div class="insight-text">Com taxa de erro de 2,91% — quase o dobro do PIX (1,69%) —, o LOGIN afeta 5.254 clientes com score médio de 51,23. É a funcionalidade com maior volume absoluto de abandono: 79,53% das sessões abandonadas terminam aqui, antes do usuário sequer entrar no app.</div>
+      </div>
+
+      <div class="insight-card">
+        <div class="insight-icon ic-amber"><i class="fa-solid fa-person-cane"></i></div>
+        <div class="insight-num" style="color:var(--amber)">65,14% vs 3,73%</div>
+        <div class="insight-title">Idosos abandonam 17× mais que o segmento Premium</div>
+        <div class="insight-text">A maior disparidade entre personas: idosos têm taxa de abandono de 65,14% contra 3,73% do Premium. Com 2.393 clientes (~12% da base), é o público com pior NPS médio (8,4) e menor CSAT (4,3) — indicando necessidade urgente de programa de acessibilidade digital.</div>
+      </div>
+
+      <div class="insight-card">
+        <div class="insight-icon ic-blue"><i class="fa-solid fa-clock"></i></div>
+        <div class="insight-num" style="color:var(--blue)">2,2× mais tempo</div>
+        <div class="insight-title">Sessões com erro duram mais que o dobro</div>
+        <div class="insight-text">Sessões com erro duram em média 2,2× mais que sessões sem erro. O Chat tem o maior tempo mediano: 227 segundos. Isso indica que o usuário não abandona imediatamente — tenta resolver, gasta mais tempo e ainda assim encerra com score médio baixo.</div>
+      </div>
+
+      <div class="insight-card">
+        <div class="insight-icon ic-teal"><i class="fa-solid fa-comment-slash"></i></div>
+        <div class="insight-num" style="color:var(--teal)">Score 24 vs 94</div>
+        <div class="insight-title">Abandono vs logout normal: abismo de experiência</div>
+        <div class="insight-text">Sessões encerradas por abandono têm score médio de apenas 24, contra 94 das sessões com logout normal. Os termos mais frequentes nos comentários negativos são "lento", "travou" e "inaceitável" — concentrados nas funcionalidades LOGIN e PIX.</div>
+      </div>
+
+      <div class="insight-card">
+        <div class="insight-icon ic-red"><i class="fa-solid fa-mobile-screen-button"></i></div>
+        <div class="insight-num" style="color:var(--red)">2,8× mais erros</div>
+        <div class="insight-title">Versão 5.8 do app multiplica os erros</div>
+        <div class="insight-text">A versão 5.8 gera 2,8× mais erros que a versão 6.1. A diferença de score entre versões é pequena (57 vs 60), mas o volume de erros criado pela versão antiga é suficiente para justificar uma atualização forçada como ação imediata de baixo custo e alto impacto.</div>
+      </div>
+
+      <div class="insight-card">
+        <div class="insight-icon ic-amber"><i class="fa-solid fa-wifi"></i></div>
+        <div class="insight-num" style="color:var(--amber)">4,5× menos erros</div>
+        <div class="insight-title">Conexão "boa" reduz erros 4,5× frente a "ruim"</div>
+        <div class="insight-text">Melhorar a qualidade de conexão de "ruim" para "boa" reduz a probabilidade de erro em 4,5×. A diferença de score entre conexão excelente (63) e ruim (53) é de apenas 10 pontos — indicando que parte do problema é de código do app, não só de infraestrutura.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- RECOMENDAÇÕES -->
+<section class="proj-section alt">
+  <div class="container">
+    <div class="section-label">// plano de ação</div>
+    <h2>Recomendações & Priorização</h2>
+    <p style="color:var(--t2);font-size:14px;margin-bottom:24px">Baseado na análise de impacto (clientes afetados × score médio × volume de abandono).</p>
+    <div style="overflow-x:auto">
+      <table class="rec-table">
+        <thead>
+          <tr>
+            <th style="width:50px">Pri.</th>
+            <th>Ação</th>
+            <th>Funcionalidade</th>
+            <th>Impacto esperado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="pri-badge pri-1">1</span></td>
+            <td><strong>Reduzir erros de autenticação</strong> — revisar fluxo de login, mensagens de erro e tentativas com retry automático</td>
+            <td><span class="tag red" style="font-size:11px">LOGIN</span></td>
+            <td>Elimina 79% dos abandonos de sessão e melhora score de 51 para próximo da média</td>
+          </tr>
+          <tr>
+            <td><span class="pri-badge pri-2">2</span></td>
+            <td><strong>Melhorar estabilidade do PIX</strong> — identificar e corrigir os erros de timeout e falha de confirmação</td>
+            <td><span class="tag amber" style="font-size:11px">PIX</span></td>
+            <td>Reduz insatisfação em 3.054 clientes com score 65,90 e impacto financeiro direto</td>
+          </tr>
+          <tr>
+            <td><span class="pri-badge pri-3">3</span></td>
+            <td><strong>Forçar atualização da versão 5.8</strong> — notificação obrigatória ou bloqueio da versão antiga no próximo acesso</td>
+            <td><span class="tag" style="font-size:11px">Todas</span></td>
+            <td>Remove multiplicador de erro de 2,8× sem custo de desenvolvimento</td>
+          </tr>
+          <tr>
+            <td><span class="pri-badge pri-4">4</span></td>
+            <td><strong>Programa de acessibilidade para idosos</strong> — fonte maior, fluxos simplificados e tutorial de onboarding</td>
+            <td><span class="tag green" style="font-size:11px">UX Geral</span></td>
+            <td>Reduz abandono de 65% para próximo da média (~15%) em 2.393 clientes</td>
+          </tr>
+          <tr>
+            <td><span class="pri-badge pri-5">5</span></td>
+            <td><strong>Otimizar tempo de resposta do CHAT</strong> — revisar lógica de atendimento, timeouts e fila de suporte</td>
+            <td><span class="tag teal" style="font-size:11px">CHAT</span></td>
+            <td>Reduz tempo mediano de 227s e melhora score das sessões longas com erro</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ARQUIVOS -->
+<section class="proj-section">
+  <div class="container">
+    <div class="section-label">// arquivos do projeto</div>
+    <h2>Baixar Arquivos</h2>
+    <p style="color:var(--t2);font-size:14px;margin-bottom:24px">Todos os arquivos disponíveis no repositório do GitHub.</p>
+    <div class="files-grid">
+      <div class="file-card">
+        <a href="https://github.com/joaov-analista/customer_journey" target="_blank" style="display:contents">
+          <div class="file-icon fi-pbi"><i class="fa-solid fa-chart-bar"></i></div>
+          <div class="file-info">
+            <div class="file-name">customer-journey.pbix</div>
+            <div class="file-type">Power BI · 8 páginas de dashboard</div>
+          </div>
+          <i class="fa-solid fa-download file-dl"></i>
+        </a>
+      </div>
+      <div class="file-card">
+        <a href="https://github.com/joaov-analista/customer_journey" target="_blank" style="display:contents">
+          <div class="file-icon fi-py"><i class="fa-brands fa-python"></i></div>
+          <div class="file-info">
+            <div class="file-name">generator.py · customers.py</div>
+            <div class="file-type">Python · Geração de dados sintéticos</div>
+          </div>
+          <i class="fa-solid fa-download file-dl"></i>
+        </a>
+      </div>
+      <div class="file-card">
+        <a href="https://github.com/joaov-analista/customer_journey" target="_blank" style="display:contents">
+          <div class="file-icon fi-py"><i class="fa-brands fa-python"></i></div>
+          <div class="file-info">
+            <div class="file-name">transformacao.py · validacoes.py</div>
+            <div class="file-type">Python · ETL e validação</div>
+          </div>
+          <i class="fa-solid fa-download file-dl"></i>
+        </a>
+      </div>
+      <div class="file-card">
+        <a href="https://github.com/joaov-analista/customer_journey" target="_blank" style="display:contents">
+          <div class="file-icon fi-sql"><i class="fa-solid fa-database"></i></div>
+          <div class="file-info">
+            <div class="file-name">criar_tabelas.sql · views.sql</div>
+            <div class="file-type">PostgreSQL · Modelo + 10 views</div>
+          </div>
+          <i class="fa-solid fa-download file-dl"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NAVEGAÇÃO ENTRE PROJETOS -->
+<div class="proj-nav">
+  <div class="container">
+    <a href="rh.html" style="display:flex;align-items:center;gap:12px">
+      <div class="btn btn-primary" style="padding:10px 14px"><i class="fa-solid fa-arrow-left"></i></div>
+      <div class="pn-prev-label">
+        <small>Projeto anterior</small>
+        <span>People Analytics — RH</span>
+      </div>
+    </a>
+    <a href="../index.html#projetos" class="pn-back-btn">
+      <i class="fa-solid fa-grid-2"></i> Todos os Projetos
+    </a>
+  </div>
+</div>
+
+<footer>
+  <p>Feito por <strong>João Vítor de Freitas</strong> · Analista de Dados · 2026</p>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/11.0.5/swiper-bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+<script>
+  /* ── Carrossel ── */
+  const captions = [
+    "P1 — Dificuldades por Funcionalidade · Taxa de erro e tempo médio",
+    "P2 — Frustrações e Sentimentos · NPS, CSAT e score por funcionalidade",
+    "P3 — Experiência por Perfil · Score e abandono por persona e segmento",
+    "P4 — Etapas com Mais Abandonos · Onde o usuário desiste da jornada",
+    "P5 — Tempo por Funcionalidade · Mediana e comparativo erro vs sucesso",
+    "P6 — Caminhos para Exp. Positiva · Motivo de encerramento e qualidade",
+    "P7 — Dia e Hora com Mais Erros · Sazonalidade dos problemas",
+    "P8 — Priorização e Impacto NPS · Clientes afetados e delta NPS",
+  ];
+  const swiper = new Swiper(".swiper", {
+    loop: true,
+    pagination: { el: ".swiper-pagination", clickable: true },
+    navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
+    on: {
+      slideChange() {
+        const caption = document.getElementById("slide-caption");
+        if (caption && captions[this.realIndex])
+          caption.textContent = captions[this.realIndex];
+      }
+    }
+  });
+
+  /* ── Abas de código ── */
+  function switchTab(lang, btn) {
+    document.querySelectorAll(".code-panel").forEach(p => p.classList.add("hidden"));
+    document.querySelectorAll(".code-tab").forEach(t => t.classList.remove("active"));
+    document.getElementById("panel-" + lang).classList.remove("hidden");
+    btn.classList.add("active");
+    const copyBtn = document.getElementById("copy-btn");
+    copyBtn.innerHTML = '<i class="fa-regular fa-copy"></i> Copiar';
+    copyBtn.classList.remove("copied");
+  }
+
+  /* ── Copiar código ── */
+  function copyCode() {
+    const visible = document.querySelector(".code-panel:not(.hidden)");
+    const code = visible ? visible.querySelector("code").innerText : "";
+    navigator.clipboard.writeText(code).then(() => {
+      const btn = document.getElementById("copy-btn");
+      btn.innerHTML = '<i class="fa-solid fa-check"></i> Copiado!';
+      btn.classList.add("copied");
+      setTimeout(() => {
+        btn.innerHTML = '<i class="fa-regular fa-copy"></i> Copiar';
+        btn.classList.remove("copied");
+      }, 2000);
+    });
+  }
+</script>
+</body>
+</html>
