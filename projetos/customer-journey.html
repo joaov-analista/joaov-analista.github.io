@@ -319,25 +319,25 @@
     <h2>Código Utilizado</h2>
     <div class="code-block-wrap">
       <div class="code-tabs">
-        <button class="code-tab py-tab active" onclick="switchTab('py', this)">
-          <i class="fa-brands fa-python"></i> Python — Validação
-        </button>
-        <button class="code-tab py-tab active" onclick="switchTab('py', this)">
-          <i class="fa-brands fa-python"></i> Python — Transformação
-        </button>
-        <button class="code-tab sql-tab" onclick="switchTab('sql', this)">
-          <i class="fa-solid fa-database"></i> SQL — Tabelas
-        </button>
-        <button class="code-tab sql-tab" onclick="switchTab('sql', this)">
-          <i class="fa-solid fa-database"></i> SQL — Views Analíticas
-        </button>
-        <button class="code-copy" id="copy-btn" onclick="copyCode()">
-          <i class="fa-regular fa-copy"></i> Copiar
-        </button>
-      </div>
+  		<button class="code-tab py-tab active" onclick="switchTab('validacao', this)">
+    	<i class="fa-brands fa-python"></i> Python — Validação
+  		</button>
+  		<button class="code-tab py-tab" onclick="switchTab('transformacao', this)">
+    	<i class="fa-brands fa-python"></i> Python — Transformação
+		</button>
+		<button class="code-tab sql-tab" onclick="switchTab('tabelas', this)">
+		<i class="fa-solid fa-database"></i> SQL — Tabelas
+		</button>
+		<button class="code-tab sql-tab" onclick="switchTab('views', this)">
+		<i class="fa-solid fa-database"></i> SQL — Views Analíticas
+		</button>
+		<button class="code-copy" id="copy-btn" onclick="copyCode()">
+		<i class="fa-regular fa-copy"></i> Copiar
+		</button>
+</div>
 
       <!-- PAINEL PYTHON — validacao.py -->
-      <div class="code-panel" id="panel-py">
+      <div class="code-panel" id="panel-validacao">
         <pre><code class="language-python">
 import pandas as pd
 
@@ -408,7 +408,7 @@ print(avaliacoes["sessao_invalida"].value_counts())
       </div>
       
       <!-- PAINEL PYTHON — transformacao.py -->
-      <div class="code-panel" id="panel-py">
+      <div class="code-panel hidden" id="panel-transformacao">
         <pre><code class="language-python">import pandas as pd
 
 # importar arquivos
@@ -584,7 +584,7 @@ for name, df in bases.items():
       </div>
 
       <!-- PAINEL SQL — tabelas -->
-      <div class="code-panel hidden" id="panel-sql">
+      <div class="code-panel hidden" id="panel-tabelas">
         <pre><code class="language-sql">
 -- ================
 -- CUSTOMER JOURNEY INTELIGENCE
@@ -666,7 +666,7 @@ CREATE TABLE IF NOT EXISTS avaliacoes (
       </div>
       
       <!-- PAINEL SQL — views analíticas -->
-      <div class="code-panel hidden" id="panel-sql">
+      <div class="code-panel hidden" id="panel-views">
         <pre><code class="language-sql">
 -- ================
 -- CUSTOMER JOURNEY INTELLIGENCE
