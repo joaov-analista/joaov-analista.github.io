@@ -188,7 +188,7 @@
       <span class="ph-cat">UX Analytics</span>
     </div>
     <h1 class="ph-title">Customer Journey Intelligence<br>— Aplicativo Bancário</h1>
-    <p class="ph-desc">Base sintética de 20.000 clientes gerada em Python, persistida em PostgreSQL com 5 tabelas relacionais e 10 views analíticas, e visualizada em Power BI com 8 páginas de dashboard — mapeando onde e por que os usuários encontram dificuldades no app.</p>
+    <p class="ph-desc">Base sintética de 20.000 clientes gerada em Python, Integrada em PostgreSQL com 5 tabelas relacionais e 10 views analíticas e visualizada em Power BI com 8 páginas de dashboard — mapeando onde e por que os usuários encontram dificuldades no app.</p>
     <div class="ph-tags">
       <span class="ph-tag">Python</span>
       <span class="ph-tag">PostgreSQL</span>
@@ -196,10 +196,9 @@
       <span class="ph-tag">SQL Views</span>
       <span class="ph-tag">UX Analytics</span>
       <span class="ph-tag">NPS · CSAT</span>
-      <span class="ph-tag">Dados Sintéticos</span>
     </div>
     <div class="ph-meta">
-      <span class="ph-meta-item"><i class="fa-regular fa-calendar"></i> Julho de 2026</span>
+      <span class="ph-meta-item"><i class="fa-regular fa-calendar"></i> Setembro de 2026</span>
       <span class="ph-meta-item"><i class="fa-solid fa-layer-group"></i> Python + PostgreSQL + Power BI</span>
       <span class="ph-meta-item"><i class="fa-solid fa-code-branch"></i>
         <a href="https://github.com/joaov-analista/customer_journey" target="_blank" style="color:inherit;text-decoration:underline">Ver no GitHub</a>
@@ -230,30 +229,19 @@
 <!-- CONTEXTO -->
 <section class="proj-section alt">
   <div class="container">
-    <div class="section-label">// problema & abordagem</div>
+    <div class="section-label">problema & abordagem</div>
     <h2>Contexto do Projeto</h2>
     <div class="contexto-grid">
       <div class="contexto-text">
-        <p>Este projeto simula um cenário real de análise de experiência do usuário em um aplicativo bancário. O objetivo foi construir uma infraestrutura analítica completa — da geração dos dados até o dashboard executivo — capaz de responder perguntas críticas de produto: onde os clientes encontram mais dificuldades, quais perfis têm pior experiência e qual funcionalidade deve ser priorizada primeiro.</p>
+        <p>Este projeto simula um cenário real de análise de experiência do usuário em um aplicativo bancário. O objetivo foi construir uma infraestrutura analítica completa da geração dos dados até o dashboard executivo, capaz de responder perguntas críticas de produto: onde os clientes encontram mais dificuldades, quais perfis têm pior experiência e qual funcionalidade deve ser priorizada primeiro.</p>
         <p>A base foi gerada inteiramente em Python com correlações de negócio realistas: personas com distribuições próprias de renda, segmento e comportamento, eventos com sazonalidade por hora e dia da semana, e erros com taxas diferenciadas por funcionalidade. Ao todo são 5 tabelas relacionais persistidas no PostgreSQL, com índices otimizados e 10 views analíticas prontas para consumo pelo Power BI.</p>
-        <p>O dashboard de 8 páginas responde perguntas estruturadas — cada página uma pergunta de negócio diferente — culminando em uma página de priorização que cruza clientes afetados, score de experiência e NPS para indicar onde agir primeiro.</p>
-        <div class="pages-grid">
-          <div class="page-card"><span class="page-num">P1</span><span class="page-name">Dificuldades por funcionalidade</span></div>
-          <div class="page-card"><span class="page-num">P2</span><span class="page-name">Frustrações e sentimentos</span></div>
-          <div class="page-card"><span class="page-num">P3</span><span class="page-name">Experiência por perfil de usuário</span></div>
-          <div class="page-card"><span class="page-num">P4</span><span class="page-name">Etapas com mais abandonos</span></div>
-          <div class="page-card"><span class="page-num">P5</span><span class="page-name">Tempo por funcionalidade</span></div>
-          <div class="page-card"><span class="page-num">P6</span><span class="page-name">Caminhos para experiência positiva</span></div>
-          <div class="page-card"><span class="page-num">P7</span><span class="page-name">Dia e hora com mais erros</span></div>
-          <div class="page-card"><span class="page-num">P8</span><span class="page-name">Priorização e impacto NPS</span></div>
-        </div>
+        <p>O dashboard de 8 páginas responde perguntas estruturadas culminando em uma página de priorização que cruza clientes afetados, score de experiência e NPS para indicar onde agir primeiro.</p>
       </div>
       <div class="stack-card">
         <h3>Stack utilizada</h3>
         <div class="stack-list">
           <div class="stack-item"><i class="fa-brands fa-python"></i><span>Python — geração de 5 tabelas sintéticas</span></div>
           <div class="stack-item"><i class="fa-solid fa-table"></i><span>Pandas — transformação e validação</span></div>
-          <div class="stack-item"><i class="fa-solid fa-magnifying-glass-chart"></i><span>IQR — detecção de outliers</span></div>
           <div class="stack-item"><i class="fa-solid fa-database"></i><span>PostgreSQL — 5 tabelas + índices</span></div>
           <div class="stack-item"><i class="fa-solid fa-eye"></i><span>SQL Views — 10 views analíticas</span></div>
           <div class="stack-item"><i class="fa-solid fa-chart-bar"></i><span>Power BI — 8 páginas de dashboard</span></div>
@@ -268,7 +256,7 @@
 <!-- GALERIA -->
 <section class="proj-section">
   <div class="container">
-    <div class="section-label">// capturas de tela</div>
+    <div class="section-label">capturas de tela</div>
     <h2>Dashboard em Detalhe</h2>
     <div class="carousel-wrap">
       <div class="swiper">
@@ -276,42 +264,42 @@
 
           <!-- SLIDE 1 — com imagem -->
           <div class="swiper-slide">
-            <img src="../assets/img/cj-1.png" alt="Dificuldades por funcionalidade">
+            <img src="../assets/img/customer_intelligence_01.png" alt="Dificuldades por funcionalidade">
           </div>
 
           <!-- SLIDE 2 — com imagem -->
           <div class="swiper-slide">
-            <img src="../assets/img/cj-2.png" alt="Frustrações e Sentimentos">
+            <img src="../assets/img/customer_intelligence_02.png" alt="Frustrações e Sentimentos">
           </div>
 
           <!-- SLIDE 3 — com imagem -->
           <div class="swiper-slide">
-            <img src="../assets/img/cj-3.png" alt="Experiência por perfil de usuário">
+            <img src="../assets/img/customer_intelligence_03.png" alt="Experiência por perfil de usuário">
           </div>
 
           <!-- SLIDE 4 — com imagem -->
           <div class="swiper-slide">
-            <img src="../assets/img/cj-4.png" alt="Etapas com mais abandonos">
+            <img src="../assets/img/curtomer_intelligence_04.png" alt="Etapas com mais abandonos">
           </div>
 
           <!-- SLIDE 5 — com imagem -->
           <div class="swiper-slide">
-            <img src="../assets/img/cj-5.png" alt="Tempo por funcionalidade">
+            <img src="../assets/img/customer_intelligence_05.png" alt="Tempo por funcionalidade">
           </div>
 
           <!-- SLIDE 6 — com imagem -->
           <div class="swiper-slide">
-            <img src="../assets/img/cj-6.png" alt="Caminhos para experiência positiva">
+            <img src="../assets/img/customer_intelligence_06.png" alt="Caminhos para experiência positiva">
           </div>
 
           <!-- SLIDE 7 — com imagem -->
           <div class="swiper-slide">
-            <img src="../assets/img/cj-7.png" alt="Dia da semana e hora com mais erros">
+            <img src="../assets/img/customer_intelligence_07.png" alt="Dia da semana e hora com mais erros">
           </div>
 
           <!-- SLIDE 8 — com imagem -->
           <div class="swiper-slide">
-            <img src="../assets/img/cj-8.png" alt="Priorização e impacto NPS">
+            <img src="../assets/img/customer_intelligence_08.png" alt="Priorização e impacto NPS">
           </div>
 
         </div>
@@ -323,118 +311,22 @@
     </div>
   </div>
 </section>
-
-
-<!-- CONTEXTO -->
-<section class="proj-section alt">
-  <div class="container">
-    <div class="section-label">// problema & abordagem</div>
-    <h2>Contexto do Projeto</h2>
-    <div class="contexto-grid">
-      <div class="contexto-text">
-        <p>Este projeto simula um cenário real de análise de experiência do usuário em um aplicativo bancário. A questão central era: <strong>onde e por que os usuários encontram dificuldades?</strong> Para responder, foi necessário construir toda a cadeia de dados do zero — da geração sintética até o dashboard executivo.</p>
-        <p>A base foi gerada em Python com correlações reais de negócio: 5 personas de cliente (Jovem Digital, Cliente Tradicional, Investidor, Idoso e Premium) com distribuições de renda, segmento e comportamento correlacionadas entre si, cobrindo 27 estados brasileiros com pesos populacionais reais. O resultado são 20.000 clientes e mais de 2 milhões de eventos de interação com o app.</p>
-        <p>Os dados foram persistidos em PostgreSQL com 5 tabelas relacionais, índices parciais para buscas críticas (erros e avaliações aceitas) e 10 views analíticas que respondem às perguntas do negócio diretamente no banco — antes mesmo de chegar ao Power BI.</p>
-        <p>O dashboard em Power BI foi construído com 8 páginas temáticas, cada uma respondendo a uma pergunta específica da jornada do usuário — de onde ocorrem os erros até qual melhoria deve ser priorizada primeiro.</p>
-
-        <div class="pages-grid">
-          <div class="page-card"><span class="page-num">P1</span><span class="page-name">Dificuldades por Funcionalidade</span></div>
-          <div class="page-card"><span class="page-num">P2</span><span class="page-name">Frustrações e Sentimentos</span></div>
-          <div class="page-card"><span class="page-num">P3</span><span class="page-name">Experiência por Perfil</span></div>
-          <div class="page-card"><span class="page-num">P4</span><span class="page-name">Etapas com Mais Abandonos</span></div>
-          <div class="page-card"><span class="page-num">P5</span><span class="page-name">Tempo por Funcionalidade</span></div>
-          <div class="page-card"><span class="page-num">P6</span><span class="page-name">Caminhos para Exp. Positiva</span></div>
-          <div class="page-card"><span class="page-num">P7</span><span class="page-name">Dia e Hora com Mais Erros</span></div>
-          <div class="page-card"><span class="page-num">P8</span><span class="page-name">Priorização e Impacto NPS</span></div>
-        </div>
-      </div>
-
-      <div class="stack-card">
-        <h3>Stack utilizada</h3>
-        <div class="stack-list">
-          <div class="stack-item"><i class="fa-brands fa-python"></i><span>Python — geração de 20.000 clientes</span></div>
-          <div class="stack-item"><i class="fa-solid fa-table"></i><span>Pandas · Faker · NumPy — ETL</span></div>
-          <div class="stack-item"><i class="fa-solid fa-database"></i><span>PostgreSQL — 5 tabelas relacionais</span></div>
-          <div class="stack-item"><i class="fa-solid fa-magnifying-glass"></i><span>SQL — 10 views analíticas</span></div>
-          <div class="stack-item"><i class="fa-solid fa-bolt"></i><span>Índices parciais — otimização</span></div>
-          <div class="stack-item"><i class="fa-solid fa-chart-bar"></i><span>Power BI — 8 páginas de dashboard</span></div>
-          <div class="stack-item"><i class="fa-solid fa-star-half-stroke"></i><span>NPS · CSAT · Score Experiência</span></div>
-          <div class="stack-item"><i class="fa-brands fa-github"></i><span>GitHub — versionamento</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- GALERIA -->
-<section class="proj-section">
-  <div class="container">
-    <div class="section-label">// capturas de tela</div>
-    <h2>Dashboard em Detalhe</h2>
-    <div class="carousel-wrap">
-      <div class="swiper">
-        <div class="swiper-wrapper">
-
-          <!-- SLIDE 1 — com imagem -->
-          <div class="swiper-slide">
-            <img src="../assets/img/cj-1.png" alt="Dificuldades por Funcionalidade">
-          </div>
-
-          <!-- SLIDE 2 — com imagem -->
-          <div class="swiper-slide">
-            <img src="../assets/img/cj-2.png" alt="Frustrações e Sentimentos">
-          </div>
-
-          <!-- SLIDE 3 — com imagem -->
-          <div class="swiper-slide">
-            <img src="../assets/img/cj-3.png" alt="Experiência por Perfil de Usuário">
-          </div>
-
-          <!-- SLIDE 4 — com imagem -->
-          <div class="swiper-slide">
-            <img src="../assets/img/cj-4.png" alt="Etapas com Mais Abandonos">
-          </div>
-
-          <!-- SLIDE 5 — com imagem -->
-          <div class="swiper-slide">
-            <img src="../assets/img/cj-5.png" alt="Tempo por Funcionalidade">
-          </div>
-
-          <!-- SLIDE 6 — com imagem -->
-          <div class="swiper-slide">
-            <img src="../assets/img/cj-6.png" alt="Caminhos para Experiência Positiva">
-          </div>
-
-          <!-- SLIDE 7 — com imagem -->
-          <div class="swiper-slide">
-            <img src="../assets/img/cj-7.png" alt="Dia e Hora com Mais Erros">
-          </div>
-
-          <!-- SLIDE 8 — com imagem -->
-          <div class="swiper-slide">
-            <img src="../assets/img/cj-8.png" alt="Priorização e Impacto NPS">
-          </div>
-
-        </div>
-        <div class="swiper-pagination"></div>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
-      </div>
-      <div class="slide-caption" id="slide-caption">Use as setas para navegar entre as páginas do dashboard</div>
-    </div>
-  </div>
-</section>
-
 
 <!-- CÓDIGO -->
 <section class="proj-section alt">
   <div class="container">
-    <div class="section-label">// código do projeto</div>
+    <div class="section-label">código do projeto</div>
     <h2>Código Utilizado</h2>
     <div class="code-block-wrap">
       <div class="code-tabs">
         <button class="code-tab py-tab active" onclick="switchTab('py', this)">
-          <i class="fa-brands fa-python"></i> Python — ETL & Transformação
+          <i class="fa-brands fa-python"></i> Python — Validação
+        </button>
+        <button class="code-tab py-tab active" onclick="switchTab('py', this)">
+          <i class="fa-brands fa-python"></i> Python — Transformação
+        </button>
+        <button class="code-tab sql-tab" onclick="switchTab('sql', this)">
+          <i class="fa-solid fa-database"></i> SQL — Tabelas
         </button>
         <button class="code-tab sql-tab" onclick="switchTab('sql', this)">
           <i class="fa-solid fa-database"></i> SQL — Views Analíticas
@@ -444,16 +336,88 @@
         </button>
       </div>
 
+      <!-- PAINEL PYTHON — validacao.py -->
+      <div class="code-panel" id="panel-py">
+        <pre><code class="language-python">
+import pandas as pd
+
+# importar arquivos
+
+clientes = pd.read_csv("C:\\Projetos banco de dados\\aplicativo bancario\\clientes.csv")
+sessoes = pd.read_csv("C:\\Projetos banco de dados\\aplicativo bancario\\sessoes.csv")
+eventos = pd.read_csv("C:\\Projetos banco de dados\\aplicativo bancario\\eventos.csv")
+erros = pd.read_csv("C:\\Projetos banco de dados\\aplicativo bancario\\erros.csv")
+avaliacoes = pd.read_csv("C:\\Projetos banco de dados\\aplicativo bancario\\avaliacoes.csv")
+
+def validacao(dfs):
+    print("="*50)
+    print("Tipos de dados")
+    print(dfs.info())
+    print("QTD Nulos")
+    print(dfs.isnull().sum())
+    print("QTD de valores unicos")
+    print(dfs.nunique())
+    print("="*50)
+    
+print("TABELA CLIENTES")
+print(clientes.head().to_string())
+print("QTD duplicados em id_cliente")
+print(clientes["id_cliente"].duplicated().sum())
+validacao(clientes)
+print("TABELA SESSÕES")
+print(sessoes.head().to_string())
+print("QTD duplicados em id_sessao")
+print(sessoes["id_sessao"].duplicated().sum())
+print("QTD duplicados em id_cliente")
+print(sessoes["id_cliente"].duplicated().sum())
+validacao(sessoes)
+print("TABELA EVENTOS")
+print(eventos.head().to_string())
+print("QTD duplicados em id_sessao")
+print(eventos["id_sessao"].duplicated().sum())
+validacao(eventos)
+print("TABELA ERROS")
+print(erros.head().to_string())
+print("QTD duplicados em id_evento")
+print(erros["id_evento"].duplicated().sum())
+print("QTD duplicados em id_sessao")
+print(erros["id_sessao"].duplicated().sum())
+validacao(erros)
+print("TABELA AVALIAÇÕES")
+print(avaliacoes.head().to_string())
+validacao(avaliacoes)
+
+# verifica se todos os clientes em sessoes constam na tabela de clientes
+sessoes["clientes_invalidos"] = sessoes["id_cliente"].isin(clientes["id_cliente"])
+print(sessoes['clientes_invalidos'].value_counts())
+
+# verifica se toda sessao de eventos consta na tabela sessao
+eventos["sessao_invalida"] = eventos["id_sessao"].isin(sessoes["id_sessao"])
+print(eventos["sessao_invalida"].value_counts())
+
+# verifica se todo evento e sessao de erros consta na tabela de evento e erros
+erros["evento_invalido"] = erros["id_evento"].isin(eventos["id_evento"])
+erros["sessao_invalida"] = erros["id_sessao"].isin(sessoes["id_sessao"])
+print(erros["evento_invalido"].value_counts())
+print(erros["sessao_invalida"].value_counts())
+
+# verifica se toda sessao em avaliacoes consta na tabela de sessoes
+avaliacoes["sessao_invalida"] = avaliacoes["id_sessao"].isin(sessoes["id_sessao"])
+print(avaliacoes["sessao_invalida"].value_counts())
+        </code></pre>
+      </div>
+      
       <!-- PAINEL PYTHON — transformacao.py -->
       <div class="code-panel" id="panel-py">
         <pre><code class="language-python">import pandas as pd
 
 # importar arquivos
-clientes  = pd.read_csv("aplicativo bancario\\clientes.csv")
-sessoes   = pd.read_csv("aplicativo bancario\\sessoes.csv")
-eventos   = pd.read_csv("aplicativo bancario\\eventos.csv")
-erros     = pd.read_csv("aplicativo bancario\\erros.csv")
-avaliacoes = pd.read_csv("aplicativo bancario\\avaliacoes.csv")
+
+clientes = pd.read_csv("C:\\Projetos banco de dados\\aplicativo bancario\\clientes.csv")
+sessoes = pd.read_csv("C:\\Projetos banco de dados\\aplicativo bancario\\sessoes.csv")
+eventos = pd.read_csv("C:\\Projetos banco de dados\\aplicativo bancario\\eventos.csv")
+erros = pd.read_csv("C:\\Projetos banco de dados\\aplicativo bancario\\erros.csv")
+avaliacoes = pd.read_csv("C:\\Projetos banco de dados\\aplicativo bancario\\avaliacoes.csv")
 
 def view(df, nome):
     print("="*90)
@@ -461,7 +425,7 @@ def view(df, nome):
     print(df.head(5).to_string())
     print(df.info())
     print("="*90)
-
+        
 # ===============================
 # TRANSFORMAÇÃO GERAL
 # ===============================
@@ -472,451 +436,484 @@ def limpar_texto(df):
         df[coluna] = df[coluna].str.strip().str.lower()
     return df
 
-clientes   = limpar_texto(clientes)
-sessoes    = limpar_texto(sessoes)
-eventos    = limpar_texto(eventos)
-erros      = limpar_texto(erros)
+clientes = limpar_texto(clientes)
+sessoes = limpar_texto(sessoes)
+eventos = limpar_texto(eventos)
+erros = limpar_texto(erros)
 avaliacoes = limpar_texto(avaliacoes)
+
 
 # ===============================
 # TRANSFORMAÇÃO TABELA CLIENTES
 # ===============================
 
-# transformar faixa renda em categorico ordenado
-ordem = ["até r$ 2.000", "r$ 2.001 – r$ 5.000",
-         "r$ 5.001 – r$ 10.000", "r$ 10.001 – r$ 20.000",
-         "acima de r$ 20.000"]
-clientes["faixa_renda"] = pd.Categorical(
-    clientes["faixa_renda"], categories=ordem, ordered=True
-)
-clientes["faixa_renda_cod"] = clientes["faixa_renda"].cat.codes  # 0 a 4
+# transformar faixa renda e categorico
+ordem = ["até r$ 2.000",
+    "r$ 2.001 – r$ 5.000",
+    "r$ 5.001 – r$ 10.000",
+    "r$ 10.001 – r$ 20.000",
+    "acima de r$ 20.000"]
 
-# verificar outliers em tempo_relacionamento e idade por IQR
-for col in ["tempo_relacionamento", "idade"]:
-    q1, q3 = clientes[col].quantile([0.25, 0.75])
-    IQR    = q3 - q1
-    out    = clientes[(clientes[col] < q1 - 1.5*IQR) |
-                      (clientes[col] > q3 + 1.5*IQR)]
-    print("="*90)
-    print(f"OUTLIERS CLIENTES — {col}: {len(out)} encontrados")
-    print("="*90)
+clientes["faixa_renda"] = pd.Categorical(clientes["faixa_renda"], categories=ordem, ordered=True)
+
+clientes["faixa_renda_cod"] = clientes["faixa_renda"].cat.codes # 0 a 4
+
+# verificar outliers em tempo relacionamento e idade, apenas registro
+q1_tr = clientes["tempo_relacionamento"].quantile(0.25)
+q3_tr = clientes["tempo_relacionamento"].quantile(0.75)
+IQR_tr = q3_tr - q1_tr
+limite_baixo_tr = q1_tr - 1.5 * IQR_tr
+limite_alto_tr = q3_tr + 1.5 * IQR_tr
+
+outliers_tr = clientes[(clientes["tempo_relacionamento"] < limite_baixo_tr) | (clientes["tempo_relacionamento"] > limite_alto_tr)]
+
+q1 = clientes["idade"].quantile(0.25)
+q3 = clientes["idade"].quantile(0.75)
+IQR = q3 - q1
+limite_baixo = q1 - 1.5 * IQR
+limite_alto = q3 + 1.5 * IQR
+
+outliers_i = clientes[(clientes["idade"] < limite_baixo) | (clientes["idade"] > limite_alto)]
+
+print("="*90)
+print("OUTLIERS CLIENTES")
+print(f"{len(outliers_tr)} encontrados em tempo_relacionamento")
+print(f"Menor:\n {outliers_tr.min()}")
+print(f"Maior:\n {outliers_tr.max()}")
+print(f"{len(outliers_i)} encontrados em idade")
+print(f"Menor:\n {outliers_i.min()}")
+print(f"Maior:\n {outliers_i.max()}")
+print("="*90)
 
 # ===============================
 # TRANSFORMAÇÃO TABELA SESSOES
 # ===============================
+# transformar versao app em string
+sessoes["versao_app"] = sessoes["versao_app"].astype("string")
 
-sessoes["versao_app"]       = sessoes["versao_app"].astype("string")
-sessoes["data_hora_inicio"] = pd.to_datetime(sessoes["data_hora_inicio"])
-sessoes["data_hora_fim"]    = pd.to_datetime(sessoes["data_hora_fim"])
+# transformar data inicio e fim em datetime de sessoes
+sessoes["data_hora_inicio"] = pd.to_datetime(sessoes['data_hora_inicio'])
+sessoes["data_hora_fim"] = pd.to_datetime(sessoes['data_hora_fim'])
 
-# extrair hora e dia da semana para análise de sazonalidade
+
+# extrair hora dia (0-23) e dia semana (1-7) de data hora inicio e fim
+# pode usar .dt.dayofweek para o dia_inicio, mas o panda coloca 0=segunda e 6=domingo 
 sessoes["hora_inicio"] = sessoes["data_hora_inicio"].dt.hour
-sessoes["dia_inicio"]  = sessoes["data_hora_inicio"].dt.day_name(locale="pt_BR")
+sessoes["dia_inicio"] = sessoes["data_hora_inicio"].dt.day_name(locale="pt_BR")
 
-# verificar outliers em duracao_segundos
+# verificar outliers em duracao segundos
 q1_s = sessoes["duracao_segundos"].quantile(0.25)
 q3_s = sessoes["duracao_segundos"].quantile(0.75)
 IQR_s = q3_s - q1_s
-outliers_s = sessoes[
-    (sessoes["duracao_segundos"] < q1_s - 1.5*IQR_s) |
-    (sessoes["duracao_segundos"] > q3_s + 1.5*IQR_s)
-]
+limite_baixo_s = q1 - 1.5 * IQR_s
+limite_alto_s = q3 + 1.5 * IQR_s
+
+outliers_s = sessoes[(sessoes["duracao_segundos"] < limite_baixo_s) | (sessoes["duracao_segundos"] > limite_alto_s)]
 print("="*90)
-print(f"OUTLIERS SESSOES — duracao_segundos: {len(outliers_s)} encontrados")
+print("OUTLIERS SESSOES")
+print(f"{len(outliers_s)} encontrados em duracao_segundos")
+print(f"Menor:\n {outliers_s.min()}")
+print(f"Maior:\n {outliers_s.max()}")
+print(sessoes.info())
 print("="*90)
 
 # ===============================
 # TRANSFORMAÇÃO TABELA EVENTOS
 # ===============================
 
-eventos["timestamp"] = pd.to_datetime(eventos["timestamp"])
-eventos["hora_dia"]  = eventos["timestamp"].dt.hour
-eventos["dia_semana"] = eventos["timestamp"].dt.day_name(locale="pt_BR")
-
-# verificar outliers em tempo_segundos
+# verificar outliers em tempo segundos
 q1_e = eventos["tempo_segundos"].quantile(0.25)
 q3_e = eventos["tempo_segundos"].quantile(0.75)
 IQR_e = q3_e - q1_e
-outliers_e = eventos[
-    (eventos["tempo_segundos"] < q1_e - 1.5*IQR_e) |
-    (eventos["tempo_segundos"] > q3_e + 1.5*IQR_e)
-]
+limite_baixo_e = q1_e - 1.5 * IQR_e
+limite_alto_e = q3_e + 1.5 * IQR_e
+
+outliers_e = eventos[(eventos["tempo_segundos"] < limite_baixo_e) | (eventos["tempo_segundos"] > limite_alto_e)]
+
 print("="*90)
-print(f"OUTLIERS EVENTOS — tempo_segundos: {len(outliers_e)} encontrados")
+print("OUTLIERS EVENTOS")
+print(f"{len(outliers_e)} encontrados em tempo_segundos")
+print(f"Menor:\n {outliers_e.min()}")
+print(f"Maior:\n {outliers_e.max()}")
 print("="*90)
+
+# transformar timestamp em datetime de eventos
+eventos["timestamp"] = pd.to_datetime(eventos["timestamp"])
+
+# extrair hora dia (0-23) e dia semana (0-6) de timestamp
+eventos["hora_dia"] = eventos["timestamp"].dt.hour
+eventos["dia_semana"] = eventos["timestamp"].dt.day_name(locale="pt_BR")
 
 # ===============================
 # TRANSFORMAÇÃO TABELA ERROS
 # ===============================
-
+#  Substituir os valores nulos das colunas 
+# ‘NaN' por ‘None’
 erros["tempo_resolucao"] = erros["tempo_resolucao"].astype("Int64")
-
 # ===============================
 # TRANSFORMAÇÃO TABELA AVALIACOES
 # ===============================
 
-avaliacoes["comentario"]      = avaliacoes["comentario"].replace("nan", None)
-avaliacoes["data_avaliacao"]  = pd.to_datetime(avaliacoes["data_avaliacao"])
+#  Substituir os valores nulos das colunas 
+# ‘NaN' por ‘None’
+avaliacoes["comentario"] = avaliacoes["comentario"].replace("nan", None)
+# transformar data avaliacao em datetime
+avaliacoes["data_avaliacao"] = pd.to_datetime(avaliacoes["data_avaliacao"])
 
-# exibir resumo final de cada tabela
-for df, nome in [(clientes,  "CLIENTES"),
-                 (sessoes,   "SESSOES"),
-                 (eventos,   "EVENTOS"),
-                 (erros,     "ERROS"),
-                 (avaliacoes,"AVALIAÇÕES")]:
+for df, nome in [(clientes, "CLIENTES"),
+                 (sessoes, "SESSOES"),
+                 (eventos, "EVENTOS"),
+                 (erros, "ERROS"),
+                 (avaliacoes, "AVALIAÇÕES")]:
     view(df, nome)
 
 # ===============================
 # SALVAR BASES
 # ===============================
-
 bases = {
-    "clientes":   clientes,
-    "sessoes":    sessoes,
-    "eventos":    eventos,
-    "erros":      erros,
-    "avaliacoes": avaliacoes,
+    "clientes" : clientes,
+    "sessoes" : sessoes,
+    "eventos" : eventos,
+    "erros" : erros,
+    "avaliacoes" : avaliacoes
 }
+
 for name, df in bases.items():
     df.to_csv(f"{name}_transformados.csv", index=False, encoding="utf-8-sig")
-    print(f"{name} salvo")</code></pre>
+    print(f"{name} salvo") </code></pre>
       </div>
 
+      <!-- PAINEL SQL — tabelas -->
+      <div class="code-panel hidden" id="panel-sql">
+        <pre><code class="language-sql">
+-- ================
+-- CUSTOMER JOURNEY INTELIGENCE
+-- ================
+
+-- 1. CLIENTES
+CREATE TABLE IF NOT EXISTS clientes (
+	id_cliente SERIAL PRIMARY KEY,
+	nome VARCHAR(100) NOT NULL,
+	idade SMALLINT NOT NULL,
+	sexo CHAR(1) NOT NULL CHECK (sexo IN ('m', 'f')),
+	cidade VARCHAR(100) NOT NULL,
+	uf CHAR(2) NOT NULL,
+	segmento VARCHAR(30) NOT NULL,
+	tempo_relacionamento SMALLINT NOT NULL CHECK (tempo_relacionamento >= 0),
+	faixa_renda VARCHAR(30) NOT NULL,
+	tipo_conta VARCHAR(20) NOT NULL,
+	app_favorito VARCHAR(10) NOT NULL,
+	persona VARCHAR(20) NOT NULL,
+	faixa_renda_cod SMALLINT NOT NULL CHECK (faixa_renda_cod BETWEEN 0 AND 4)	
+);
+
+-- 2. SESSOES
+CREATE TABLE IF NOT EXISTS sessoes (
+	id_sessao SERIAL PRIMARY KEY,
+	id_cliente INT NOT NULL REFERENCES clientes(id_cliente),
+	data_hora_inicio TIMESTAMP NOT NULL,
+	dispositivo VARCHAR(20) NOT NULL,
+	versao_app VARCHAR(5) NOT NULL,
+	qualidade_conexao VARCHAR(50) NOT NULL,
+	duracao_segundos INT NOT NULL CHECK (duracao_segundos >= 0),
+	data_hora_fim TIMESTAMP NOT NULL,
+	abandonada BOOLEAN NOT NULL DEFAULT FALSE,
+	motivo_encerramento VARCHAR(20) NOT NULL,
+	score_experiencia SMALLINT NOT NULL CHECK (score_experiencia BETWEEN 0 AND 100),
+	hora_inicio SMALLINT NOT NULL CHECK (hora_inicio BETWEEN 0 AND 23),
+	dia_inicio VARCHAR(20) NOT NULL 
+);
+
+-- 3. EVENTOS 
+CREATE TABLE IF NOT EXISTS eventos (
+	id_evento SERIAL PRIMARY KEY,
+	id_sessao INT NOT NULL REFERENCES sessoes(id_sessao),
+	ordem SMALLINT NOT NULL CHECK (ordem >= 1),
+	timestamp TIMESTAMP NOT NULL,
+	funcionalidade VARCHAR(20) NOT NULL,
+	acao VARCHAR(30) NOT NULL,
+	tempo_segundos INT NOT NULL CHECK (tempo_segundos >= 1),
+	status VARCHAR(20) NOT NULL,
+	teve_erro BOOLEAN NOT NULL DEFAULT FALSE,
+	hora_dia SMALLINT NOT NULL CHECK (hora_dia BETWEEN 0 AND 23),
+	dia_semana VARCHAR(20) NOT NULL
+);
+
+-- 4. ERROS
+CREATE TABLE IF NOT EXISTS erros (
+	id_erro SERIAL PRIMARY KEY,
+	id_evento INT NOT NULL REFERENCES eventos(id_evento),
+	id_sessao INT NOT NULL REFERENCES sessoes(id_sessao),
+	tipo_erro VARCHAR(30) NOT NULL,
+	codigo_erro VARCHAR(30) NOT NULL,
+	tempo_resolucao INT  NULL ,
+	resolvido BOOLEAN NOT NULL DEFAULT FALSE,
+	tentativas SMALLINT NOT NULL DEFAULT 1
+);
+
+-- 5. AVALIAÇÕES 
+CREATE TABLE IF NOT EXISTS avaliacoes (
+	id_avaliacao SERIAL PRIMARY KEY,
+	id_sessao INT NOT NULL UNIQUE REFERENCES sessoes(id_sessao),
+	nps SMALLINT NOT NULL CHECK (nps BETWEEN 0 AND 10),
+	csat SMALLINT NOT NULL CHECK (csat BETWEEN 1 AND 5), 
+	comentario TEXT NULL,
+	aceitou_pesquisa BOOLEAN NOT NULL DEFAULT FALSE,
+	score_experiencia SMALLINT NOT NULL CHECK (score_experiencia BETWEEN 0 AND 100),
+	data_avaliacao TIMESTAMP NOT NULL
+);     
+        </code></pre>
+      </div>
+      
       <!-- PAINEL SQL — views analíticas -->
       <div class="code-panel hidden" id="panel-sql">
-        <pre><code class="language-sql">-- ================
--- CUSTOMER JOURNEY INTELLIGENCE — VIEWS ANALÍTICAS
+        <pre><code class="language-sql">
+-- ================
+-- CUSTOMER JOURNEY INTELLIGENCE
 -- ================
 
 -- Onde os clientes encontram mais dificuldades?
 CREATE VIEW vw_dificuldade_p_funcionalidade AS
-SELECT
-    funcionalidade,
-    COUNT(*)                                  AS total_eventos,
-    SUM(teve_erro::int)                       AS total_erros,
-    ROUND(AVG(teve_erro::int) * 100, 2)       AS pct_taxa_erro,
-    ROUND(AVG(tempo_segundos), 1)             AS media_tempo_segundos,
-    COUNT(DISTINCT id_sessao)                 AS sessoes_afetadas
+SELECT 
+	funcionalidade,
+	COUNT(*) AS total_eventos,
+	SUM(teve_erro::int) AS total_erros,
+	ROUND(AVG(teve_erro::int) * 100, 2) AS pct_taxa_erro,
+	ROUND(AVG(tempo_segundos), 1) AS media_tempo_segundos,
+	COUNT(DISTINCT id_sessao) AS sessoes_afetadas
 FROM eventos
 GROUP BY funcionalidade
 ORDER BY pct_taxa_erro DESC;
+
+SELECT * FROM vw_dificuldade_p_funcionalidade LIMIT 10;
 
 -- Quais funcionalidades geram maior frustração?
 CREATE VIEW vw_frustacao_p_funcionalidade AS
-SELECT
-    e.funcionalidade,
-    ROUND(AVG(s.score_experiencia), 1)        AS score_medio,
-    ROUND(AVG(a.nps), 1)                      AS nps_medio,
-    ROUND(AVG(a.csat), 1)                     AS csat_medio,
-    COUNT(DISTINCT er.id_erro)                AS qtd_erro,
-    SUM(CASE WHEN er.resolvido = false
-        THEN 1 ELSE 0 END)                    AS erros_nao_resolvido
+SELECT 
+	e.funcionalidade,
+	ROUND(AVG(s.score_experiencia), 1) AS score_medio,
+	ROUND(AVG(a.nps), 1) AS nps_medio,
+	ROUND(AVG(a.csat), 1) AS csat_medio,
+	COUNT(DISTINCT er.id_erro) AS qtd_erro,
+	SUM(CASE WHEN er.resolvido = false
+		THEN 1 ELSE 0 END) AS erros_nao_resolvido
 FROM eventos e
-JOIN sessoes s  ON e.id_sessao  = s.id_sessao
-LEFT JOIN erros er       ON er.id_evento = e.id_evento
-LEFT JOIN avaliacoes a   ON a.id_sessao  = s.id_sessao
-    AND a.aceitou_pesquisa = true
+JOIN sessoes s ON e.id_sessao = s.id_sessao
+LEFT JOIN erros er ON er.id_evento = e.id_evento
+LEFT JOIN avaliacoes a ON a.id_sessao = s.id_sessao AND a.aceitou_pesquisa = true
 GROUP BY e.funcionalidade
 ORDER BY score_medio ASC;
 
+SELECT * FROM vw_frustacao_p_funcionalidade LIMIT 10;
+
+--Quais perfis possuem pior experiência?
+CREATE VIEW vw_experiencia_p_perfil AS
+SELECT
+	c.persona,
+	c.segmento,
+	c.faixa_renda,
+	c.app_favorito,
+	COUNT(DISTINCT s.id_sessao) AS total_sessoes,
+	ROUND(AVG(s.score_experiencia), 1) AS score_medio,
+	ROUND(AVG(a.nps), 2) AS nps_medio,
+	ROUND(AVG(a.csat), 2) AS csat_medio,
+	ROUND(AVG(s.abandonada::int) * 100, 2) AS pct_sessao_abandonada,
+	ROUND((SUM(CASE WHEN a.nps >= 9 THEN 1 ELSE 0 END) -
+		   SUM(CASE WHEN a.nps <= 6 THEN 1 ELSE 0 END))
+		   * 100.0 / NULLIF(COUNT(a.id_avaliacao), 0), 1) AS nps_score
+FROM clientes c
+JOIN sessoes s ON c.id_cliente = s.id_cliente
+LEFT JOIN avaliacoes a ON a.id_sessao = s.id_sessao AND a.aceitou_pesquisa = true
+GROUP BY c.persona, c.segmento, c.faixa_renda, c.app_favorito
+ORDER BY score_medio ASC;
+
+SELECT * FROM vw_experiencia_p_perfil LIMIT 10;
+
 -- Em qual etapa ocorre o maior abandono?
 CREATE VIEW vw_etapa_com_mais_abandono AS
-SELECT
-    e.funcionalidade,
-    COUNT(*)                                   AS total_abandonos,
-    ROUND(COUNT(*) * 100.0
-          / SUM(COUNT(*)) OVER (), 2)          AS pct_do_total,
-    ROUND(AVG(e.ordem), 1)                     AS ordem_media_abandono
+SELECT 
+	e.funcionalidade,
+	COUNT(*) AS total_abandonos,
+	ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (), 2) AS pct_do_total,
+	ROUND(AVG(e.ordem), 1) AS ordem_media_abandono
 FROM eventos e
 JOIN sessoes s ON s.id_sessao = e.id_sessao
-WHERE s.abandonada = true
-  AND e.ordem = (
-    SELECT MAX(e2.ordem)
-    FROM eventos e2
-    WHERE e2.id_sessao = e.id_sessao
-  )
+WHERE s.abandonada = true AND e.ordem = (
+	SELECT MAX(e2.ordem)
+	FROM eventos e2
+	WHERE e2.id_sessao = e.id_sessao
+)
 GROUP BY e.funcionalidade
 ORDER BY total_abandonos DESC;
+
+SELECT * FROM vw_etapa_com_mais_abandono;
+
+-- Quanto tempo o usuário leva em cada funcionalidade?
+CREATE VIEW vw_tempo_por_funcionalidade AS
+SELECT
+	funcionalidade,
+	status,
+	COUNT(*) AS total_eventos,
+	ROUND(AVG(tempo_segundos), 1) AS media_tempo_segundos,
+	MIN(tempo_segundos) AS minimo_tempo,
+	MAX(tempo_segundos) AS maximo_tempo
+FROM eventos
+GROUP BY funcionalidade, status
+ORDER BY funcionalidade, status;
+
+SELECT *FROM vw_tempo_por_funcionalidade LIMIT 10;
+
+-- Quais caminhos levam a uma experiência positiva?
+CREATE VIEW vw_caminhos_esperiencia_positiva AS
+SELECT 
+	s.motivo_encerramento,
+	s.qualidade_conexao,
+	s.versao_app,
+	c.persona,
+	COUNT(DISTINCT s.id_sessao) AS total_sessoes,
+	ROUND(AVG( s.score_experiencia), 1) AS score_medio,
+	ROUND(AVG( a.nps), 2) AS nps_medio,
+	SUM(CASE WHEN s.score_experiencia >=80 
+		THEN 1 ELSE 0 END) AS sessoes_positivas,
+	ROUND(SUM(CASE WHEN s.score_experiencia >=80
+		THEN 1 ELSE 0 END) * 100.0 
+		/ COUNT(DISTINCT s.id_sessao), 1) AS pct_sessoes_positivas
+FROM sessoes s
+JOIN clientes c ON c.id_cliente = s.id_cliente
+LEFT JOIN avaliacoes a ON a.id_sessao = s.id_sessao AND a.aceitou_pesquisa = true
+GROUP BY s.motivo_encerramento, s.qualidade_conexao, s.versao_app, c.persona
+ORDER BY score_medio DESC;
+
+SELECT * FROM vw_caminhos_esperiencia_positiva LIMIT 10;
+
+-- Quais assuntos aparecem com maior frequência nas reclamações?
+CREATE VIEW vw_assuntos_com_maior_frequencia AS
+SELECT 
+	a.comentario,
+	a.nps,
+	a.csat,
+	a.score_experiencia,
+	c.persona,
+	c.segmento,
+	s.motivo_encerramento,
+	s.qualidade_conexao
+FROM avaliacoes a
+JOIN sessoes s ON s.id_sessao = a.id_sessao
+JOIN clientes c ON c.id_cliente = s.id_cliente
+WHERE a.comentario IS NOT NULL
+ORDER BY a.nps ASC;
+
+SELECT * FROM vw_assuntos_com_maior_frequencia LIMIT 10;
+
+-- O sentimento varia conforme a funcionalidade?
+CREATE VIEW vw_sentimento_p_funcionalidade AS
+SELECT
+	e.funcionalidade,
+	ROUND(AVG(a.nps), 2) AS nps_medio,
+	ROUND(AVG(a.csat), 2) AS csat_medio,
+	ROUND(AVG(a.score_experiencia), 2) AS score_medio,
+	COUNT(DISTINCT a.id_avaliacao) AS avaliacoes,
+	SUM(CASE WHEN a.nps <=6 THEN 1 ELSE 0 END) AS detratores,
+	SUM(CASE WHEN a.nps >=9 THEN 1 ELSE 0 END) AS promotores,
+	ROUND((SUM(CASE WHEN a.nps <=6 THEN 1 ELSE 0 END) -
+		  SUM(CASE WHEN a.nps >=9 THEN 1 ELSE 0 END))
+		  * 100.0 / NULLIF (COUNT(a.id_avaliacao), 0), 1) AS nps_score
+FROM eventos e
+JOIN avaliacoes a ON a.id_sessao = e.id_sessao
+	AND a.aceitou_pesquisa = true
+GROUP BY e.funcionalidade
+ORDER BY nps_score ASC;
+
+SELECT * FROM vw_sentimento_p_funcionalidade LIMIT 10;
+
+-- Existem padrões recorrentes?
+-- Qual melhoria deve ser feita primeiro?
+-- Quais problemas afetam mais clientes?
+CREATE VIEW vw_padroes AS
+SELECT
+	er.tipo_erro,
+	e.funcionalidade,
+	COUNT(DISTINCT er.id_erro) AS total_erros,
+	COUNT(DISTINCT s.id_cliente) AS clientes_afetados,
+	COUNT(DISTINCT e.id_sessao) AS sessoes_afetadas,
+	ROUND(AVG(s.score_experiencia), 1) AS score_medio_sessao,
+	ROUND(AVG(a.nps), 2) AS nps_medio,
+	ROUND(AVG(er.resolvido::int) * 100, 1) AS pct_resolucao,
+	ROUND(AVG(er.tentativas), 1) AS media_tentativas,
+	ROUND((SUM(CASE WHEN a.nps <=6 THEN 1 ELSE 0 END) -
+		  SUM(CASE WHEN a.nps >=9 THEN 1 ELSE 0 END))
+		  * 100.0 / NULLIF (COUNT(a.id_avaliacao), 0), 1) AS nps_score
+FROM erros er
+JOIN eventos e ON e.id_evento = er.id_evento
+JOIN sessoes s ON s.id_sessao = er.id_sessao
+LEFT JOIN avaliacoes a ON a.id_sessao = s.id_sessao
+	AND a.aceitou_pesquisa = true
+GROUP BY er.tipo_erro, e.funcionalidade
+ORDER BY clientes_afetados DESC, score_medio_sessao ASC;
+
+SELECT * FROM vw_padroes LIMIT 10;
 
 -- Qual funcionalidade gera maior impacto no NPS?
 CREATE VIEW vw_nps_p_funcionalidade AS
-SELECT
-    e.funcionalidade,
-    COUNT(DISTINCT s.id_sessao)                AS sessoes_com_funcionalidade,
-    ROUND(AVG(CASE WHEN e.teve_erro = false
-        THEN a.nps END), 2)                    AS nps_medio_sem_erro,
-    ROUND(AVG(CASE WHEN e.teve_erro = true
-        THEN a.nps END), 2)                    AS nps_com_erro,
-    ROUND(
-        AVG(CASE WHEN e.teve_erro = false THEN a.nps END) -
-        AVG(CASE WHEN e.teve_erro = true  THEN a.nps END),
-    2)                                         AS delta_nps,
-    ROUND(
-        (SUM(CASE WHEN a.nps <= 6 THEN 1 ELSE 0 END) -
-         SUM(CASE WHEN a.nps >= 9 THEN 1 ELSE 0 END))
-        * 100.0 / NULLIF(COUNT(a.id_avaliacao), 0),
-    1)                                         AS nps_score
-FROM eventos e
-JOIN sessoes    s ON s.id_sessao  = e.id_sessao
-JOIN avaliacoes a ON a.id_sessao  = s.id_sessao
-    AND a.aceitou_pesquisa = true
-GROUP BY e.funcionalidade
-ORDER BY delta_nps DESC;
-
--- Quais padrões de erro afetam mais clientes?
-CREATE VIEW vw_padroes AS
-SELECT
-    er.tipo_erro,
-    e.funcionalidade,
-    COUNT(DISTINCT er.id_erro)                 AS total_erros,
-    COUNT(DISTINCT s.id_cliente)               AS clientes_afetados,
-    COUNT(DISTINCT e.id_sessao)                AS sessoes_afetadas,
-    ROUND(AVG(s.score_experiencia), 1)         AS score_medio_sessao,
-    ROUND(AVG(er.resolvido::int) * 100, 1)     AS pct_resolucao,
-    ROUND(AVG(er.tentativas), 1)               AS media_tentativas
-FROM erros er
-JOIN eventos e  ON e.id_evento = er.id_evento
-JOIN sessoes s  ON s.id_sessao = er.id_sessao
-LEFT JOIN avaliacoes a ON a.id_sessao = s.id_sessao
-    AND a.aceitou_pesquisa = true
-GROUP BY er.tipo_erro, e.funcionalidade
-ORDER BY clientes_afetados DESC, score_medio_sessao ASC;</code></pre>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-<!-- CÓDIGO -->
-<section class="proj-section alt">
-  <div class="container">
-    <div class="section-label">// código do projeto</div>
-    <h2>Código Utilizado</h2>
-    <div class="code-block-wrap">
-      <div class="code-tabs">
-        <button class="code-tab py-tab active" onclick="switchTab('py', this)">
-          <i class="fa-brands fa-python"></i> Python — ETL &amp; Transformação
-        </button>
-        <button class="code-tab sql-tab" onclick="switchTab('sql', this)">
-          <i class="fa-solid fa-database"></i> SQL — Views Analíticas
-        </button>
-        <button class="code-copy" id="copy-btn" onclick="copyCode()">
-          <i class="fa-regular fa-copy"></i> Copiar
-        </button>
-      </div>
-
-      <!-- PAINEL PYTHON — transformacao.py -->
-      <div class="code-panel" id="panel-py">
-        <pre><code class="language-python">import pandas as pd
-
-# importar arquivos
-clientes  = pd.read_csv("clientes.csv")
-sessoes   = pd.read_csv("sessoes.csv")
-eventos   = pd.read_csv("eventos.csv")
-erros     = pd.read_csv("erros.csv")
-avaliacoes = pd.read_csv("avaliacoes.csv")
-
-def view(df, nome):
-    print("="*90)
-    print(f"{nome}")
-    print(df.head(5).to_string())
-    print(df.info())
-    print("="*90)
-
-# ===============================
-# TRANSFORMAÇÃO GERAL
-# ===============================
-
-# tirar espaços de todas as bases e deixar tudo minusculo
-def limpar_texto(df):
-    for coluna in df.select_dtypes(include="object").columns:
-        df[coluna] = df[coluna].str.strip().str.lower()
-    return df
-
-clientes   = limpar_texto(clientes)
-sessoes    = limpar_texto(sessoes)
-eventos    = limpar_texto(eventos)
-erros      = limpar_texto(erros)
-avaliacoes = limpar_texto(avaliacoes)
-
-# ===============================
-# TRANSFORMAÇÃO TABELA CLIENTES
-# ===============================
-
-# transformar faixa_renda em categorico ordenado
-ordem = ["até r$ 2.000", "r$ 2.001 – r$ 5.000",
-         "r$ 5.001 – r$ 10.000", "r$ 10.001 – r$ 20.000",
-         "acima de r$ 20.000"]
-
-clientes["faixa_renda"] = pd.Categorical(
-    clientes["faixa_renda"], categories=ordem, ordered=True
-)
-clientes["faixa_renda_cod"] = clientes["faixa_renda"].cat.codes  # 0 a 4
-
-# verificar outliers em tempo_relacionamento e idade (IQR)
-for col in ["tempo_relacionamento", "idade"]:
-    q1  = clientes[col].quantile(0.25)
-    q3  = clientes[col].quantile(0.75)
-    iqr = q3 - q1
-    out = clientes[(clientes[col] < q1 - 1.5*iqr) |
-                   (clientes[col] > q3 + 1.5*iqr)]
-    print(f"OUTLIERS {col.upper()}: {len(out)} encontrados")
-
-# ===============================
-# TRANSFORMAÇÃO TABELA SESSOES
-# ===============================
-
-sessoes["versao_app"]      = sessoes["versao_app"].astype("string")
-sessoes["data_hora_inicio"] = pd.to_datetime(sessoes["data_hora_inicio"])
-sessoes["data_hora_fim"]    = pd.to_datetime(sessoes["data_hora_fim"])
-
-# extrair hora e dia da semana
-sessoes["hora_inicio"] = sessoes["data_hora_inicio"].dt.hour
-sessoes["dia_inicio"]  = sessoes["data_hora_inicio"].dt.day_name(locale="pt_BR")
-
-# verificar outliers em duracao_segundos
-q1_s = sessoes["duracao_segundos"].quantile(0.25)
-q3_s = sessoes["duracao_segundos"].quantile(0.75)
-out_s = sessoes[(sessoes["duracao_segundos"] < q1_s - 1.5*(q3_s-q1_s)) |
-                (sessoes["duracao_segundos"] > q3_s + 1.5*(q3_s-q1_s))]
-print(f"OUTLIERS DURACAO_SEGUNDOS: {len(out_s)} encontrados")
-
-# ===============================
-# TRANSFORMAÇÃO TABELA EVENTOS
-# ===============================
-
-eventos["timestamp"] = pd.to_datetime(eventos["timestamp"])
-eventos["hora_dia"]  = eventos["timestamp"].dt.hour
-eventos["dia_semana"] = eventos["timestamp"].dt.day_name(locale="pt_BR")
-
-# verificar outliers em tempo_segundos
-q1_e = eventos["tempo_segundos"].quantile(0.25)
-q3_e = eventos["tempo_segundos"].quantile(0.75)
-out_e = eventos[(eventos["tempo_segundos"] < q1_e - 1.5*(q3_e-q1_e)) |
-                (eventos["tempo_segundos"] > q3_e + 1.5*(q3_e-q1_e))]
-print(f"OUTLIERS TEMPO_SEGUNDOS: {len(out_e)} encontrados")
-
-# ===============================
-# TRANSFORMAÇÃO TABELA ERROS
-# ===============================
-
-erros["tempo_resolucao"] = erros["tempo_resolucao"].astype("Int64")
-
-# ===============================
-# TRANSFORMAÇÃO TABELA AVALIACOES
-# ===============================
-
-avaliacoes["comentario"]      = avaliacoes["comentario"].replace("nan", None)
-avaliacoes["data_avaliacao"]  = pd.to_datetime(avaliacoes["data_avaliacao"])
-
-# exibir resumo de cada tabela
-for df, nome in [(clientes, "CLIENTES"), (sessoes, "SESSOES"),
-                 (eventos, "EVENTOS"), (erros, "ERROS"),
-                 (avaliacoes, "AVALIAÇÕES")]:
-    view(df, nome)
-
-# ===============================
-# SALVAR BASES TRATADAS
-# ===============================
-
-bases = {"clientes": clientes, "sessoes": sessoes,
-         "eventos": eventos, "erros": erros,
-         "avaliacoes": avaliacoes}
-
-for name, df in bases.items():
-    df.to_csv(f"{name}_transformados.csv", index=False, encoding="utf-8-sig")
-    print(f"{name} salvo")</code></pre>
-      </div>
-
-      <!-- PAINEL SQL — views.sql -->
-      <div class="code-panel hidden" id="panel-sql">
-        <pre><code class="language-sql">-- =====================================
--- CUSTOMER JOURNEY INTELLIGENCE — VIEWS
--- =====================================
-
--- 1. Onde os clientes encontram mais dificuldades?
-CREATE VIEW vw_dificuldade_p_funcionalidade AS
-SELECT
-    funcionalidade,
-    COUNT(*)                                        AS total_eventos,
-    SUM(teve_erro::int)                             AS total_erros,
-    ROUND(AVG(teve_erro::int) * 100, 2)             AS pct_taxa_erro,
-    ROUND(AVG(tempo_segundos), 1)                   AS media_tempo_segundos,
-    COUNT(DISTINCT id_sessao)                       AS sessoes_afetadas
-FROM eventos
-GROUP BY funcionalidade
-ORDER BY pct_taxa_erro DESC;
-
-
--- 2. Qual funcionalidade gera maior impacto no NPS?
---    Delta NPS = diferença entre sessões com erro e sem erro
-CREATE VIEW vw_nps_p_funcionalidade AS
-SELECT
-    e.funcionalidade,
-    COUNT(DISTINCT s.id_sessao)                     AS sessoes_com_funcionalidade,
-    ROUND(AVG(CASE WHEN e.teve_erro = false
-              THEN a.nps END), 2)                   AS nps_medio_sem_erro,
-    ROUND(AVG(CASE WHEN e.teve_erro = true
-              THEN a.nps END), 2)                   AS nps_com_erro,
-    ROUND(AVG(CASE WHEN e.teve_erro = false THEN a.nps END) -
-          AVG(CASE WHEN e.teve_erro = true  THEN a.nps END), 2)
-                                                    AS delta_nps,
-    ROUND((SUM(CASE WHEN a.nps <= 6 THEN 1 ELSE 0 END) -
-           SUM(CASE WHEN a.nps >= 9 THEN 1 ELSE 0 END))
-           * 100.0 / NULLIF(COUNT(a.id_avaliacao), 0), 1)
-                                                    AS nps_score
-FROM eventos e
-JOIN sessoes   s ON s.id_sessao = e.id_sessao
-JOIN avaliacoes a ON a.id_sessao = s.id_sessao
-    AND a.aceitou_pesquisa = true
-GROUP BY e.funcionalidade
-ORDER BY delta_nps DESC;
-
-
--- 3. Em qual etapa ocorre o maior abandono?
-CREATE VIEW vw_etapa_com_mais_abandono AS
-SELECT
-    e.funcionalidade,
-    COUNT(*)                                        AS total_abandonos,
-    ROUND(COUNT(*) * 100.0
-          / SUM(COUNT(*)) OVER (), 2)               AS pct_do_total,
-    ROUND(AVG(e.ordem), 1)                          AS ordem_media_abandono
+SELECT 
+	e.funcionalidade,
+	COUNT(DISTINCT s.id_sessao) AS sessoes_com_funcionalidade,
+	ROUND(AVG(CASE WHEN e.teve_erro = false 
+		  THEN a.nps END), 2) AS nps_medio_sem_erro,
+	ROUND(AVG(CASE WHEN e.teve_erro = true
+		  THEN a.nps END), 2) AS nps_com_erro,
+	ROUND(AVG(CASE WHEN e.teve_erro = false THEN a.nps END) -
+          AVG(CASE WHEN e.teve_erro = true THEN a.nps END), 2) AS delta_nps,
+	ROUND((SUM(CASE WHEN a.nps <=6 THEN 1 ELSE 0 END) -
+		  SUM(CASE WHEN a.nps >=9 THEN 1 ELSE 0 END))
+		  * 100.0 / NULLIF (COUNT(a.id_avaliacao), 0), 1) AS nps_score
 FROM eventos e
 JOIN sessoes s ON s.id_sessao = e.id_sessao
-WHERE s.abandonada = true
-  AND e.ordem = (
-      SELECT MAX(e2.ordem)
-      FROM   eventos e2
-      WHERE  e2.id_sessao = e.id_sessao
-  )
+JOIN avaliacoes a ON a.id_sessao = s.id_sessao
+	AND a.aceitou_pesquisa = true
 GROUP BY e.funcionalidade
-ORDER BY total_abandonos DESC;
+ORDER BY delta_nps DESC;
+	
+SELECT * FROM vw_nps_p_funcionalidade LIMIT 10;
 
-
--- 4. Padrões de erro: qual problema afeta mais clientes?
-CREATE VIEW vw_padroes AS
+-- qual hora do dia tem mais erros de funcionalidade
+CREATE VIEW vw_hora_com_mais_erros AS
 SELECT
-    er.tipo_erro,
-    e.funcionalidade,
-    COUNT(DISTINCT er.id_erro)                      AS total_erros,
-    COUNT(DISTINCT s.id_cliente)                    AS clientes_afetados,
-    COUNT(DISTINCT e.id_sessao)                     AS sessoes_afetadas,
-    ROUND(AVG(s.score_experiencia), 1)              AS score_medio_sessao,
-    ROUND(AVG(er.resolvido::int) * 100, 1)          AS pct_resolucao,
-    ROUND(AVG(er.tentativas), 1)                    AS media_tentativas,
-    ROUND((SUM(CASE WHEN a.nps <= 6 THEN 1 ELSE 0 END) -
-           SUM(CASE WHEN a.nps >= 9 THEN 1 ELSE 0 END))
-           * 100.0 / NULLIF(COUNT(a.id_avaliacao), 0), 1)
-                                                    AS nps_score
-FROM erros er
-JOIN eventos   e ON e.id_evento  = er.id_evento
-JOIN sessoes   s ON s.id_sessao  = er.id_sessao
-LEFT JOIN avaliacoes a ON a.id_sessao = s.id_sessao
-    AND a.aceitou_pesquisa = true
-GROUP BY er.tipo_erro, e.funcionalidade
-ORDER BY clientes_afetados DESC, score_medio_sessao ASC;</code></pre>
-      </div>
+	e.funcionalidade,
+	e.hora_dia,
+	COUNT(DISTINCT er.id_erro) AS total_erros,
+	COUNT(DISTINCT e.id_evento) AS total_eventos, 
+	ROUND(AVG(e.tempo_segundos), 1) AS media_tempo_segundos,
+	ROUND(AVG(s.score_experiencia), 1) AS media_score_experiencia
+FROM eventos e
+JOIN sessoes s ON s.id_sessao = e.id_sessao
+JOIN erros er ON er.id_evento = e.id_evento
+WHERE e.teve_erro = true
+GROUP BY e.funcionalidade, e.hora_dia
+ORDER BY total_erros DESC;
+
+SELECT * FROM vw_hora_com_mais_erros LIMIT 10;
+
+-- qual dia da semana tem mais erros
+CREATE VIEW vw_dia_semana_mais_erros AS 
+SELECT
+	e.funcionalidade,
+	e.dia_semana,
+	COUNT(DISTINCT er.id_erro) AS total_erros,
+	COUNT(DISTINCT e.id_evento) AS total_eventos,
+	ROUND(AVG(e.tempo_segundos), 1) AS media_tempo_segundos,
+	ROUND(AVG(s.score_experiencia), 1) AS medis_score_experiencia
+FROM eventos e
+JOIN sessoes s ON s.id_sessao = e.id_sessao
+JOIN erros er ON er.id_evento = e.id_evento
+WHERE e.teve_erro = true
+GROUP BY e.funcionalidade, e.dia_semana
+ORDER BY total_erros DESC;
+
+SELECT * FROM vw_dia_semana_mais_erros LIMIT 10;
+          
+            </code></pre>
+          </div>
     </div>
   </div>
 </section>
@@ -924,7 +921,7 @@ ORDER BY clientes_afetados DESC, score_medio_sessao ASC;</code></pre>
 <!-- INSIGHTS -->
 <section class="proj-section">
   <div class="container">
-    <div class="section-label">// principais achados</div>
+    <div class="section-label">principais achados</div>
     <h2>Insights do Projeto</h2>
     <div class="insights-grid">
 
@@ -977,7 +974,7 @@ ORDER BY clientes_afetados DESC, score_medio_sessao ASC;</code></pre>
 <!-- RECOMENDAÇÕES -->
 <section class="proj-section alt">
   <div class="container">
-    <div class="section-label">// plano de ação</div>
+    <div class="section-label">plano de ação</div>
     <h2>Recomendações & Priorização</h2>
     <p style="color:var(--t2);font-size:14px;margin-bottom:24px">Baseado na análise de impacto (clientes afetados × score médio × volume de abandono).</p>
     <div style="overflow-x:auto">
@@ -1030,7 +1027,7 @@ ORDER BY clientes_afetados DESC, score_medio_sessao ASC;</code></pre>
 <!-- ARQUIVOS -->
 <section class="proj-section">
   <div class="container">
-    <div class="section-label">// arquivos do projeto</div>
+    <div class="section-label">arquivos do projeto</div>
     <h2>Baixar Arquivos</h2>
     <p style="color:var(--t2);font-size:14px;margin-bottom:24px">Todos os arquivos disponíveis no repositório do GitHub.</p>
     <div class="files-grid">
@@ -1081,15 +1078,15 @@ ORDER BY clientes_afetados DESC, score_medio_sessao ASC;</code></pre>
 <!-- NAVEGAÇÃO ENTRE PROJETOS -->
 <div class="proj-nav">
   <div class="container">
+    <a href="../index.html#projetos" class="pn-back-btn">
+      <i class="fa-solid fa-grid-2"></i> Todos os Projetos
+    </a>
     <a href="rh.html" style="display:flex;align-items:center;gap:12px">
       <div class="btn btn-primary" style="padding:10px 14px"><i class="fa-solid fa-arrow-left"></i></div>
       <div class="pn-prev-label">
         <small>Projeto anterior</small>
         <span>People Analytics — RH</span>
       </div>
-    </a>
-    <a href="../index.html#projetos" class="pn-back-btn">
-      <i class="fa-solid fa-grid-2"></i> Todos os Projetos
     </a>
   </div>
 </div>
