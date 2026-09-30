@@ -235,12 +235,6 @@
         <p>Este projeto simula um cenário real de People Analytics: uma base de RH com dados cadastrais, folha de pagamento e registros de ausência de 950 colaboradores entre 2021 e 2026. O objetivo foi identificar os fatores que mais influenciam turnover e absenteísmo — transformando dados operacionais de RH em alertas antecipados que podem orientar ações de retenção antes que o colaborador decida sair.</p>
         <p>O tratamento de dados em Python envolveu a limpeza e padronização de 5 tabelas relacionadas — dimensões de área, calendário e funcionário; fatos de ausências e folha de pagamento — com verificação de nulos, conversão de tipos, checagem de consistência entre datas (nascimento, admissão, demissão) e detecção de outliers por método IQR. Esse processo revelou 1.657 registros de horas extras fora do padrão, concentrados em áreas específicas.</p>
         <p>No Power BI, foram construídas 12 medidas DAX (turnover, absenteísmo, custo por colaborador, comparativos ano a ano) distribuídas em 4 páginas analíticas com foco em diferentes perspectivas do problema de RH.</p>
-        <div class="pages-grid" style="margin-top:16px">
-          <div class="page-card"><span class="page-num">P1</span><span class="page-name">Visão Executiva</span></div>
-          <div class="page-card"><span class="page-num">P2</span><span class="page-name">Turnover & Desligamentos</span></div>
-          <div class="page-card"><span class="page-num">P3</span><span class="page-name">Absenteísmo & Alertas</span></div>
-          <div class="page-card"><span class="page-num">P4</span><span class="page-name">Custo & Folha</span></div>
-        </div>
       </div>
       <div class="stack-card">
         <h3>Stack utilizada</h3>
@@ -554,15 +548,23 @@ for nome, df in bases.items():
 <!-- NAVEGAÇÃO -->
 <div class="proj-nav">
   <div class="container">
-    <a href="gastos-governo.html" style="display:flex;align-items:center;gap:12px">
-      <div class="btn btn-primary" style="padding:10px 14px"><i class="fa-solid fa-arrow-left"></i></div>
+    <a href="customer-journey.html" style="display:flex;align-items:center;gap:12px">
+      <div class="btn btn-primary" style="padding:10px 14px">
+        <i class="fa-solid fa-arrow-left"></i>
+      </div>
       <div class="pn-prev-label">
+        <small>Próximo projeto</small>
+        <span>Customer Journey Intelligence</span>
+      </div>
+    </a>
+    <a href="gastos-governo.html" style="display:flex;align-items:center;gap:12px">
+      <div class="pn-prev-label" style="text-align:right">
         <small>Projeto anterior</small>
         <span>Despesas do Governo Federal</span>
       </div>
-    </a>
-    <a href="../index.html#projetos" class="pn-back">
-      <i class="fa-solid fa-grid-2"></i> Pe
+      <div class="btn btn-primary" style="padding:10px 14px">
+        <i class="fa-solid fa-arrow-right"></i>
+      </div>
     </a>
   </div>
 </div>
